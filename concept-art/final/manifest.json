@@ -1,0 +1,62 @@
+[
+  {
+    "name": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour.png",
+    "shows_jimothy": true,
+    "source": "refined/001-hero-portrait-watercolour/s0.42_seed1000.png",
+    "ref_scale": 0.42,
+    "seed": 1000,
+    "prompt": "a very round chubby tanuki, charcoal grey and black fur, silver grey guard hairs, strongly arched hunched back, no neck, head held low, tiny stump tail, short legs, standing proudly in profile side view, character concept art, children's book watercolour illustration, soft colours, gentle linework",
+    "note": "The one plate where the stump tail actually rendered."
+  },
+  {
+    "name": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector.png",
+    "shows_jimothy": true,
+    "source": "refined/004-hero-portrait-flat-vector/s0.42_seed1005.png",
+    "ref_scale": 0.42,
+    "seed": 1005,
+    "prompt": "a very round chubby tanuki, charcoal grey and black fur, silver grey guard hairs, strongly arched hunched back, no neck, head held low, tiny stump tail, short legs, standing proudly in profile side view, character concept art, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "note": "Cleanest short-spine silhouette; tailless (the style abstracts it away)."
+  },
+  {
+    "name": "039-cricket-march-cel-shaded",
+    "file": "039-cricket-march-cel-shaded.png",
+    "shows_jimothy": false,
+    "source": "generated/039-cricket-march-cel-shaded.png",
+    "ref_scale": null,
+    "seed": null,
+    "prompt": null,
+    "note": "Unmodified - no raccoon, so the reference pass did not apply."
+  },
+  {
+    "name": "072-trash-fortress-gouache",
+    "file": "072-trash-fortress-gouache.png",
+    "shows_jimothy": false,
+    "source": "generated/072-trash-fortress-gouache.png",
+    "ref_scale": null,
+    "seed": null,
+    "prompt": null,
+    "note": "Unmodified - environment plate, no raccoon."
+  },
+  {
+    "name": "082-defender-gouache",
+    "file": "082-defender-gouache.png",
+    "shows_jimothy": true,
+    "source": "refined/082-defender-gouache/s0.42_seed1802.png",
+    "ref_scale": 0.42,
+    "seed": 1802,
+    "prompt": "a very round chubby tanuki, charcoal grey and black fur, silver grey guard hairs, strongly arched hunched back, no neck, head held low, tiny stump tail, short legs, standing heroically on top of a mountain of garbage bags and trash cans, defending his hoard, evening, gouache painting, flat matte shapes, visible brush texture, mid-century illustration",
+    "note": "Original was warm brown; now correctly charcoal. Rear occluded by trash."
+  },
+  {
+    "name": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded.png",
+    "shows_jimothy": true,
+    "source": "refined/089-defender-cel-shaded/s0.42_seed1811.png",
+    "ref_scale": 0.42,
+    "seed": 1811,
+    "prompt": "a very round chubby tanuki, charcoal grey and black fur, silver grey guard hairs, strongly arched hunched back, no neck, head held low, tiny stump tail, short legs, standing heroically on top of a mountain of garbage bags and trash cans, defending his hoard, evening, cel shaded cartoon, thick confident outlines, bright saturated colours",
+    "note": "Went from an ordinary raccoon to a properly round, hunched one."
+  }
+]

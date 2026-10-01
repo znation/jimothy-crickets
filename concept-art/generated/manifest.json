@@ -1,0 +1,1002 @@
+[
+  {
+    "n": 1,
+    "name": "001-hero-portrait-watercolour",
+    "subject": "hero-portrait",
+    "style": "watercolour",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1000,
+    "file": "001-hero-portrait-watercolour.png",
+    "secs": null
+  },
+  {
+    "n": 2,
+    "name": "002-hero-portrait-gouache",
+    "subject": "hero-portrait",
+    "style": "gouache",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1001,
+    "file": "002-hero-portrait-gouache.png",
+    "secs": null
+  },
+  {
+    "n": 3,
+    "name": "003-hero-portrait-painterly",
+    "subject": "hero-portrait",
+    "style": "painterly",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1002,
+    "file": "003-hero-portrait-painterly.png",
+    "secs": null
+  },
+  {
+    "n": 4,
+    "name": "004-hero-portrait-flat-vector",
+    "subject": "hero-portrait",
+    "style": "flat-vector",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1003,
+    "file": "004-hero-portrait-flat-vector.png",
+    "secs": null
+  },
+  {
+    "n": 5,
+    "name": "005-hero-portrait-claymation",
+    "subject": "hero-portrait",
+    "style": "claymation",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1004,
+    "file": "005-hero-portrait-claymation.png",
+    "secs": null
+  },
+  {
+    "n": 6,
+    "name": "006-hero-portrait-felt-plush",
+    "subject": "hero-portrait",
+    "style": "felt-plush",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1005,
+    "file": "006-hero-portrait-felt-plush.png",
+    "secs": null
+  },
+  {
+    "n": 7,
+    "name": "007-hero-portrait-papercut",
+    "subject": "hero-portrait",
+    "style": "papercut",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1006,
+    "file": "007-hero-portrait-papercut.png",
+    "secs": null
+  },
+  {
+    "n": 8,
+    "name": "008-hero-portrait-pixel-art",
+    "subject": "hero-portrait",
+    "style": "pixel-art",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1007,
+    "file": "008-hero-portrait-pixel-art.png",
+    "secs": null
+  },
+  {
+    "n": 9,
+    "name": "009-hero-portrait-cel-shaded",
+    "subject": "hero-portrait",
+    "style": "cel-shaded",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1008,
+    "file": "009-hero-portrait-cel-shaded.png",
+    "secs": null
+  },
+  {
+    "n": 10,
+    "name": "010-hero-portrait-risograph",
+    "subject": "hero-portrait",
+    "style": "risograph",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing proudly in profile side view, character concept art, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1009,
+    "file": "010-hero-portrait-risograph.png",
+    "secs": null
+  },
+  {
+    "n": 11,
+    "name": "011-hero-alley-watercolour",
+    "subject": "hero-alley",
+    "style": "watercolour",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1100,
+    "file": "011-hero-alley-watercolour.png",
+    "secs": null
+  },
+  {
+    "n": 12,
+    "name": "012-hero-alley-gouache",
+    "subject": "hero-alley",
+    "style": "gouache",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1101,
+    "file": "012-hero-alley-gouache.png",
+    "secs": null
+  },
+  {
+    "n": 13,
+    "name": "013-hero-alley-painterly",
+    "subject": "hero-alley",
+    "style": "painterly",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1102,
+    "file": "013-hero-alley-painterly.png",
+    "secs": null
+  },
+  {
+    "n": 14,
+    "name": "014-hero-alley-flat-vector",
+    "subject": "hero-alley",
+    "style": "flat-vector",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1103,
+    "file": "014-hero-alley-flat-vector.png",
+    "secs": null
+  },
+  {
+    "n": 15,
+    "name": "015-hero-alley-claymation",
+    "subject": "hero-alley",
+    "style": "claymation",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1104,
+    "file": "015-hero-alley-claymation.png",
+    "secs": null
+  },
+  {
+    "n": 16,
+    "name": "016-hero-alley-felt-plush",
+    "subject": "hero-alley",
+    "style": "felt-plush",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1105,
+    "file": "016-hero-alley-felt-plush.png",
+    "secs": null
+  },
+  {
+    "n": 17,
+    "name": "017-hero-alley-papercut",
+    "subject": "hero-alley",
+    "style": "papercut",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1106,
+    "file": "017-hero-alley-papercut.png",
+    "secs": null
+  },
+  {
+    "n": 18,
+    "name": "018-hero-alley-pixel-art",
+    "subject": "hero-alley",
+    "style": "pixel-art",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1107,
+    "file": "018-hero-alley-pixel-art.png",
+    "secs": null
+  },
+  {
+    "n": 19,
+    "name": "019-hero-alley-cel-shaded",
+    "subject": "hero-alley",
+    "style": "cel-shaded",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1108,
+    "file": "019-hero-alley-cel-shaded.png",
+    "secs": null
+  },
+  {
+    "n": 20,
+    "name": "020-hero-alley-risograph",
+    "subject": "hero-alley",
+    "style": "risograph",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, standing in a rainy Seattle back alley at dusk, puddles, warm light, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1109,
+    "file": "020-hero-alley-risograph.png",
+    "secs": null
+  },
+  {
+    "n": 21,
+    "name": "021-guarding-trash-watercolour",
+    "subject": "guarding-trash",
+    "style": "watercolour",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1200,
+    "file": "021-guarding-trash-watercolour.png",
+    "secs": null
+  },
+  {
+    "n": 22,
+    "name": "022-guarding-trash-gouache",
+    "subject": "guarding-trash",
+    "style": "gouache",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1201,
+    "file": "022-guarding-trash-gouache.png",
+    "secs": null
+  },
+  {
+    "n": 23,
+    "name": "023-guarding-trash-painterly",
+    "subject": "guarding-trash",
+    "style": "painterly",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1202,
+    "file": "023-guarding-trash-painterly.png",
+    "secs": null
+  },
+  {
+    "n": 24,
+    "name": "024-guarding-trash-flat-vector",
+    "subject": "guarding-trash",
+    "style": "flat-vector",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1203,
+    "file": "024-guarding-trash-flat-vector.png",
+    "secs": null
+  },
+  {
+    "n": 25,
+    "name": "025-guarding-trash-claymation",
+    "subject": "guarding-trash",
+    "style": "claymation",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1204,
+    "file": "025-guarding-trash-claymation.png",
+    "secs": null
+  },
+  {
+    "n": 26,
+    "name": "026-guarding-trash-felt-plush",
+    "subject": "guarding-trash",
+    "style": "felt-plush",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1205,
+    "file": "026-guarding-trash-felt-plush.png",
+    "secs": null
+  },
+  {
+    "n": 27,
+    "name": "027-guarding-trash-papercut",
+    "subject": "guarding-trash",
+    "style": "papercut",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1206,
+    "file": "027-guarding-trash-papercut.png",
+    "secs": null
+  },
+  {
+    "n": 28,
+    "name": "028-guarding-trash-pixel-art",
+    "subject": "guarding-trash",
+    "style": "pixel-art",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1207,
+    "file": "028-guarding-trash-pixel-art.png",
+    "secs": null
+  },
+  {
+    "n": 29,
+    "name": "029-guarding-trash-cel-shaded",
+    "subject": "guarding-trash",
+    "style": "cel-shaded",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1208,
+    "file": "029-guarding-trash-cel-shaded.png",
+    "secs": null
+  },
+  {
+    "n": 30,
+    "name": "030-guarding-trash-risograph",
+    "subject": "guarding-trash",
+    "style": "risograph",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute, sitting on top of a big pile of black garbage bags, guarding it, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1209,
+    "file": "030-guarding-trash-risograph.png",
+    "secs": null
+  },
+  {
+    "n": 31,
+    "name": "031-cricket-march-watercolour",
+    "subject": "cricket-march",
+    "style": "watercolour",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1300,
+    "file": "031-cricket-march-watercolour.png",
+    "secs": 19.0
+  },
+  {
+    "n": 32,
+    "name": "032-cricket-march-gouache",
+    "subject": "cricket-march",
+    "style": "gouache",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1301,
+    "file": "032-cricket-march-gouache.png",
+    "secs": 20.9
+  },
+  {
+    "n": 33,
+    "name": "033-cricket-march-painterly",
+    "subject": "cricket-march",
+    "style": "painterly",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1302,
+    "file": "033-cricket-march-painterly.png",
+    "secs": 20.7
+  },
+  {
+    "n": 34,
+    "name": "034-cricket-march-flat-vector",
+    "subject": "cricket-march",
+    "style": "flat-vector",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1303,
+    "file": "034-cricket-march-flat-vector.png",
+    "secs": 21.1
+  },
+  {
+    "n": 35,
+    "name": "035-cricket-march-claymation",
+    "subject": "cricket-march",
+    "style": "claymation",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1304,
+    "file": "035-cricket-march-claymation.png",
+    "secs": 21.1
+  },
+  {
+    "n": 36,
+    "name": "036-cricket-march-felt-plush",
+    "subject": "cricket-march",
+    "style": "felt-plush",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1305,
+    "file": "036-cricket-march-felt-plush.png",
+    "secs": 21.2
+  },
+  {
+    "n": 37,
+    "name": "037-cricket-march-papercut",
+    "subject": "cricket-march",
+    "style": "papercut",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1306,
+    "file": "037-cricket-march-papercut.png",
+    "secs": 21.1
+  },
+  {
+    "n": 38,
+    "name": "038-cricket-march-pixel-art",
+    "subject": "cricket-march",
+    "style": "pixel-art",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1307,
+    "file": "038-cricket-march-pixel-art.png",
+    "secs": 20.9
+  },
+  {
+    "n": 39,
+    "name": "039-cricket-march-cel-shaded",
+    "subject": "cricket-march",
+    "style": "cel-shaded",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1308,
+    "file": "039-cricket-march-cel-shaded.png",
+    "secs": 20.9
+  },
+  {
+    "n": 40,
+    "name": "040-cricket-march-risograph",
+    "subject": "cricket-march",
+    "style": "risograph",
+    "prompt": "a marching line of a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1309,
+    "file": "040-cricket-march-risograph.png",
+    "secs": 21.1
+  },
+  {
+    "n": 41,
+    "name": "041-cricket-boss-watercolour",
+    "subject": "cricket-boss",
+    "style": "watercolour",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1400,
+    "file": "041-cricket-boss-watercolour.png",
+    "secs": 21.0
+  },
+  {
+    "n": 42,
+    "name": "042-cricket-boss-gouache",
+    "subject": "cricket-boss",
+    "style": "gouache",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1401,
+    "file": "042-cricket-boss-gouache.png",
+    "secs": 21.1
+  },
+  {
+    "n": 43,
+    "name": "043-cricket-boss-painterly",
+    "subject": "cricket-boss",
+    "style": "painterly",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1402,
+    "file": "043-cricket-boss-painterly.png",
+    "secs": 21.0
+  },
+  {
+    "n": 44,
+    "name": "044-cricket-boss-flat-vector",
+    "subject": "cricket-boss",
+    "style": "flat-vector",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1403,
+    "file": "044-cricket-boss-flat-vector.png",
+    "secs": 21.1
+  },
+  {
+    "n": 45,
+    "name": "045-cricket-boss-claymation",
+    "subject": "cricket-boss",
+    "style": "claymation",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1404,
+    "file": "045-cricket-boss-claymation.png",
+    "secs": 20.9
+  },
+  {
+    "n": 46,
+    "name": "046-cricket-boss-felt-plush",
+    "subject": "cricket-boss",
+    "style": "felt-plush",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1405,
+    "file": "046-cricket-boss-felt-plush.png",
+    "secs": 20.9
+  },
+  {
+    "n": 47,
+    "name": "047-cricket-boss-papercut",
+    "subject": "cricket-boss",
+    "style": "papercut",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1406,
+    "file": "047-cricket-boss-papercut.png",
+    "secs": 21.0
+  },
+  {
+    "n": 48,
+    "name": "048-cricket-boss-pixel-art",
+    "subject": "cricket-boss",
+    "style": "pixel-art",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1407,
+    "file": "048-cricket-boss-pixel-art.png",
+    "secs": 21.1
+  },
+  {
+    "n": 49,
+    "name": "049-cricket-boss-cel-shaded",
+    "subject": "cricket-boss",
+    "style": "cel-shaded",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1408,
+    "file": "049-cricket-boss-cel-shaded.png",
+    "secs": 21.3
+  },
+  {
+    "n": 50,
+    "name": "050-cricket-boss-risograph",
+    "subject": "cricket-boss",
+    "style": "risograph",
+    "prompt": "a giant gentle a sweet round cartoon cricket, soft rounded green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, big and soft and smiling warmly, sitting peacefully next to tiny trash cans that show how large it is, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1409,
+    "file": "050-cricket-boss-risograph.png",
+    "secs": 21.1
+  },
+  {
+    "n": 51,
+    "name": "051-alley-empty-watercolour",
+    "subject": "alley-empty",
+    "style": "watercolour",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1500,
+    "file": "051-alley-empty-watercolour.png",
+    "secs": 21.0
+  },
+  {
+    "n": 52,
+    "name": "052-alley-empty-gouache",
+    "subject": "alley-empty",
+    "style": "gouache",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1501,
+    "file": "052-alley-empty-gouache.png",
+    "secs": 19.5
+  },
+  {
+    "n": 53,
+    "name": "053-alley-empty-painterly",
+    "subject": "alley-empty",
+    "style": "painterly",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1502,
+    "file": "053-alley-empty-painterly.png",
+    "secs": 19.4
+  },
+  {
+    "n": 54,
+    "name": "054-alley-empty-flat-vector",
+    "subject": "alley-empty",
+    "style": "flat-vector",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1503,
+    "file": "054-alley-empty-flat-vector.png",
+    "secs": 19.4
+  },
+  {
+    "n": 55,
+    "name": "055-alley-empty-claymation",
+    "subject": "alley-empty",
+    "style": "claymation",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1504,
+    "file": "055-alley-empty-claymation.png",
+    "secs": 19.6
+  },
+  {
+    "n": 56,
+    "name": "056-alley-empty-felt-plush",
+    "subject": "alley-empty",
+    "style": "felt-plush",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1505,
+    "file": "056-alley-empty-felt-plush.png",
+    "secs": 19.3
+  },
+  {
+    "n": 57,
+    "name": "057-alley-empty-papercut",
+    "subject": "alley-empty",
+    "style": "papercut",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1506,
+    "file": "057-alley-empty-papercut.png",
+    "secs": 19.4
+  },
+  {
+    "n": 58,
+    "name": "058-alley-empty-pixel-art",
+    "subject": "alley-empty",
+    "style": "pixel-art",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1507,
+    "file": "058-alley-empty-pixel-art.png",
+    "secs": 19.5
+  },
+  {
+    "n": 59,
+    "name": "059-alley-empty-cel-shaded",
+    "subject": "alley-empty",
+    "style": "cel-shaded",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1508,
+    "file": "059-alley-empty-cel-shaded.png",
+    "secs": 19.3
+  },
+  {
+    "n": 60,
+    "name": "060-alley-empty-risograph",
+    "subject": "alley-empty",
+    "style": "risograph",
+    "prompt": "a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon, no characters, environment concept art, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1509,
+    "file": "060-alley-empty-risograph.png",
+    "secs": 19.5
+  },
+  {
+    "n": 61,
+    "name": "061-tower-build-watercolour",
+    "subject": "tower-build",
+    "style": "watercolour",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1600,
+    "file": "061-tower-build-watercolour.png",
+    "secs": null
+  },
+  {
+    "n": 62,
+    "name": "062-tower-build-gouache",
+    "subject": "tower-build",
+    "style": "gouache",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1601,
+    "file": "062-tower-build-gouache.png",
+    "secs": null
+  },
+  {
+    "n": 63,
+    "name": "063-tower-build-painterly",
+    "subject": "tower-build",
+    "style": "painterly",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1602,
+    "file": "063-tower-build-painterly.png",
+    "secs": null
+  },
+  {
+    "n": 64,
+    "name": "064-tower-build-flat-vector",
+    "subject": "tower-build",
+    "style": "flat-vector",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1603,
+    "file": "064-tower-build-flat-vector.png",
+    "secs": null
+  },
+  {
+    "n": 65,
+    "name": "065-tower-build-claymation",
+    "subject": "tower-build",
+    "style": "claymation",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1604,
+    "file": "065-tower-build-claymation.png",
+    "secs": null
+  },
+  {
+    "n": 66,
+    "name": "066-tower-build-felt-plush",
+    "subject": "tower-build",
+    "style": "felt-plush",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1605,
+    "file": "066-tower-build-felt-plush.png",
+    "secs": null
+  },
+  {
+    "n": 67,
+    "name": "067-tower-build-papercut",
+    "subject": "tower-build",
+    "style": "papercut",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1606,
+    "file": "067-tower-build-papercut.png",
+    "secs": null
+  },
+  {
+    "n": 68,
+    "name": "068-tower-build-pixel-art",
+    "subject": "tower-build",
+    "style": "pixel-art",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1607,
+    "file": "068-tower-build-pixel-art.png",
+    "secs": null
+  },
+  {
+    "n": 69,
+    "name": "069-tower-build-cel-shaded",
+    "subject": "tower-build",
+    "style": "cel-shaded",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1608,
+    "file": "069-tower-build-cel-shaded.png",
+    "secs": null
+  },
+  {
+    "n": 70,
+    "name": "070-tower-build-risograph",
+    "subject": "tower-build",
+    "style": "risograph",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute wearing a tiny yellow hard hat, building a defense tower out of stacked trash cans and cardboard, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1609,
+    "file": "070-tower-build-risograph.png",
+    "secs": null
+  },
+  {
+    "n": 71,
+    "name": "071-trash-fortress-watercolour",
+    "subject": "trash-fortress",
+    "style": "watercolour",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1700,
+    "file": "071-trash-fortress-watercolour.png",
+    "secs": 19.5
+  },
+  {
+    "n": 72,
+    "name": "072-trash-fortress-gouache",
+    "subject": "trash-fortress",
+    "style": "gouache",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1701,
+    "file": "072-trash-fortress-gouache.png",
+    "secs": 19.5
+  },
+  {
+    "n": 73,
+    "name": "073-trash-fortress-painterly",
+    "subject": "trash-fortress",
+    "style": "painterly",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1702,
+    "file": "073-trash-fortress-painterly.png",
+    "secs": 19.4
+  },
+  {
+    "n": 74,
+    "name": "074-trash-fortress-flat-vector",
+    "subject": "trash-fortress",
+    "style": "flat-vector",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1703,
+    "file": "074-trash-fortress-flat-vector.png",
+    "secs": 19.5
+  },
+  {
+    "n": 75,
+    "name": "075-trash-fortress-claymation",
+    "subject": "trash-fortress",
+    "style": "claymation",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1704,
+    "file": "075-trash-fortress-claymation.png",
+    "secs": 20.9
+  },
+  {
+    "n": 76,
+    "name": "076-trash-fortress-felt-plush",
+    "subject": "trash-fortress",
+    "style": "felt-plush",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1705,
+    "file": "076-trash-fortress-felt-plush.png",
+    "secs": 21.2
+  },
+  {
+    "n": 77,
+    "name": "077-trash-fortress-papercut",
+    "subject": "trash-fortress",
+    "style": "papercut",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1706,
+    "file": "077-trash-fortress-papercut.png",
+    "secs": 21.0
+  },
+  {
+    "n": 78,
+    "name": "078-trash-fortress-pixel-art",
+    "subject": "trash-fortress",
+    "style": "pixel-art",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1707,
+    "file": "078-trash-fortress-pixel-art.png",
+    "secs": 21.1
+  },
+  {
+    "n": 79,
+    "name": "079-trash-fortress-cel-shaded",
+    "subject": "trash-fortress",
+    "style": "cel-shaded",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1708,
+    "file": "079-trash-fortress-cel-shaded.png",
+    "secs": 20.9
+  },
+  {
+    "n": 80,
+    "name": "080-trash-fortress-risograph",
+    "subject": "trash-fortress",
+    "style": "risograph",
+    "prompt": "a whimsical fortress built out of garbage cans, cardboard boxes and pizza boxes in an alley, cute game environment concept art, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1709,
+    "file": "080-trash-fortress-risograph.png",
+    "secs": 21.0
+  },
+  {
+    "n": 81,
+    "name": "081-defender-watercolour",
+    "subject": "defender",
+    "style": "watercolour",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1800,
+    "file": "081-defender-watercolour.png",
+    "secs": null
+  },
+  {
+    "n": 82,
+    "name": "082-defender-gouache",
+    "subject": "defender",
+    "style": "gouache",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1801,
+    "file": "082-defender-gouache.png",
+    "secs": null
+  },
+  {
+    "n": 83,
+    "name": "083-defender-painterly",
+    "subject": "defender",
+    "style": "painterly",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1802,
+    "file": "083-defender-painterly.png",
+    "secs": null
+  },
+  {
+    "n": 84,
+    "name": "084-defender-flat-vector",
+    "subject": "defender",
+    "style": "flat-vector",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1803,
+    "file": "084-defender-flat-vector.png",
+    "secs": null
+  },
+  {
+    "n": 85,
+    "name": "085-defender-claymation",
+    "subject": "defender",
+    "style": "claymation",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1804,
+    "file": "085-defender-claymation.png",
+    "secs": null
+  },
+  {
+    "n": 86,
+    "name": "086-defender-felt-plush",
+    "subject": "defender",
+    "style": "felt-plush",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1805,
+    "file": "086-defender-felt-plush.png",
+    "secs": null
+  },
+  {
+    "n": 87,
+    "name": "087-defender-papercut",
+    "subject": "defender",
+    "style": "papercut",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1806,
+    "file": "087-defender-papercut.png",
+    "secs": null
+  },
+  {
+    "n": 88,
+    "name": "088-defender-pixel-art",
+    "subject": "defender",
+    "style": "pixel-art",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1807,
+    "file": "088-defender-pixel-art.png",
+    "secs": null
+  },
+  {
+    "n": 89,
+    "name": "089-defender-cel-shaded",
+    "subject": "defender",
+    "style": "cel-shaded",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1808,
+    "file": "089-defender-cel-shaded.png",
+    "secs": null
+  },
+  {
+    "n": 90,
+    "name": "090-defender-risograph",
+    "subject": "defender",
+    "style": "risograph",
+    "prompt": "a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute standing heroically on top of a mountain of garbage bags and trash cans, chest out, defending his hoard, dramatic low angle, evening, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1809,
+    "file": "090-defender-risograph.png",
+    "secs": null
+  },
+  {
+    "n": 91,
+    "name": "091-key-art-watercolour",
+    "subject": "key-art",
+    "style": "watercolour",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, children's book watercolour illustration, soft pastel colours, gentle linework, warm and inviting",
+    "seed": 1900,
+    "file": "091-key-art-watercolour.png",
+    "secs": null
+  },
+  {
+    "n": 92,
+    "name": "092-key-art-gouache",
+    "subject": "key-art",
+    "style": "gouache",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, gouache painting, flat matte shapes, rich warm palette, visible brush texture, mid-century illustration",
+    "seed": 1901,
+    "file": "092-key-art-gouache.png",
+    "secs": null
+  },
+  {
+    "n": 93,
+    "name": "093-key-art-painterly",
+    "subject": "key-art",
+    "style": "painterly",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, soft painterly animated film concept art, lush backgrounds, atmospheric lighting, hand painted",
+    "seed": 1902,
+    "file": "093-key-art-painterly.png",
+    "secs": null
+  },
+  {
+    "n": 94,
+    "name": "094-key-art-flat-vector",
+    "subject": "key-art",
+    "style": "flat-vector",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, bold flat vector illustration, limited palette, geometric shapes, clean poster design",
+    "seed": 1903,
+    "file": "094-key-art-flat-vector.png",
+    "secs": null
+  },
+  {
+    "n": 95,
+    "name": "095-key-art-claymation",
+    "subject": "key-art",
+    "style": "claymation",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, claymation stop motion diorama, plasticine models, tilt shift photography, handmade texture",
+    "seed": 1904,
+    "file": "095-key-art-claymation.png",
+    "secs": null
+  },
+  {
+    "n": 96,
+    "name": "096-key-art-felt-plush",
+    "subject": "key-art",
+    "style": "felt-plush",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, handmade felt and plush toy diorama, soft textiles, visible stitching, cosy craft photography",
+    "seed": 1905,
+    "file": "096-key-art-felt-plush.png",
+    "secs": null
+  },
+  {
+    "n": 97,
+    "name": "097-key-art-papercut",
+    "subject": "key-art",
+    "style": "papercut",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, layered paper cutout collage, construction paper, soft drop shadows, tactile craft illustration",
+    "seed": 1906,
+    "file": "097-key-art-papercut.png",
+    "secs": null
+  },
+  {
+    "n": 98,
+    "name": "098-key-art-pixel-art",
+    "subject": "key-art",
+    "style": "pixel-art",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, detailed 16-bit pixel art, rich dithering, retro game art",
+    "seed": 1907,
+    "file": "098-key-art-pixel-art.png",
+    "secs": null
+  },
+  {
+    "n": 99,
+    "name": "099-key-art-cel-shaded",
+    "subject": "key-art",
+    "style": "cel-shaded",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, cel shaded cartoon, thick confident outlines, bright saturated colours, Saturday morning cartoon",
+    "seed": 1908,
+    "file": "099-key-art-cel-shaded.png",
+    "secs": null
+  },
+  {
+    "n": 100,
+    "name": "100-key-art-risograph",
+    "subject": "key-art",
+    "style": "risograph",
+    "prompt": "video game key art poster, a very round chubby tanuki, tiny stump tail, dark grey and black fur, hunched arched back, black bandit mask, tiny short legs, cute as the hero in the centre, cheerful round smiling crickets around him, a glowing pile of treasure-like garbage behind him, dynamic and joyful, risograph print, two spot colours, grainy paper texture, slight misregistration, indie zine art",
+    "seed": 1909,
+    "file": "100-key-art-risograph.png",
+    "secs": null
+  }
+]

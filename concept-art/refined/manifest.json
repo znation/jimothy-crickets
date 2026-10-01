@@ -1,0 +1,422 @@
+[
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.35_seed1000.png",
+    "scale": 0.35,
+    "seed": 1000,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.35_seed1001.png",
+    "scale": 0.35,
+    "seed": 1001,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.35_seed1002.png",
+    "scale": 0.35,
+    "seed": 1002,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.42_seed1000.png",
+    "scale": 0.42,
+    "seed": 1000,
+    "best": true
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.42_seed1001.png",
+    "scale": 0.42,
+    "seed": 1001,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.42_seed1002.png",
+    "scale": 0.42,
+    "seed": 1002,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.42_seed1003.png",
+    "scale": 0.42,
+    "seed": 1003,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.42_seed1004.png",
+    "scale": 0.42,
+    "seed": 1004,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.42_seed1005.png",
+    "scale": 0.42,
+    "seed": 1005,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.50_seed1000.png",
+    "scale": 0.5,
+    "seed": 1000,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.50_seed1001.png",
+    "scale": 0.5,
+    "seed": 1001,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.50_seed1002.png",
+    "scale": 0.5,
+    "seed": 1002,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.65_seed1000.png",
+    "scale": 0.65,
+    "seed": 1000,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.65_seed1001.png",
+    "scale": 0.65,
+    "seed": 1001,
+    "best": false
+  },
+  {
+    "pick": "001-hero-portrait-watercolour",
+    "file": "001-hero-portrait-watercolour/s0.65_seed1002.png",
+    "scale": 0.65,
+    "seed": 1002,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.35_seed1003.png",
+    "scale": 0.35,
+    "seed": 1003,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.35_seed1004.png",
+    "scale": 0.35,
+    "seed": 1004,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.35_seed1005.png",
+    "scale": 0.35,
+    "seed": 1005,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.42_seed1003.png",
+    "scale": 0.42,
+    "seed": 1003,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.42_seed1004.png",
+    "scale": 0.42,
+    "seed": 1004,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.42_seed1005.png",
+    "scale": 0.42,
+    "seed": 1005,
+    "best": true
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.42_seed1006.png",
+    "scale": 0.42,
+    "seed": 1006,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.42_seed1007.png",
+    "scale": 0.42,
+    "seed": 1007,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.42_seed1008.png",
+    "scale": 0.42,
+    "seed": 1008,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.50_seed1003.png",
+    "scale": 0.5,
+    "seed": 1003,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.50_seed1004.png",
+    "scale": 0.5,
+    "seed": 1004,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.50_seed1005.png",
+    "scale": 0.5,
+    "seed": 1005,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.65_seed1003.png",
+    "scale": 0.65,
+    "seed": 1003,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.65_seed1004.png",
+    "scale": 0.65,
+    "seed": 1004,
+    "best": false
+  },
+  {
+    "pick": "004-hero-portrait-flat-vector",
+    "file": "004-hero-portrait-flat-vector/s0.65_seed1005.png",
+    "scale": 0.65,
+    "seed": 1005,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.35_seed1801.png",
+    "scale": 0.35,
+    "seed": 1801,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.35_seed1802.png",
+    "scale": 0.35,
+    "seed": 1802,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.35_seed1803.png",
+    "scale": 0.35,
+    "seed": 1803,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.42_seed1801.png",
+    "scale": 0.42,
+    "seed": 1801,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.42_seed1802.png",
+    "scale": 0.42,
+    "seed": 1802,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.42_seed1803.png",
+    "scale": 0.42,
+    "seed": 1803,
+    "best": true
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.42_seed1804.png",
+    "scale": 0.42,
+    "seed": 1804,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.42_seed1805.png",
+    "scale": 0.42,
+    "seed": 1805,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.42_seed1806.png",
+    "scale": 0.42,
+    "seed": 1806,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.50_seed1801.png",
+    "scale": 0.5,
+    "seed": 1801,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.50_seed1802.png",
+    "scale": 0.5,
+    "seed": 1802,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.50_seed1803.png",
+    "scale": 0.5,
+    "seed": 1803,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.65_seed1801.png",
+    "scale": 0.65,
+    "seed": 1801,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.65_seed1802.png",
+    "scale": 0.65,
+    "seed": 1802,
+    "best": false
+  },
+  {
+    "pick": "082-defender-gouache",
+    "file": "082-defender-gouache/s0.65_seed1803.png",
+    "scale": 0.65,
+    "seed": 1803,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.35_seed1808.png",
+    "scale": 0.35,
+    "seed": 1808,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.35_seed1809.png",
+    "scale": 0.35,
+    "seed": 1809,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.35_seed1810.png",
+    "scale": 0.35,
+    "seed": 1810,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.42_seed1808.png",
+    "scale": 0.42,
+    "seed": 1808,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.42_seed1809.png",
+    "scale": 0.42,
+    "seed": 1809,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.42_seed1810.png",
+    "scale": 0.42,
+    "seed": 1810,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.42_seed1811.png",
+    "scale": 0.42,
+    "seed": 1811,
+    "best": true
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.42_seed1812.png",
+    "scale": 0.42,
+    "seed": 1812,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.42_seed1813.png",
+    "scale": 0.42,
+    "seed": 1813,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.50_seed1808.png",
+    "scale": 0.5,
+    "seed": 1808,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.50_seed1809.png",
+    "scale": 0.5,
+    "seed": 1809,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.50_seed1810.png",
+    "scale": 0.5,
+    "seed": 1810,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.65_seed1808.png",
+    "scale": 0.65,
+    "seed": 1808,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.65_seed1809.png",
+    "scale": 0.65,
+    "seed": 1809,
+    "best": false
+  },
+  {
+    "pick": "089-defender-cel-shaded",
+    "file": "089-defender-cel-shaded/s0.65_seed1810.png",
+    "scale": 0.65,
+    "seed": 1810,
+    "best": false
+  }
+]

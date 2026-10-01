@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+
+# Qwen-Image-2.1 output: its Qwen Research License allows research or evaluation
+# use only, so it must not ship. Kept locally for reference, never committed.
+concept-art/qwen/
