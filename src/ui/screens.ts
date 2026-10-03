@@ -270,7 +270,13 @@ export function openSettings(app: App) {
           status,
         ),
       ),
-      h("p.small.footer", null, `${t("settings.privacy")} · ${t("settings.version", { v: __APP_VERSION__ })}`),
+      h(
+        "p.small.footer",
+        null,
+        h("a", { href: "./privacy.html", target: "_blank", rel: "noopener" }, t("settings.privacy")),
+        ` · ${t("settings.version", { v: __APP_VERSION__ })}`,
+      ),
+      h("p.small.footer", null, t("settings.credits")),
       close,
     ),
   );
