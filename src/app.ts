@@ -8,6 +8,7 @@ import { View } from "./render/view.ts";
 import type { SaveStore } from "./save.ts";
 import { bot, referenceInputs } from "./sim/run.ts";
 import { UNIT_IDS, type LevelDef, type UnitId } from "./sim/types.ts";
+import { GameAudio } from "./platform/audio.ts";
 import { DebugOverlay } from "./ui/debug.ts";
 import { installNavigation } from "./ui/gamepad.ts";
 import { LevelScreen, MapScreen, TitleScreen, type Screen } from "./ui/screens.ts";
@@ -17,6 +18,7 @@ const MAX_FRAME_GAP = 0.25; // s; a longer gap (tab switch, breakpoint) is not s
 export class App {
   readonly view: View;
   readonly scene: SceneRenderer;
+  readonly audio = new GameAudio();
   screen: Screen | null = null;
   private attract: LevelSession | null = null;
   private attractRestart = 0;
@@ -45,10 +47,19 @@ export class App {
     }).observe(canvas);
     platform.lifecycle.onPause(() => {
       this.screen?.onPause?.();
+      this.audio.setPaused(true);
       cancelAnimationFrame(this.raf);
       this.raf = 0;
     });
-    platform.lifecycle.onResume(() => this.wake());
+    platform.lifecycle.onResume(() => {
+      this.audio.setPaused(false);
+      this.wake();
+    });
+    // A soft tap for every button except unit cards, which chirp as they send.
+    ui.addEventListener("click", (e) => {
+      const b = (e.target as HTMLElement).closest("button");
+      if (b && !b.classList.contains("unit-card")) this.audio.play("tap");
+    });
     installNavigation(ui);
     window.addEventListener("keydown", (e) => this.screen?.onKey?.(e, true));
     window.addEventListener("keyup", (e) => this.screen?.onKey?.(e, false));
@@ -65,6 +76,7 @@ export class App {
 
   show(screen: Screen) {
     this.screen?.dispose?.();
+    this.audio.theme(screen.session ? screen.session.level.area : "menu");
     this.screen = screen;
     this.ui.replaceChildren(screen.el);
     screen.focus?.();
@@ -105,6 +117,7 @@ export class App {
     const s = this.save.data.settings;
     const reduce = s.reducedMotion || matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.scene.reducedMotion = reduce;
+    this.audio.setVolumes(s.music, s.sfx);
     document.documentElement.classList.toggle("reduced-motion", reduce);
     document.documentElement.classList.toggle("large-text", s.largeText);
   }

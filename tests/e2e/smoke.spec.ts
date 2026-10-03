@@ -50,7 +50,9 @@ test("title, map and a level load without page errors", async ({ page }) => {
   await page.getByRole("button", { name: "Play" }).click();
   await page.locator('[data-level="4-5"]').click(); // the map opens on the furthest area
   await page.getByRole("button", { name: "Let's go!" }).click();
-  await page.waitForTimeout(1000);
+  // Send a few friends so the synthesized sounds and music all get exercised.
+  for (const unit of ["cricket", "possum", "squirrel", "crow", "rat"]) await page.locator(`[data-unit="${unit}"]`).click();
+  await page.waitForTimeout(3000);
   expect(errors).toEqual([]);
 });
 

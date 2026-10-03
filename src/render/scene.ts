@@ -25,7 +25,7 @@ const FLY_HEIGHT = 90;
 const UNIT_SCALE = 1.5;
 
 interface Effect {
-  kind: "hop" | "splash" | "text" | "startle" | "dust";
+  kind: "hop" | "text" | "startle" | "dust" | "confetti";
   x: number;
   y: number;
   age: number;
@@ -33,6 +33,9 @@ interface Effect {
   unit?: UnitId;
   text?: string;
   dir?: number;
+  vx?: number;
+  vy?: number;
+  colour?: string;
 }
 
 export class SceneRenderer {
@@ -69,6 +72,15 @@ export class SceneRenderer {
         if (u && !this.reducedMotion) {
           const [x, y] = this.unitPos(st, u.lane, u.s, u.jitter, u.def.tags.includes("air"));
           this.add({ kind: "startle", x, y: y - 40, life: 0.45 });
+        }
+      } else if (e.type === "levelWon") {
+        // a burst of leaves and stars from where the pile was
+        const [px, py] = st.level.pile.pos;
+        const colours = ["#ffe08a", "#6cc24a", "#ff8f5a", "#8fd3ff", "#f6a6c1"];
+        for (let i = 0; i < (this.reducedMotion ? 0 : 60); i++) {
+          const a = -Math.PI / 2 + (i / 60 - 0.5) * 2.4;
+          const speed = 500 + ((i * 97) % 400);
+          this.add({ kind: "confetti", x: px, y: py - 40, life: 1.6, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, colour: colours[i % colours.length]! });
         }
       } else if (e.type === "defenseChewed") {
         const [x, y] = st.defenses[e.index]!.pos;
@@ -250,6 +262,13 @@ export class SceneRenderer {
         ctx.strokeText("!", e.x, e.y - k * 14);
         ctx.fillStyle = "#fff";
         ctx.fillText("!", e.x, e.y - k * 14);
+      } else if (e.kind === "confetti") {
+        const x = e.x + e.vx! * e.age;
+        const y = e.y + e.vy! * e.age + 700 * e.age * e.age; // a little gravity
+        ctx.translate(x, y);
+        ctx.rotate(e.age * 8 + e.vx!);
+        ctx.fillStyle = e.colour!;
+        ctx.fillRect(-7, -4, 14, 8);
       } else if (e.kind === "dust") {
         for (let i = 0; i < 6; i++) {
           const a = (i / 6) * Math.PI * 2;

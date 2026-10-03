@@ -179,6 +179,7 @@ export class ShopScreen implements Screen {
             "aria-label": cost === undefined ? t("shop.max") : `${t(`upgrade.${u.id}`)}, ${cost} acorns`,
             onclick: () => {
               if (this.app.save.buyUpgrade(u)) {
+                this.app.audio.play("buy");
                 void this.app.save.store();
                 this.app.show(new ShopScreen(this.app));
               }
@@ -305,6 +306,7 @@ export class LevelScreen implements Screen {
     const st = session.st;
     session.onEvents((events) => {
       app.scene.onEvents(st, events);
+      app.audio.onEvents(events, (i) => st.defenses[i]!.def.id);
       for (const e of events) {
         if (e.type === "unitSent" && this.tutorialStep === 1) this.advanceTutorial();
         if (e.type === "levelWon" || e.type === "nightEnded") this.endTimer = 1.4;
