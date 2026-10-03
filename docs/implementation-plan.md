@@ -49,7 +49,7 @@ in-app purchases and no revenue of any kind, on every platform. This shapes the 
   - native iOS and Android apps (phone and tablet)
   - native Windows, macOS and Linux apps, including Steam and the Steam Deck
 - Every level can be played headlessly, so CI and agents can check their own changes.
-- A repeatable pipeline that turns the Qwen concept art into consistent in-game sprites.
+- A repeatable pipeline that turns the SDXL-Turbo concept art into consistent in-game sprites.
 
 **Non-goals for v1**
 
@@ -267,13 +267,13 @@ Music and sound effects get separate volume sliders.
 ├─ docs/
 │  ├─ implementation-plan.md    this document
 │  └─ style-guide.md            art bible (M5)
-├─ concept-art/                 existing Qwen and SDXL concept art and generators
+├─ concept-art/                 existing SDXL-Turbo concept art and generators
 ├─ art/                         production art sources (Git LFS)
 │  ├─ prompts/                  sprite and background prompt sets (data)
 │  ├─ raw/                      model output, never hand-edited
 │  └─ curated/                  picked + touched-up PNGs: the source of truth for shipped art
 ├─ tools/
-│  ├─ asset_gen/                Qwen sprite and background generation (reuses qwen_image.py)
+│  ├─ asset_gen/                SDXL-Turbo sprite and background generation (from generate_sdxl.py)
 │  ├─ build_atlas.ts            curated PNGs → WebP atlases + JSON frame maps
 │  ├─ sim.ts                    headless level runner CLI
 │  └─ validate_data.ts          schema and reference checks for all data files
@@ -539,7 +539,7 @@ muted.
 
 **Q9 — Asset pipeline.** **Proposal: semi-automated.**
 
-- Qwen generates sprite and background candidates from versioned prompt files.
+- SDXL-Turbo generates sprite and background candidates from versioned prompt files.
 - A human picks and touches them up into `art/curated/`.
 - A build script packs atlases.
 
@@ -583,12 +583,13 @@ something new to learn. Recruitment happens on clearing the listed level.
 The README specifies **hand-drawn / storybook**: soft shapes, **chunky confident outlines**, a warm
 picture-book palette, and explicitly "not retro pixel art, not corporate flat vector".
 
-In the Qwen set (`concept-art/qwen/`), two columns are closest:
+The concept art is the SDXL-Turbo set in `concept-art/sdxl/` (`index.html`): 11 subjects × 10
+styles. In it, two columns are closest to that brief:
 
-- **Watercolour** (`001`, `011`, `021`, …): the strongest storybook feel. Soft washes on white
-  paper, and Jimothy's round body and nub tail read well (`001`, `061`).
+- **Watercolour** (`001`, `011`, `021`, …): the strongest storybook feel. Soft washes, warm
+  palette, and Jimothy reads as round and grey.
   - Weakness: outlines are soft and thin, so small sprites may lose their silhouettes.
-- **Cel-shaded** (`009`, `039`, `089`, …): the chunky outlines and silhouette clarity the README
+- **Cel-shaded** (`009`, `019`, `029`, …): the chunky outlines and silhouette clarity the README
   wants at small sizes.
   - Weakness: closer to cartoon than picture book.
 
@@ -608,26 +609,30 @@ Notes on the existing set:
 - **Premise flip.** The concept art predates the README's reverse-TD premise; it shows Jimothy
   *defending* his pile. The character designs carry over unchanged, and several scenes map neatly
   onto the new premise (table below).
-- **Off-model crickets.** The key-art plates (`091`–`100`) drew the crickets as yellow, bee-like
-  faces. Treat them as off-model. The on-model cricket references are `031`–`040` (cricket march)
-  and `101`–`110` (standoff).
-- **Outdated README.** `concept-art/README.md` still documents only the SDXL set. Update it as part
-  of M5.
+- **Weak plates.** `concept-art/README.md` lists them:
+  - `trash-fortress` reads as cardboard-castle alleys rather than a fort built from trash
+  - `048` is a robot-like cricket
+  - `066` shows a tail
+  - some composited plates have a soft halo around the crickets
+
+  Use the other plates in those rows as reference instead.
+- **No Qwen art.** An earlier Qwen-Image-2.1 set exists locally but is not in the repo, and must
+  never ship (§8.5).
 
 ### 8.2 What the existing concept art is used for
 
-| Concept art | Use |
+| Concept art (`concept-art/sdxl/`) | Use |
 |---|---|
-| `hero-portrait` (001–010), esp. watercolour `001` | Jimothy **character reference**: ref image for every Jimothy generation; style guide model sheet |
-| `cricket-march` (031–040), esp. `031`, `039` | Cricket reference; the "troupe marching down a lane" read |
-| `standoff` (101–110), esp. `101` | **Composition reference for gameplay**: troupe on the left, humans' pile on the right |
-| `trash-fortress` (071–080), esp. `072` | The **humans' fortified pile**, which fits the flipped premise directly; the pile's 5 shrink stages |
+| `hero-portrait` (001–010), esp. watercolour `001` | Jimothy **character reference**: the anchor image for Jimothy generations (§8.4); style guide model sheet |
+| `cricket-march` (031–040), esp. `031`, `033`, `039` | Cricket reference; the "troupe marching down a lane" read |
+| `standoff` (101–110), esp. `101`, `106` | **Composition reference for gameplay**: troupe on the left, humans' pile on the right |
+| `trash-fortress` (071–080), esp. `075`, `076` | The **humans' fortified pile**, which fits the flipped premise directly. The weakest row, so expect to redraw it for the pile's 5 shrink stages. |
 | `guarding-trash` (021–030), `defender` (081–090) | Jimothy **atop the reclaimed pile**: the level-complete and area-complete art |
 | `alley-empty` (051–060) | Area 1 background reference |
-| `key-art` (091–100) | Composition reference for title screen and store art (re-render: off-model crickets, old premise) |
+| `key-art` (091–100) | Composition reference for title screen and store art (re-render for the new premise) |
 | `tower-build` (061–070) | Upgrade-shop art ("Jimothy in a hard hat improving the troupe") |
 | `cricket-boss` (041–050) | Not needed in v1; possible area-4 finale visual gag |
-| `concept-art/final/` (SDXL picks) | Historical reference only; superseded by the Qwen set |
+| `concept-art/final/` (first SDXL sweep) | Historical reference only; superseded by `sdxl/` |
 | `concept-art/reference/` photos | Ground truth for Jimothy's anatomy and colouring |
 
 ### 8.3 New art the game needs (none exists yet)
@@ -648,40 +653,69 @@ Total: roughly **60–80 shipped images**, chosen from **400–600 generated can
 
 ### 8.4 Generation pipeline
 
-Reuse the vendored `concept-art/_tools/qwen_image.py` runner. Move it to `tools/asset_gen/` and
-keep it byte-identical to the vale original. Two features matter here, and neither was used for
-concept art:
+The model is **SDXL-Turbo** (4 steps, guidance 0) with **IP-Adapter** for reference images, run
+on CPU. The concept-art generator, `concept-art/_tools/generate_sdxl.py`, already has the workflow
+production art needs. Generalize it into `tools/asset_gen/` rather than starting over:
 
-- **Reference images (`Job.refs`).** Condition each Jimothy and cricket generation on the chosen
-  anchor plate. This is the main lever for **consistency across sprites**, which is the hard part
-  of production art from an image model.
-- **Transparent output (`Job.transparent=True`).** The runner asks for an RGBA image with a
-  transparent background. Concept art used opaque output, which came back as RGBA with alpha
-  240–255. **Spike this first in M5:** check whether real cut-outs come back clean. If not, fall
-  back to plain-white backgrounds plus a matting step (threshold and flood-fill from the corners).
-  The watercolour-on-white look makes that easy.
+- **Candidates, then picks.** Every asset renders several seeds into
+  `<set>/_candidates/<asset>/<seed>-<prompt hash>.png`.
+  - A human picks one seed per asset, recorded in `picks.json`.
+  - An assemble step copies the picks and writes a manifest with the exact prompt, seed and
+    settings.
+  - The prompt hash means an edited prompt never mixes with old renders.
+- **Prompt-length guard.** Both SDXL text encoders keep only 77 tokens and silently drop the rest.
+  The script refuses any longer prompt.
+- **Regional inpainting for multi-character images:** render the background, then inpaint each
+  character into its own region with a prompt that describes only that character.
+
+Two things production art needs that concept art did not, each a **spike at the start of M5**:
+
+- **Character consistency across sprites.** Use IP-Adapter with the chosen anchor plate (e.g.
+  `sdxl/001`) as the reference image, instead of the photo. The concept work set its limits:
+  - Above ~0.45 the art styles start to wash out, and at 0.42 it already blocked long tails better
+    than any wording.
+  - The reference brings its *scene* with it. The photo's dirt and grass replaced the garbage pile
+    with rocks. Render backgrounds without it, and characters on plain backgrounds.
+  - The anchor must show the whole animal. A crop of his hindquarters, inpainted into a small
+    region, produced headless rear ends.
+- **Transparency.** SDXL has no alpha channel. Generate each sprite "isolated on a plain white
+  background" and cut it out.
+  - A quick colour-threshold cutout was tried in the concept work and failed: it kept ground bands
+    and white boxes.
+  - So plan for a proper matting model, such as rembg or BiRefNet (check the license before
+    adopting), plus touch-up in Krita.
 
 Pipeline:
 
 ```
-art/prompts/*.json ──► tools/asset_gen/generate_sprites.py ──► art/raw/<set>/NNN.png  (+ manifest)
-                                     (Qwen, refs + style lead)
-art/raw  ──(human picks; contact sheet)──► art/curated/<name>.png   (touch-ups in Krita/GIMP)
+art/prompts/*.json ──► tools/asset_gen/generate.py ──► art/raw/<set>/_candidates/…  (seeds × prompts)
+                         (SDXL-Turbo + IP-Adapter anchor, CPU)
+art/raw ──(human picks → picks.json)──► matting ──► art/curated/<name>.png   (touch-ups in Krita)
 art/curated ──► tools/build_atlas.ts ──► dist/atlas/<area>.webp + .json
                  (trim, outline-normalize, resize to 2× logical, pack, WebP-encode)
 ```
 
-Lessons from the concept-art work that carry over:
+Lessons from the concept-art work (eight review passes, ~650 candidates; details in
+`concept-art/README.md`):
 
-- **The style must lead the prompt.** When style came last, Qwen collapsed every style into one
-  look.
-- **Describe Jimothy concretely**, with the `JIMOTHY` text block from `generate_qwen.py`: ball
-  body, no neck, short stubby legs, a few-inch nub tail, charcoal-grey and black with no brown.
-  The LLM text encoder honors this, where SDXL/CLIP never could.
-- **Medium words can override anatomy.** For papercut, an extra Jimothy-only clause with a concrete
-  size anchor was needed ("no bigger than one of his ears"). Expect similar fixes per style, and
-  keep them as per-style clauses in data.
-- **Avoid "a real raccoon"**: it pulls toward photorealism.
+- **Seeds matter more than wording.** At a fixed seed, rewording barely changes the image.
+  Budget **4+ seeds per asset** and pick by eye; that fixed most problems.
+- **The style leads the prompt**, and every prompt is a compact keyword phrase.
+- **Jimothy:** "a single very round chubby tailless tanuki, charcoal grey and black fur, bandit
+  mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs".
+  - "Tanuki" carries the round, short-tailed silhouette.
+  - "Raccoon" summons a long ringed tail.
+  - "Single" stops extra baby raccoons.
+- **Crickets:** "soft rounded bright green bodies, little black dot eyes, small gentle
+  closed-mouth smiles … harmless and cuddly". Dropping any of it brought back spiky, toothy or
+  orange striped bugs.
+- **Two characters never share a prompt.** Attributes bleed between them: "green" turns Jimothy
+  into a cricket hybrid, and the raccoon reference turns crickets into raccoons. Use regional
+  inpainting.
+- **Medium words override subjects.**
+  - Papercut turned cricket crowds into bees.
+  - Pixel art turned crickets into robots.
+  - Expect per-style fixes, and keep them as data (`TUNING` in the generator).
 - **Name ink colours carefully.** "Blue ink" turned Jimothy blue.
 
 **Consistency post-processing** in `build_atlas.ts`, so sprites look like one family even when
@@ -701,32 +735,49 @@ character across many animation frames, and the README asks for minimal animatio
   - flip and tumble for "shooed"
   - a flop for the possum's play-dead
 - an optional **2-frame walk** (legs together / apart), only where the bob-walk reads poorly. Make
-  the second frame with an image edit of the first (a ref-conditioned "same character, legs
-  apart"), not a fresh generation.
+  the second frame by inpainting just the legs of the first, not by a fresh generation.
 - effects drawn procedurally: water arcs, light cones, broom swishes, "!" startle marks, dust puffs
 
-**Compute budget.** One 512² image at 20 steps takes about 115 s at idle priority (measured in the
-Qwen concept-art run). That puts 500 candidates at about 16 hours: practical as several overnight
-runs. 1024² backgrounds cost roughly 4× per image, so generate backgrounds at 1024 × 576 and keep
-their count low.
+**Compute budget** (measured in the concept-art run, CPU at idle priority, sharing the machine with
+other jobs):
+- about **25 s per 512² image**
+- about **1.5–2 min per inpainted composite**
+
+500 candidates is about 3.5 hours: one overnight run. SDXL-Turbo is trained at 512². Spike
+backgrounds at 1024 × 576 in M5, and fall back to 512-high renders plus upscaling if wide output
+degrades.
 
 **Hardware rules for every run.** These are standing requirements on this machine:
 
-- stay **under 6 GB of VRAM** (the runner's guard enforces this)
-- **one GPU job at a time** (the runner's lock)
+- **CPU only.** The Vega 48 is also the display adapter. SDXL on it hung the GPU and corrupted
+  the desktop badly enough to need a hard reboot (`concept-art/README.md`).
 - launch under `chrt --idle 0 ionice -c 3`
-- don't overlap with heavy CPU batches. The iMac throttles to 800 MHz under combined CPU and GPU
-  heat (`/home/zach/imac-thermal-throttling.md`).
+- don't overlap with other heavy CPU batches. The iMac throttles to 800 MHz under sustained load
+  (`/home/zach/imac-thermal-throttling.md`).
+- The shared `~/venv` currently has a `huggingface_hub` too new for its `transformers`. Runs put a
+  project-only copy first on the path (`PYTHONPATH=~/.cache/jimothy-sdxl-pylibs`; see the
+  generator's docstring).
 
-### 8.5 Licensing check (before any store submission)
+### 8.5 Licensing
 
-The game is non-commercial, which lowers the bar but doesn't remove the check:
+Checked when the model was chosen:
 
-- **Verify the Qwen-Image-2.1 license** allows its outputs to be *publicly distributed* in a free,
-  non-commercial game, including through stores like Steam and the App Store. Record the answer in
-  `docs/style-guide.md`. Free distribution is still distribution, so read the actual terms rather
-  than assuming.
-- **Font and audio assets:** licenses that are free for non-commercial use (e.g. CC BY-NC) are now
+- **SDXL-Turbo** (`sai-nc-community`, Stability AI Non-Commercial Research Community License):
+  - It allows non-commercial use, defined as "not primarily intended for commercial advantage or
+    monetary compensation … such as personal use (i.e., hobbyist)". A free game fits.
+  - We own the outputs.
+  - Its distribution conditions (a copy of the agreement, "Powered by Stability AI") apply to the
+    model and modified versions of it, which explicitly exclude outputs. We ship only outputs.
+  - Outputs must follow Stability AI's Acceptable Use Policy. Nothing in an all-ages game is near
+    it.
+  - **Charging for the game later would need a different license**, Stability's Community License.
+    Revisit if pricing ever changes (§12.4).
+- **IP-Adapter** (`h94/IP-Adapter`): Apache 2.0.
+- **Qwen-Image-2.1 is excluded.** Its Qwen Research License allows only "research or evaluation"
+  use, so its earlier concept set was removed from the repo and `concept-art/qwen/` is
+  git-ignored. Never use it for shipped art.
+- **Matting model** (§8.4): check its license before adopting it.
+- **Font and audio assets:** licenses that are free for non-commercial use (e.g. CC BY-NC) are
   acceptable. Still prefer CC0 / CC BY / SIL OFL: they avoid any question about whether a store
   listing counts as commercial, and they keep a commercial option open later.
 - **Steam requires disclosure of AI-generated content** in its content survey. Plan the store-page
@@ -980,14 +1031,15 @@ a big-bang risk at the end. Each milestone has a concrete exit check that an age
 
 ### M5 — Art pipeline and style lock (README step 7, started early)
 
-M5 can run in parallel with M3–M4: it uses the GPU, not the developer.
+M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not developer time.
 
-- Spikes: transparent output and ref-conditioned consistency (§8.4).
+- Spikes (§8.4): IP-Adapter anchor-image consistency across sprites; matting sprites off a
+  white background (pick a model and check its license); wide backgrounds at 1024 × 576.
 - Style probes → Zach picks the anchors → `docs/style-guide.md`.
-- `tools/asset_gen/generate_sprites.py`, prompt sets, `build_atlas.ts` with outline normalization.
+- `tools/asset_gen/generate.py` (generalized from `generate_sdxl.py`), prompt sets, matting,
+  `build_atlas.ts` with outline normalization.
 - Produce area 1's assets: cricket, possum, squirrel, sprinkler, broom neighbor, area-1 pile
   stages, alley background, Jimothy commander poses, core UI icons.
-- Update `concept-art/README.md` for the Qwen set.
 - **Exit:** area 1 runs with real art at all §10.3 sizes. Zach approves the look.
 
 ### M6 — Campaign wrapper and saves (README step 5); mobile beta
@@ -1005,7 +1057,8 @@ M5 can run in parallel with M3–M4: it uses the GPU, not the developer.
 - Lane choice UI; the crow, the rat, the fence, the motion light, the yard dog.
 - Areas 2–4 authored (15 levels) with reference solutions; difficulty-curve report in CI.
 - Gamepad and keyboard navigation (needed for the Steam Deck).
-- Art for areas 2–4 via the M5 pipeline. Most of the GPU time is spent here, so start it early.
+- Art for areas 2–4 via the M5 pipeline. Most of the generation time is spent here, so start it
+  early.
 - **Exit:** all 20 levels are winnable headlessly with no upgrades; a full playthrough is done on
   web, one phone and the Deck (or a 1280 × 800 gamepad session).
 
@@ -1031,8 +1084,8 @@ not a calendar.
 |---|---|---|---|---|---|---|---|---|
 | S | M | S | M | L | M | L | M | M |
 
-The critical path is **M4 (fun) → M7 (content)**. Art (M5 → M7) runs alongside it, limited by GPU
-hours and Zach's time to pick images.
+The critical path is **M4 (fun) → M7 (content)**. Art (M5 → M7) runs alongside it, limited by
+overnight generation runs and Zach's time to pick images.
 
 ---
 
@@ -1050,7 +1103,7 @@ Answering these unblocks M0. Each one has a default from this plan.
 | 6 | Defeated units (Q6) | Gone for the attempt |
 | 7 | Attempt end (Q7) | Night timer + "Call it a night" |
 | 8 | Audio (Q8) | Small v1 set |
-| 9 | Asset pipeline (Q9) | Qwen + human curation + atlas build (§8) |
+| 9 | Asset pipeline (Q9) | SDXL-Turbo candidates + human picks + matting + atlas build (§8) |
 | 10 | Deployment (Q10) | GitHub Pages + itch.io; stores per §2 |
 | 11 | Landscape-only | Yes |
 | 12 | Native shells | Capacitor (mobile) + Tauri (desktop), with Electron as the Linux fallback |
@@ -1066,13 +1119,13 @@ Answering these unblocks M0. Each one has a default from this plan.
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | **The game isn't fun at its simplest** | medium | high | M4 is an explicit fun checkpoint, before content and art scale up. Tuning is cheap because everything is data. |
-| **Sprite inconsistency from the image model** | high | medium | Ref-conditioned generation; one painted pose per unit plus procedural animation; build-time outline normalization; human curation; budget for hand touch-ups |
-| Transparent-background output is unreliable | medium | low | White-background generation + matting (§8.4) |
+| **Sprite inconsistency from the image model** | high | medium | IP-Adapter anchor image; 4+ seeds per asset, picked by eye; one painted pose per unit plus procedural animation; build-time outline normalization; budget for hand touch-ups |
+| Clean cut-outs are hard (SDXL has no alpha) | high | low | White-background generation + a matting model + Krita touch-ups (§8.4). A simple colour threshold already failed. |
 | WebKitGTK performance on Linux / Steam Deck | medium | medium | Measured in M2; Electron fallback for Linux only |
 | iOS evicts web saves | high (web only) | medium | Native storage in the apps; `storage.persist()`; export code; nudge web players on iOS to install the PWA or app |
 | App Store 4.2 rejection ("just a website") | low–medium | medium | Bundled offline build, native touches (haptics, orientation lock, native saves), a complete game |
 | Google Play closed-test requirement delays Android | high | low | Start the clock in M6, long before launch |
-| Qwen license or AI-art store policies | low | high | Non-commercial use lowers the risk; still verify distribution terms in M5 before producing assets at volume; disclose on Steam |
-| GPU work disrupts the desktop, or thermal throttling slows everything | medium | low | Runner guard (6 GiB, single job, watchdog), idle priority, overnight batches, no overlap with CPU-heavy work |
+| Model license or AI-art store policies | low | high | SDXL-Turbo's license covers a free hobby game, and outputs are ours (§8.5); never use Qwen-Image-2.1 output; revisit if the game ever charges; disclose on Steam |
+| Generation disrupts the desktop, or thermal throttling slows everything | low | low | CPU only (never SDXL on the display GPU), idle priority, overnight batches, no overlap with other CPU-heavy work |
 | Scope creep (new units, hero mode, adaptive AI) | medium | medium | README settled decisions; new content must be *data*; new systems need Zach's sign-off |
 | Difficulty spikes, given soft fail | medium | low | Reference-solution and bot-difficulty CI checks; generous night lengths; upgrades only ever make levels easier |
