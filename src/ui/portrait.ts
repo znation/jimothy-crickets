@@ -1,10 +1,21 @@
-// Small canvas portraits of units and Jimothy for cards and dialogs, drawn with the same sprite
-// code as the playfield.
+// Small canvas portraits of units, defenses and Jimothy for cards and dialogs, drawn with the
+// same sprite code as the playfield.
 
-import { drawJimothy, drawUnit } from "../render/sprites.ts";
-import type { UnitId } from "../sim/types.ts";
+import {
+  drawBroomNeighbor,
+  drawFence,
+  drawJimothy,
+  drawMotionLight,
+  drawSprinkler,
+  drawUnit,
+  drawYardDog,
+} from "../render/sprites.ts";
+import { DEFENSE_IDS, type DefenseId, type UnitId } from "../sim/types.ts";
 
-export function portrait(id: UnitId | "jimothy", cssW: number, cssH: number, zoom = 1): HTMLCanvasElement {
+// World-unit height each subject is framed to.
+const FRAME: Record<string, number> = { jimothy: 150, broomNeighbor: 190, fence: 100, sprinkler: 60, motionLight: 50, yardDog: 70 };
+
+export function portrait(id: UnitId | DefenseId | "jimothy", cssW: number, cssH: number, zoom = 1): HTMLCanvasElement {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const c = document.createElement("canvas");
   c.width = Math.round(cssW * dpr);
@@ -13,9 +24,30 @@ export function portrait(id: UnitId | "jimothy", cssW: number, cssH: number, zoo
   c.style.height = `${cssH}px`;
   c.className = "portrait";
   const ctx = c.getContext("2d")!;
-  const k = dpr * zoom * (id === "jimothy" ? cssH / 150 : cssH / 60);
-  ctx.setTransform(k, 0, 0, k, c.width / 2, c.height / 2 + (id === "jimothy" ? 0 : 4 * k));
-  if (id === "jimothy") drawJimothy(ctx, 0, "idle");
-  else drawUnit(ctx, id, 0, 0);
+  const k = dpr * zoom * (cssH / (FRAME[id] ?? 60));
+  const unit = id !== "jimothy" && !DEFENSE_IDS.includes(id as DefenseId);
+  ctx.setTransform(k, 0, 0, k, c.width / 2, c.height / 2 + (unit ? 4 * k : id === "broomNeighbor" ? 10 * k : 0));
+  switch (id) {
+    case "jimothy":
+      drawJimothy(ctx, 0, "idle");
+      break;
+    case "sprinkler":
+      drawSprinkler(ctx, 0.35);
+      break;
+    case "broomNeighbor":
+      drawBroomNeighbor(ctx, 0);
+      break;
+    case "yardDog":
+      drawYardDog(ctx, 0, 0);
+      break;
+    case "motionLight":
+      drawMotionLight(ctx, 1);
+      break;
+    case "fence":
+      drawFence(ctx, false);
+      break;
+    default:
+      drawUnit(ctx, id, 0, 0);
+  }
   return c;
 }

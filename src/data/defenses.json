@@ -32,7 +32,7 @@
   },
   {
     "id": "broomNeighbor",
-    "targets": ["ground"],
+    "targets": ["ground", "air"],
     "shape": { "kind": "radius", "r": 260 },
     "effect": { "damage": 1, "rate": 0.6, "windup": 0.3, "pushback": { "px": 160 } },
     "chewHp": 8,

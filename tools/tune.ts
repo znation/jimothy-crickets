@@ -5,9 +5,9 @@ import { content, levels, unitsAvailableAt } from "../src/data/content.ts";
 import { bot, runAttempt, type AttemptResult, type BotOptions } from "../src/sim/run.ts";
 
 const row = (r: AttemptResult) =>
-  `${r.outcome.kind === "won" ? `won ${r.outcome.moons}☾` : "night"} ${r.seconds.toFixed(0).padStart(3)}s ` +
-  `pile ${String(r.pileTrace.at(-1)).padStart(2)} sent ${String(r.stats.sent).padStart(3)} ` +
-  `arrived ${String(r.stats.arrived).padStart(3)}`;
+  r.outcome.kind === "won"
+    ? `won ${r.outcome.moons}☾ ${String(Math.round((1 - r.nightLeft) * 100)).padStart(3)}% of night`
+    : `night ends, pile ${String(Math.round(r.pileTrace.at(-1)!)).padStart(3)} left`;
 
 for (const level of levels) {
   const available = unitsAvailableAt(level.id);
@@ -25,5 +25,5 @@ for (const level of levels) {
         (r.outcome.kind !== "won" && best.outcome.kind !== "won" && r.pileTrace.at(-1)! < best.pileTrace.at(-1)!);
       if (better) [best, bestName] = [r, `${JSON.stringify(weights ?? "equal")} burst ${burst}`];
     }
-  console.log(`${level.id}  plain: ${row(plain)}\n     best: ${row(best)}  (${bestName})`);
+  console.log(`${level.id}  plain: ${row(plain).padEnd(26)} best: ${row(best).padEnd(26)} ${bestName}`);
 }

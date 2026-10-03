@@ -2,10 +2,10 @@
 // focus rings, keyboard access and readable text for free.
 
 import type { App } from "../app.ts";
-import { campaign, levelOrder, upgrades } from "../data/content.ts";
+import { campaign, levelById, levelOrder, unitsAvailableAt, upgrades } from "../data/content.ts";
 import type { LevelSession } from "../play.ts";
 import { closestS } from "../sim/lane.ts";
-import { UNIT_IDS, type UnitId } from "../sim/types.ts";
+import { UNIT_IDS, type DefenseId, type UnitId } from "../sim/types.ts";
 import { h, svg } from "./dom.ts";
 import { acornIcon, cogIcon, handIcon, moonIcon, pauseIcon, pileIcon, snackIcon } from "./icons.ts";
 import { portrait } from "./portrait.ts";
@@ -293,6 +293,8 @@ export class LevelScreen implements Screen {
   private endTimer = 0;
   private last = { snacks: -1, pile: -1, night: -1 };
   private keysHeld = new Set<string>();
+  private laneButtons: HTMLButtonElement[] = [];
+  private laneLayout = -1;
 
   readonly session: LevelSession;
   private app: App;
@@ -370,6 +372,20 @@ export class LevelScreen implements Screen {
     );
 
     this.app.view.canvas.onpointerdown = (e) => this.tapField(e);
+    if (st.lanes.length > 1) {
+      // One big button per lane at its start, so choosing a lane never needs a precise tap.
+      const keys = "QWE";
+      this.laneButtons = st.lanes.map((_, i) =>
+        h(
+          "button.lane-btn",
+          { onclick: () => this.chooseLane(i), role: "radio", "aria-label": `Path ${i + 1}`, "data-lane": String(i) },
+          h("span.arrow", null, "➜"),
+          h("span.key", null, keys[i] ?? ""),
+        ),
+      );
+      this.el.append(h("div.lanes", { role: "radiogroup", "aria-label": "Paths" }, ...this.laneButtons));
+      this.chooseLane(0);
+    }
     if (session.replaying) this.el.classList.add("replaying");
     if (!opts.skipIntro && session.level.intro) this.showIntro();
     else this.maybeTutorial();
@@ -393,6 +409,7 @@ export class LevelScreen implements Screen {
 
   frame(dt: number) {
     const st = this.session.st;
+    if (this.laneButtons.length && this.laneLayout !== this.app.view.generation) this.placeLaneButtons();
     const snacks = Math.floor(st.snacks);
     if (snacks !== this.last.snacks) this.snacksEl.textContent = String((this.last.snacks = snacks));
     const pile = st.pileHp / st.level.pile.hp;
@@ -430,7 +447,7 @@ export class LevelScreen implements Screen {
       down ? this.keysHeld.add(e.key) : this.keysHeld.delete(e.key);
     }
     const lane = "qwe".indexOf(e.key.toLowerCase());
-    if (down && lane >= 0 && lane < this.session.st.lanes.length) this.session.lane = lane;
+    if (down && lane >= 0 && lane < this.session.st.lanes.length) this.chooseLane(lane);
   }
 
   private press(u: UnitId) {
@@ -462,7 +479,29 @@ export class LevelScreen implements Screen {
       const d = closestS(lane, p).dist;
       if (d < bestDist) [best, bestDist] = [i, d];
     });
-    if (best >= 0) this.session.lane = best;
+    if (best >= 0) this.chooseLane(best);
+  }
+
+  private chooseLane(i: number) {
+    this.session.lane = i;
+    this.laneButtons.forEach((b, j) => {
+      b.classList.toggle("on", i === j);
+      b.setAttribute("aria-checked", String(i === j));
+    });
+    this.app.wake();
+  }
+
+  private placeLaneButtons() {
+    const v = this.app.view;
+    this.laneLayout = v.generation;
+    // On short screens the unit bar covers the bottom lane's start: keep the buttons above it.
+    const barTop = this.el.querySelector(".unit-bar")!.getBoundingClientRect().top;
+    this.session.st.lanes.forEach((lane, i) => {
+      const [x, y] = lane.points[0]!;
+      const b = this.laneButtons[i]!;
+      b.style.left = `${v.ox + (x + 40) * v.scale}px`;
+      b.style.top = `${Math.min(v.oy + y * v.scale, barTop - 38)}px`;
+    });
   }
 
   private cycleSpeed() {
@@ -498,6 +537,8 @@ export class LevelScreen implements Screen {
 
   private showIntro() {
     const go = h("button.big.primary", { onclick: () => this.closeIntro() }, t("intro.go"));
+    // Plan §10.2: the first time a defense or friend appears, show its picture.
+    const news = firstAppearances(this.session.level.id);
     this.openOverlay(
       "intro",
       h(
@@ -505,6 +546,15 @@ export class LevelScreen implements Screen {
         null,
         portrait("jimothy", 160, 120),
         h("p.say", null, t(this.session.level.intro!.textKey)),
+        news.length
+          ? h(
+              "div.news",
+              null,
+              ...news.map((n) =>
+                h("figure.new-thing", null, portrait(n.id, 96, 72), h("figcaption", null, t(`${n.kind}.${n.id}`))),
+              ),
+            )
+          : null,
         go,
       ),
       go,
@@ -619,4 +669,23 @@ export class LevelScreen implements Screen {
       again,
     );
   }
+}
+
+/** Defenses and friends that appear for the first time in this level, in campaign order. */
+export function firstAppearances(levelId: string): { kind: "defense" | "unit"; id: UnitId | DefenseId }[] {
+  const seenDefenses = new Set<string>();
+  const before = levelOrder.slice(0, levelOrder.indexOf(levelId));
+  for (const id of before) for (const d of levelById(id)?.defenses ?? []) seenDefenses.add(d.def);
+  const level = levelById(levelId);
+  const out: { kind: "defense" | "unit"; id: UnitId | DefenseId }[] = [];
+  for (const d of level?.defenses ?? []) {
+    if (!seenDefenses.has(d.def)) {
+      seenDefenses.add(d.def);
+      out.push({ kind: "defense", id: d.def });
+    }
+  }
+  const prevId = before.at(-1);
+  const had = prevId ? unitsAvailableAt(prevId) : [];
+  for (const u of unitsAvailableAt(levelId)) if (prevId && !had.includes(u)) out.push({ kind: "unit", id: u });
+  return out;
 }

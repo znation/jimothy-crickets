@@ -5,10 +5,11 @@
 //   npm run sim -- --level 1-3 --bot [--burst 60] [--weights cricket=2,possum=1]
 //   npm run sim -- --all --report                       every level: reference + bot score
 //   npm run sim -- --all --make-reference               search bot strategies, store the best wins
+//   npm run sim -- --all --curve                        difficulty per level; fails on a backwards ramp
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { content, levelById, levels, references, unitsAvailableAt } from "../src/data/content.ts";
+import { campaign, content, levelById, levels, references, unitsAvailableAt } from "../src/data/content.ts";
 import {
   bot,
   referenceInputs,
@@ -34,6 +35,7 @@ const { values: args } = parseArgs({
     report: { type: "boolean" },
     "make-reference": { type: "boolean" },
     trace: { type: "boolean" },
+    curve: { type: "boolean" },
   },
 });
 
@@ -44,7 +46,33 @@ const targets: LevelDef[] = args.all
     : fail("pass --level <id> or --all");
 const seed = Number(args.seed);
 
-if (args["make-reference"]) {
+// Difficulty is the share of the night the reference solution (the best strategy the search found)
+// needs. Within an area it should rise; a drop bigger than this means a level is out of order.
+const CURVE_TOLERANCE = 0.08;
+
+if (args.curve) {
+  let bad = 0;
+  for (const area of campaign.areas) {
+    let prev = 0;
+    for (const id of area.levels) {
+      const level = levelById(id)!;
+      const ref = references[id];
+      if (!ref) fail(`${id} has no reference`);
+      const r = attempt(level, { seed: ref.seed, inputs: referenceInputs(ref) });
+      const plain = attempt(level, { seed, policy: bot() });
+      const d = r.outcome.kind === "won" ? 1 - r.nightLeft : 1;
+      const flag = d < prev - CURVE_TOLERANCE ? "  << easier than the level before" : "";
+      if (flag) bad++;
+      const plainText = plain.outcome.kind === "won" ? `wins, ${Math.round((1 - plain.nightLeft) * 100)}%` : "night ends";
+      console.log(`${id}  difficulty ${d.toFixed(2)}  ${"#".repeat(Math.round(d * 40)).padEnd(40)}  plain bot: ${plainText}${flag}`);
+      prev = Math.max(prev, d);
+    }
+  }
+  if (bad) {
+    console.error(`${bad} level(s) break the difficulty ramp (tolerance ${CURVE_TOLERANCE}).`);
+    process.exitCode = 1;
+  }
+} else if (args["make-reference"]) {
   const out = { ...references } as Record<string, Reference>;
   for (const level of targets) {
     const best = searchReference(level);

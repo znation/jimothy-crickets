@@ -12,7 +12,7 @@ const SIZES = {
 for (const [name, size] of Object.entries(SIZES)) {
   test(`level HUD fits at ${name} (${size.width}×${size.height})`, async ({ page }, info) => {
     await page.setViewportSize(size);
-    await page.goto("/?level=1-3&skipIntro=1");
+    await page.goto("/?level=4-5&skipIntro=1"); // the busiest HUD: five friends, three paths
     await expect(page.locator('[data-unit="cricket"]')).toBeVisible();
 
     const view = (await page.evaluate("window.__jc.view")) as { scale: number; ox: number; oy: number; dpr: number };

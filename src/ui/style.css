@@ -66,7 +66,8 @@ button {
   touch-action: manipulation;
 }
 
-button:focus-visible {
+button:focus-visible,
+.gamepad :focus {
   outline: 4px solid #fff;
   outline-offset: 3px;
 }
@@ -233,6 +234,29 @@ button:focus-visible {
 
 .moons.large .moon:nth-child(3) {
   animation-delay: 0.5s;
+}
+
+.news {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.new-thing {
+  margin: 0;
+  padding: 8px 12px 6px;
+  border-radius: 18px;
+  background: var(--paper-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-thing figcaption {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 16px;
 }
 
 .recruit {
@@ -743,6 +767,45 @@ button:focus-visible {
 
 .replaying .unit-bar {
   opacity: 0.6;
+  pointer-events: none;
+}
+
+.lane-btn {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+  background: rgba(255, 246, 230, 0.75);
+  color: var(--ink);
+  font-size: 26px;
+  font-weight: 900;
+  box-shadow: 0 4px 0 var(--ink);
+}
+
+.lane-btn.on {
+  background: var(--accent);
+  scale: 1.12;
+}
+
+.lane-btn .key {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+@media (pointer: coarse) {
+  .lane-btn .key {
+    display: none;
+  }
+}
+
+.replaying .lanes {
   pointer-events: none;
 }
 

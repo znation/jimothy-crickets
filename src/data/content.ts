@@ -8,6 +8,21 @@ import l1_2 from "./levels/1-2.json" with { type: "json" };
 import l1_3 from "./levels/1-3.json" with { type: "json" };
 import l1_4 from "./levels/1-4.json" with { type: "json" };
 import l1_5 from "./levels/1-5.json" with { type: "json" };
+import l2_1 from "./levels/2-1.json" with { type: "json" };
+import l2_2 from "./levels/2-2.json" with { type: "json" };
+import l2_3 from "./levels/2-3.json" with { type: "json" };
+import l2_4 from "./levels/2-4.json" with { type: "json" };
+import l2_5 from "./levels/2-5.json" with { type: "json" };
+import l3_1 from "./levels/3-1.json" with { type: "json" };
+import l3_2 from "./levels/3-2.json" with { type: "json" };
+import l3_3 from "./levels/3-3.json" with { type: "json" };
+import l3_4 from "./levels/3-4.json" with { type: "json" };
+import l3_5 from "./levels/3-5.json" with { type: "json" };
+import l4_1 from "./levels/4-1.json" with { type: "json" };
+import l4_2 from "./levels/4-2.json" with { type: "json" };
+import l4_3 from "./levels/4-3.json" with { type: "json" };
+import l4_4 from "./levels/4-4.json" with { type: "json" };
+import l4_5 from "./levels/4-5.json" with { type: "json" };
 import referencesJson from "./references.json" with { type: "json" };
 import unitsJson from "./units.json" with { type: "json" };
 import upgradesJson from "./upgrades.json" with { type: "json" };
@@ -35,7 +50,7 @@ export interface Campaign {
 export const rawData = {
   units: unitsJson as unknown[],
   defenses: defensesJson as unknown[],
-  levels: [l1_1, l1_2, l1_3, l1_4, l1_5] as unknown[],
+  levels: [l1_1, l1_2, l1_3, l1_4, l1_5, l2_1, l2_2, l2_3, l2_4, l2_5, l3_1, l3_2, l3_3, l3_4, l3_5, l4_1, l4_2, l4_3, l4_4, l4_5] as unknown[],
   campaign: campaignJson as unknown,
   references: referencesJson as unknown,
   upgrades: upgradesJson as unknown[],

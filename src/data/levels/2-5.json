@@ -1,0 +1,22 @@
+{
+  "id": "2-5",
+  "area": "backyards",
+  "background": "backyards",
+  "intro": { "textKey": "intro.2-5" },
+  "lanes": [
+    { "id": 0, "points": [[260, 400], [620, 340], [1000, 360], [1380, 420], [1660, 520]] },
+    { "id": 1, "points": [[260, 720], [640, 770], [1020, 740], [1380, 690], [1660, 600]] }
+  ],
+  "pile": { "pos": [1760, 550], "hp": 58 },
+  "defenses": [
+    { "def": "yardDog", "pos": [700, 454] },
+    { "def": "motionLight", "pos": [900, 550], "facingDeg": 0 },
+    { "def": "broomNeighbor", "pos": [1300, 537] },
+    { "def": "sprinkler", "pos": [700, 615] },
+    { "def": "broomNeighbor", "pos": [1200, 585] },
+    { "def": "sprinkler", "pos": [1500, 511] }
+  ],
+  "economy": { "startSnacks": 60, "trickle": 7 },
+  "nightLength": 200,
+  "moons": [0, 55, 85]
+}

@@ -9,6 +9,7 @@ import type { SaveStore } from "./save.ts";
 import { bot, referenceInputs } from "./sim/run.ts";
 import { UNIT_IDS, type LevelDef, type UnitId } from "./sim/types.ts";
 import { DebugOverlay } from "./ui/debug.ts";
+import { installNavigation } from "./ui/gamepad.ts";
 import { LevelScreen, MapScreen, TitleScreen, type Screen } from "./ui/screens.ts";
 
 const MAX_FRAME_GAP = 0.25; // s; a longer gap (tab switch, breakpoint) is not simulated
@@ -48,6 +49,7 @@ export class App {
       this.raf = 0;
     });
     platform.lifecycle.onResume(() => this.wake());
+    installNavigation(ui);
     window.addEventListener("keydown", (e) => this.screen?.onKey?.(e, true));
     window.addEventListener("keyup", (e) => this.screen?.onKey?.(e, false));
   }

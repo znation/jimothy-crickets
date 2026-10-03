@@ -1,0 +1,24 @@
+{
+  "id": "4-1",
+  "area": "stripmall",
+  "background": "stripmall",
+  "intro": { "textKey": "intro.4-1" },
+  "lanes": [
+    { "id": 0, "points": [[260, 330], [640, 270], [1040, 290], [1400, 360], [1660, 480]] },
+    { "id": 1, "points": [[260, 540], [620, 580], [1000, 520], [1380, 560], [1660, 545]] },
+    { "id": 2, "points": [[260, 750], [660, 775], [1060, 760], [1400, 700], [1660, 610]] }
+  ],
+  "pile": { "pos": [1760, 550], "hp": 66 },
+  "defenses": [
+    { "def": "sprinkler", "pos": [700, 225] },
+    { "def": "broomNeighbor", "pos": [1200, 311] },
+    { "def": "yardDog", "pos": [900, 426] },
+    { "def": "yardDog", "pos": [1300, 442] },
+    { "def": "sprinkler", "pos": [800, 760] },
+    { "def": "broomNeighbor", "pos": [1350, 699] },
+    { "def": "sprinkler", "pos": [1550, 671] }
+  ],
+  "economy": { "startSnacks": 70, "trickle": 8 },
+  "nightLength": 210,
+  "moons": [0, 55, 85]
+}

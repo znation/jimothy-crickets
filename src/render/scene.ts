@@ -19,7 +19,7 @@ import {
 import { BLEED_H, BLEED_W, BLEED_X, BLEED_Y, type View } from "./view.ts";
 
 const LANE_WIDTH = 120;
-const JIMOTHY_POS: Vec = [130, 0]; // y follows the first lane's start
+const JIMOTHY_X = 130;
 const FLY_HEIGHT = 90;
 /** Units are drawn larger than life so they stay readable on phones (~0.35 CSS px per unit). */
 const UNIT_SCALE = 1.5;
@@ -163,11 +163,10 @@ export class SceneRenderer {
       ctx.restore();
     }
 
-    // Jimothy in the staging area
-    const start = st.lanes[0]!.points[0]!;
+    // Jimothy in the staging area, between the lanes
     this.cheer = Math.max(0, this.cheer - dt);
     ctx.save();
-    ctx.translate(JIMOTHY_POS[0], start[1] - 40);
+    ctx.translate(JIMOTHY_X, stagingY(st) - 40);
     drawJimothy(ctx, t, st.outcome?.kind === "nightEnded" ? "sleepy" : this.cheer > 0 || st.outcome?.kind === "won" ? "cheer" : "idle");
     ctx.restore();
 
@@ -284,6 +283,12 @@ export class SceneRenderer {
   }
 }
 
+/** The middle of the lanes' starting points: where Jimothy stands. */
+export function stagingY(st: SimState): number {
+  const ys = st.lanes.map((l) => l.points[0]![1]);
+  return (Math.min(...ys) + Math.max(...ys)) / 2;
+}
+
 /** Paint the static layer. Decorations are placed from a PRNG seeded by the level id. */
 function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState) {
   let seed = [...st.level.id].reduce((a, c) => a * 31 + c.charCodeAt(0), 7);
@@ -300,7 +305,9 @@ function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState) {
   const y0 = Math.min(-BLEED_Y, Math.floor(vis.y0));
   const W = Math.max(BLEED_W - BLEED_X, Math.ceil(vis.x1)) - x0;
   const H = Math.max(BLEED_H - BLEED_Y, Math.ceil(vis.y1)) - y0;
-  const horizon = 330;
+  // The skyline sits just above the highest lane, so paths never run through buildings.
+  const highestLane = Math.min(...st.lanes.flatMap((l) => l.points.map((pt) => pt[1])));
+  const horizon = Math.min(330, highestLane - 90);
 
   const sky = ctx.createLinearGradient(0, y0, 0, horizon);
   sky.addColorStop(0, "#1a2147");
@@ -317,42 +324,7 @@ function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState) {
   }
   ctx.globalAlpha = 1;
 
-  // evergreens behind the alley
-  for (let x = x0 - 40; x < x0 + W + 80; x += 70 + rnd() * 60) {
-    const h = 150 + rnd() * 140;
-    ctx.fillStyle = rnd() < 0.5 ? "#1d3a36" : "#24443d";
-    ctx.beginPath();
-    ctx.moveTo(x, horizon + 20);
-    ctx.lineTo(x + 45, horizon - h);
-    ctx.lineTo(x + 90, horizon + 20);
-    ctx.fill();
-  }
-  // brick buildings with a few warm windows
-  for (let x = x0; x < x0 + W; ) {
-    const w = 220 + rnd() * 200;
-    const h = 120 + rnd() * 160;
-    ctx.fillStyle = rnd() < 0.5 ? "#3b3550" : "#433a4f";
-    ctx.fillRect(x, horizon - h, w - 12, h + 40);
-    for (let wy = horizon - h + 26; wy < horizon - 10; wy += 54)
-      for (let wx = x + 24; wx < x + w - 50; wx += 62) {
-        ctx.fillStyle = rnd() < 0.3 ? "#f6d08a" : "#2a2740";
-        ctx.fillRect(wx, wy, 28, 32);
-      }
-    x += w;
-  }
-
-  // damp asphalt with moss
-  const ground = ctx.createLinearGradient(0, horizon, 0, y0 + H);
-  ground.addColorStop(0, "#3f4756");
-  ground.addColorStop(1, "#2f3542");
-  ctx.fillStyle = ground;
-  ctx.fillRect(x0, horizon, W, y0 + H - horizon);
-  for (let i = 0; i < 40; i++) {
-    ctx.fillStyle = rnd() < 0.6 ? "rgba(92, 128, 84, 0.35)" : "rgba(110, 125, 170, 0.25)";
-    ctx.beginPath();
-    ctx.ellipse(x0 + rnd() * W, horizon + 40 + rnd() * (H - horizon), 30 + rnd() * 90, 10 + rnd() * 24, 0, 0, Math.PI * 2);
-    ctx.fill();
-  }
+  paintScenery(ctx, st.level.area, { x0, y0, W, H, horizon }, rnd);
 
   // defense ranges, faint, so players can read the layout
   for (const d of st.defenses) {
@@ -399,10 +371,9 @@ function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState) {
     ctx.setLineDash([]);
   }
 
-  // staging area: a flattened cardboard box for the troupe
-  const [sx, sy] = st.lanes[0]!.points[0]!;
+  // staging area: a flattened cardboard box under Jimothy, between the lanes' starts
   ctx.save();
-  ctx.translate(sx - 120, sy + 20);
+  ctx.translate(st.lanes[0]!.points[0]![0] - 120, stagingY(st) + 20);
   ctx.rotate(-0.04);
   ctx.beginPath();
   ctx.roundRect(-110, -40, 220, 80, 10);
@@ -428,3 +399,135 @@ const RANGE_COLOURS: Record<string, string> = {
   yardDog: "rgba(255, 140, 120, 0.12)",
   motionLight: "rgba(255, 243, 176, 0.08)",
 };
+
+interface Box {
+  x0: number;
+  y0: number;
+  W: number;
+  H: number;
+  horizon: number;
+}
+
+/** The skyline and ground for each area (README art direction: damp, mossy, evergreen PNW). */
+function paintScenery(ctx: CanvasRenderingContext2D, area: string, b: Box, rnd: () => number) {
+  const { x0, y0, W, H, horizon } = b;
+  const evergreens = (base: number, minH: number, maxH: number) => {
+    for (let x = x0 - 40; x < x0 + W + 80; x += 70 + rnd() * 60) {
+      const h = minH + rnd() * (maxH - minH);
+      ctx.fillStyle = rnd() < 0.5 ? "#1d3a36" : "#24443d";
+      ctx.beginPath();
+      ctx.moveTo(x, base + 20);
+      ctx.lineTo(x + 45, base - h);
+      ctx.lineTo(x + 90, base + 20);
+      ctx.fill();
+    }
+  };
+  const window = (x: number, y: number, w: number, h: number, lit = 0.3) => {
+    ctx.fillStyle = rnd() < lit ? "#f6d08a" : "#2a2740";
+    ctx.fillRect(x, y, w, h);
+  };
+  const ground = (top: string, bottom: string) => {
+    const g = ctx.createLinearGradient(0, horizon, 0, y0 + H);
+    g.addColorStop(0, top);
+    g.addColorStop(1, bottom);
+    ctx.fillStyle = g;
+    ctx.fillRect(x0, horizon, W, y0 + H - horizon);
+  };
+  const patches = (n: number, colours: string[]) => {
+    for (let i = 0; i < n; i++) {
+      ctx.fillStyle = colours[Math.floor(rnd() * colours.length)]!;
+      ctx.beginPath();
+      ctx.ellipse(x0 + rnd() * W, horizon + 40 + rnd() * (H - horizon), 30 + rnd() * 90, 10 + rnd() * 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  };
+  const house = (x: number, w: number, h: number, wall: string) => {
+    ctx.fillStyle = wall;
+    ctx.fillRect(x, horizon - h, w, h + 30);
+    ctx.fillStyle = "#2b2840";
+    ctx.beginPath();
+    ctx.moveTo(x - 16, horizon - h + 4);
+    ctx.lineTo(x + w / 2, horizon - h - w * 0.38);
+    ctx.lineTo(x + w + 16, horizon - h + 4);
+    ctx.fill();
+    for (let wx = x + 22; wx < x + w - 40; wx += 58) window(wx, horizon - h + 26, 30, 30, 0.45);
+  };
+
+  switch (area) {
+    case "backyards": {
+      evergreens(horizon - 40, 200, 320);
+      for (let x = x0; x < x0 + W; x += 300 + rnd() * 120) house(x, 200 + rnd() * 60, 120 + rnd() * 40, rnd() < 0.5 ? "#4a4060" : "#3f4a63");
+      ground("#3d5a3b", "#2c4430");
+      // a wooden fence along the back of the yards
+      ctx.fillStyle = "#6e5640";
+      ctx.fillRect(x0, horizon - 40, W, 46);
+      for (let x = x0; x < x0 + W; x += 26) {
+        ctx.fillStyle = "#7d6349";
+        ctx.fillRect(x, horizon - 52, 20, 58);
+      }
+      patches(50, ["rgba(110, 160, 90, 0.35)", "rgba(70, 110, 70, 0.4)", "rgba(240, 220, 120, 0.25)"]);
+      break;
+    }
+    case "culdesac": {
+      evergreens(horizon - 30, 160, 260);
+      for (let x = x0; x < x0 + W; x += 360 + rnd() * 100) {
+        house(x, 260 + rnd() * 50, 140 + rnd() * 30, rnd() < 0.5 ? "#4d4466" : "#45506b");
+        ctx.fillStyle = "#5d5874"; // garage door
+        ctx.fillRect(x + 150, horizon - 70, 90, 100);
+      }
+      ground("#456a42", "#33502f");
+      // the turning circle in front of the pile, and a sidewalk across the back
+      ctx.fillStyle = "#565d6b";
+      ctx.beginPath();
+      ctx.ellipse(1700, 560, 360, 280, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#8a8f99";
+      ctx.fillRect(x0, horizon + 4, W, 26);
+      patches(36, ["rgba(120, 175, 100, 0.35)", "rgba(60, 100, 60, 0.35)"]);
+      break;
+    }
+    case "stripmall": {
+      evergreens(horizon - 70, 140, 220);
+      // one long low building with lit shop windows and signs
+      ctx.fillStyle = "#3d3a52";
+      ctx.fillRect(x0, horizon - 170, W, 200);
+      for (let x = x0 + 30; x < x0 + W - 200; x += 260) {
+        ctx.fillStyle = ["#e07a5f", "#81b29a", "#f2cc8f", "#8fb8de"][Math.floor(rnd() * 4)]!;
+        ctx.fillRect(x, horizon - 150, 180, 34);
+        window(x, horizon - 100, 180, 80, 0.7);
+      }
+      ground("#3a3f4c", "#2b2f3a");
+      // parking stall lines
+      ctx.strokeStyle = "rgba(240, 240, 220, 0.35)";
+      ctx.lineWidth = 6;
+      for (let x = x0 + 40; x < x0 + W; x += 150) {
+        ctx.beginPath();
+        ctx.moveTo(x, horizon + 60);
+        ctx.lineTo(x + 30, horizon + 230);
+        ctx.stroke();
+      }
+      // a dumpster behind the pile
+      ctx.fillStyle = "#3f7a5a";
+      ctx.fillRect(1700, 300, 220, 150);
+      ctx.fillStyle = "#336349";
+      ctx.fillRect(1690, 290, 240, 24);
+      patches(24, ["rgba(110, 125, 170, 0.25)", "rgba(92, 128, 84, 0.25)"]);
+      break;
+    }
+    default: {
+      // the alley: evergreens behind brick buildings, damp asphalt with moss
+      evergreens(horizon, 150, 290);
+      for (let x = x0; x < x0 + W; ) {
+        const w = 220 + rnd() * 200;
+        const h = 120 + rnd() * 160;
+        ctx.fillStyle = rnd() < 0.5 ? "#3b3550" : "#433a4f";
+        ctx.fillRect(x, horizon - h, w - 12, h + 40);
+        for (let wy = horizon - h + 26; wy < horizon - 10; wy += 54)
+          for (let wx = x + 24; wx < x + w - 50; wx += 62) window(wx, wy, 28, 32);
+        x += w;
+      }
+      ground("#3f4756", "#2f3542");
+      patches(40, ["rgba(92, 128, 84, 0.35)", "rgba(92, 128, 84, 0.35)", "rgba(110, 125, 170, 0.25)"]);
+    }
+  }
+}

@@ -48,7 +48,7 @@ test("title, map and a level load without page errors", async ({ page }) => {
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   await page.goto("/?unlock=all");
   await page.getByRole("button", { name: "Play" }).click();
-  await page.locator('[data-level="1-5"]').click();
+  await page.locator('[data-level="4-5"]').click(); // the map opens on the furthest area
   await page.getByRole("button", { name: "Let's go!" }).click();
   await page.waitForTimeout(1000);
   expect(errors).toEqual([]);
@@ -66,4 +66,53 @@ test("the installed game plays offline", async ({ page, context }) => {
   await page.locator('[data-level="1-1"]').click();
   await expect(page.getByRole("button", { name: "Let's go!" })).toBeVisible();
   await context.setOffline(false);
+});
+
+test("multi-lane levels: lane buttons pick where units go; arrows move focus", async ({ page }) => {
+  await page.goto("/?level=3-3&skipIntro=1");
+  const lanes = page.getByRole("radio");
+  await expect(lanes).toHaveCount(3);
+  await lanes.nth(2).click();
+  await expect(lanes.nth(2)).toHaveAttribute("aria-checked", "true");
+  await page.locator('[data-unit="cricket"]').click();
+  await expect.poll(() => page.evaluate("window.__jc.recorded.at(-1)?.lane")).toBe(2);
+
+  // Keyboard-only: arrows walk across the unit bar, Q/W/E pick lanes, Enter sends.
+  await page.locator('[data-unit="cricket"]').focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator('[data-unit="possum"]')).toBeFocused();
+  await page.keyboard.press("w");
+  await expect(lanes.nth(1)).toHaveAttribute("aria-checked", "true");
+});
+
+test("a gamepad can play: d-pad moves focus, A sends, Start pauses", async ({ page }) => {
+  // A fake standard-mapping pad whose buttons the test flips.
+  await page.addInitScript(() => {
+    const pad = {
+      connected: true,
+      axes: [0, 0, 0, 0],
+      buttons: Array.from({ length: 17 }, () => ({ pressed: false, value: 0 })),
+    };
+    (window as unknown as { __pad: typeof pad }).__pad = pad;
+    navigator.getGamepads = () => [pad as unknown as Gamepad];
+  });
+  const tap = async (i: number) => {
+    await page.evaluate((i) => ((window as any).__pad.buttons[i].pressed = true), i);
+    await page.waitForTimeout(80);
+    await page.evaluate((i) => ((window as any).__pad.buttons[i].pressed = false), i);
+    await page.waitForTimeout(80);
+  };
+  await page.goto("/?level=1-3&skipIntro=1");
+  await expect(page.locator('[data-unit="cricket"]')).toBeFocused();
+  await tap(15); // d-pad right
+  await expect(page.locator('[data-unit="possum"]')).toBeFocused();
+  await expect(page.locator("html")).toHaveClass(/gamepad/);
+  await tap(14); // back left
+  await tap(0); // A sends a cricket
+  await expect.poll(() => page.evaluate("window.__jc.recorded.length")).toBeGreaterThan(0);
+  await tap(9); // Start pauses
+  await expect(page.getByRole("dialog")).toContainText("Paused");
+  await expect(page.getByRole("button", { name: "Keep going" })).toBeFocused();
+  await tap(0); // A resumes
+  await expect(page.getByRole("dialog")).toHaveCount(0);
 });

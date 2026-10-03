@@ -20,7 +20,9 @@ jobs:
       - run: npm run validate
       - run: npm test
       - name: Headless report (every level's reference must win)
-        run: npm run sim -- --all --report
+        run: npm run sim -- --all --report > /dev/null
+      - name: Difficulty curve
+        run: npm run sim -- --all --curve
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
         env:

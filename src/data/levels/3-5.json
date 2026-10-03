@@ -1,0 +1,24 @@
+{
+  "id": "3-5",
+  "area": "culdesac",
+  "background": "culdesac",
+  "intro": { "textKey": "intro.3-5" },
+  "lanes": [
+    { "id": 0, "points": [[260, 330], [640, 270], [1040, 290], [1400, 360], [1660, 480]] },
+    { "id": 1, "points": [[260, 540], [620, 580], [1000, 520], [1380, 560], [1660, 545]] },
+    { "id": 2, "points": [[260, 750], [660, 775], [1060, 760], [1400, 700], [1660, 610]] }
+  ],
+  "pile": { "pos": [1760, 550], "hp": 92 },
+  "defenses": [
+    { "def": "sprinkler", "pos": [750, 225] },
+    { "def": "broomNeighbor", "pos": [1250, 321] },
+    { "def": "yardDog", "pos": [700, 457] },
+    { "def": "motionLight", "pos": [1000, 545], "facingDeg": 0 },
+    { "def": "sprinkler", "pos": [1400, 679] },
+    { "def": "yardDog", "pos": [900, 656] },
+    { "def": "sprinkler", "pos": [1300, 708] }
+  ],
+  "economy": { "startSnacks": 70, "trickle": 8 },
+  "nightLength": 210,
+  "moons": [0, 55, 85]
+}

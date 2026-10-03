@@ -71,5 +71,20 @@
   "settings.loaded": "Progress loaded!",
   "settings.badCode": "That code didn't work. Check it and try again.",
   "settings.version": "Version {v}",
-  "settings.done": "Done"
+  "settings.done": "Done",
+  "intro.2-1": "Back yards! The dog only guards one path. Pick the other one.",
+  "intro.2-2": "Two dogs on top. Squirrels are too quick for them!",
+  "intro.2-3": "Brooms on both paths. Possums don't mind a sweep!",
+  "intro.2-4": "A motion light! Crows fly right over the dogs.",
+  "intro.2-5": "The biggest back yard pile. Everybody, go!",
+  "intro.3-1": "Welcome to the cul-de-sac. Fancy lawns, fancy garbage.",
+  "intro.3-2": "A fence! Rats can chew through it, and crows fly over.",
+  "intro.3-3": "Three paths! Each one has its own trouble.",
+  "intro.3-4": "Fences on both sides. Bring the rats!",
+  "intro.3-5": "The cul-de-sac's grandest pile. Use every friend!",
+  "intro.4-1": "The dumpster lot behind the strip mall. Smells amazing.",
+  "intro.4-2": "They fenced the middle. Sneaky!",
+  "intro.4-3": "Brooms and dogs everywhere. Mix up your troupe!",
+  "intro.4-4": "Fences on every path! Rats to the front.",
+  "intro.4-5": "The biggest pile in the whole city. This is it, everybody!"
 }
