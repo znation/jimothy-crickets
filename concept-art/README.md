@@ -1,6 +1,58 @@
 # Jimothy Crickets — Concept Art
 
-## `final/` — the six selected pieces
+## `sdxl/` — the current set (SDXL-Turbo, 110 plates)
+
+**Start here.** Open `sdxl/index.html`. It covers 11 subjects × 10 art directions, with
+the same plate names and base seeds as the earlier Qwen set, so the two compare
+one-to-one.
+
+**Why it was regenerated.** The previous set was made with Qwen-Image-2.1
+(`_tools/generate_qwen.py`, output to `qwen/`). That model's Qwen Research License
+only allows use "for research or evaluation purposes", which doesn't cover art in a
+released game, even a free one. Those images were never committed, and `qwen/` is
+in `.gitignore`. Don't add them back or ship them. SDXL-Turbo's license
+(`sai-nc-community`) explicitly allows non-commercial hobbyist use and gives us
+ownership of the outputs.
+
+How it was made (`_tools/generate_sdxl.py`):
+
+- **Candidates, then picks.** Every plate was rendered with several seeds, into
+  `sdxl/_candidates/<plate>/<seed>-<prompt hash>.png`. The seed chosen for each
+  plate is in `sdxl/picks.json`. `--assemble` copies the picks into place, and
+  `manifest.json` records the exact prompt, seed and reference scale of each one.
+  The hash in the filename means an edited prompt never mixes with old renders.
+- **Prompts are short.** Both SDXL text encoders cut off at 77 tokens, and the
+  script refuses to run if any prompt is longer.
+- **The style comes first** in every prompt.
+- **Jimothy** is "a single very round chubby tailless tanuki …". The rear-view
+  photo is applied as a reference at 0.42.
+- **The two-character scenes are painted in stages.** That covers `standoff`
+  and `key-art`, plus `guarding-trash` and `defender`, where the reference
+  photo's dirt and grass replaced the garbage pile with rocks. The background is
+  rendered first. Then each character is inpainted into its own region, with a
+  prompt that describes only that character. That keeps "green" off Jimothy and
+  stops the raccoon reference turning crickets into more raccoons. The regions
+  for each plate are in `manifest.json`.
+
+Eight passes, about 650 candidates, all on CPU at idle priority. What each pass
+found:
+
+| Problem | Fix |
+|---|---|
+| Long ringed tail on ~40% of Jimothy plates; extra baby raccoons | "single … tailless … smooth round rump with a tiny stump", reference 0.35 → 0.42, 4 seeds per plate, picked by eye. A stronger reference removes more tails but washes out the styles. |
+| Spiky, blocky or toothy crickets | Restored the full "soft rounded bright green bodies … harmless and cuddly" wording, plus per-plate wording for papercut, risograph and pixel-art |
+| No crickets in key art, and two raccoons in every standoff | Staged painting (above). Cutting out separate renders and blending them repainted the crickets into leaves. |
+| Garbage pile became rocks and literal mountains | Paint the pile first with no reference, then inpaint Jimothy on top |
+| trash-fortress: stone castles, then junk-filled alleys | Name each castle part and its material ("towers of stacked trash cans, walls of cardboard boxes") |
+
+Still weak, if you want to re-roll:
+- **trash-fortress (071–080):** these read as cardboard-castle alleys, not a fort
+  built from trash.
+- **048 cricket-boss pixel-art:** still a bit robot-like.
+- **066 tower-build felt-plush:** a dark tail shows.
+- **Some composite plates:** a soft halo around the inpainted cricket region.
+
+## `final/` — the six selected pieces (earlier SDXL sweep)
 
 **Start here.** Open `final/index.html`.
 

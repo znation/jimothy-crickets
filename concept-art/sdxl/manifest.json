@@ -1,0 +1,2562 @@
+[
+  {
+    "n": 1,
+    "name": "001-hero-portrait-watercolour",
+    "subject": "hero-portrait",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 151000,
+    "file": "001-hero-portrait-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 2,
+    "name": "002-hero-portrait-gouache",
+    "subject": "hero-portrait",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 1001,
+    "file": "002-hero-portrait-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 3,
+    "name": "003-hero-portrait-painterly",
+    "subject": "hero-portrait",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 151002,
+    "file": "003-hero-portrait-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 4,
+    "name": "004-hero-portrait-flat-vector",
+    "subject": "hero-portrait",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 101003,
+    "file": "004-hero-portrait-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 5,
+    "name": "005-hero-portrait-claymation",
+    "subject": "hero-portrait",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 151004,
+    "file": "005-hero-portrait-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 6,
+    "name": "006-hero-portrait-felt-plush",
+    "subject": "hero-portrait",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 1005,
+    "file": "006-hero-portrait-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 7,
+    "name": "007-hero-portrait-papercut",
+    "subject": "hero-portrait",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 151006,
+    "file": "007-hero-portrait-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 8,
+    "name": "008-hero-portrait-pixel-art",
+    "subject": "hero-portrait",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 351007,
+    "file": "008-hero-portrait-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 9,
+    "name": "009-hero-portrait-cel-shaded",
+    "subject": "hero-portrait",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 151008,
+    "file": "009-hero-portrait-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 10,
+    "name": "010-hero-portrait-risograph",
+    "subject": "hero-portrait",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body in profile side view, character portrait",
+    "ref_scale": 0.42,
+    "seed": 151009,
+    "file": "010-hero-portrait-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 11,
+    "name": "011-hero-alley-watercolour",
+    "subject": "hero-alley",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 51100,
+    "file": "011-hero-alley-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 12,
+    "name": "012-hero-alley-gouache",
+    "subject": "hero-alley",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 101101,
+    "file": "012-hero-alley-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 13,
+    "name": "013-hero-alley-painterly",
+    "subject": "hero-alley",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 51102,
+    "file": "013-hero-alley-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 14,
+    "name": "014-hero-alley-flat-vector",
+    "subject": "hero-alley",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 51103,
+    "file": "014-hero-alley-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 15,
+    "name": "015-hero-alley-claymation",
+    "subject": "hero-alley",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 101104,
+    "file": "015-hero-alley-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 16,
+    "name": "016-hero-alley-felt-plush",
+    "subject": "hero-alley",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 101105,
+    "file": "016-hero-alley-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 17,
+    "name": "017-hero-alley-papercut",
+    "subject": "hero-alley",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 51106,
+    "file": "017-hero-alley-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 18,
+    "name": "018-hero-alley-pixel-art",
+    "subject": "hero-alley",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 51107,
+    "file": "018-hero-alley-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 19,
+    "name": "019-hero-alley-cel-shaded",
+    "subject": "hero-alley",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 151108,
+    "file": "019-hero-alley-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 20,
+    "name": "020-hero-alley-risograph",
+    "subject": "hero-alley",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, in a rainy Seattle back alley at dusk, puddles, warm light",
+    "ref_scale": 0.42,
+    "seed": 1109,
+    "file": "020-hero-alley-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 21,
+    "name": "021-guarding-trash-watercolour",
+    "subject": "guarding-trash",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1200,
+    "file": "021-guarding-trash-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 22,
+    "name": "022-guarding-trash-gouache",
+    "subject": "guarding-trash",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1201,
+    "file": "022-guarding-trash-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 23,
+    "name": "023-guarding-trash-painterly",
+    "subject": "guarding-trash",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "soft painterly animated film concept art, hand painted, atmospheric lighting, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "soft painterly animated film concept art, hand painted, atmospheric lighting, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "soft painterly animated film concept art, hand painted, atmospheric lighting, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1202,
+    "file": "023-guarding-trash-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 24,
+    "name": "024-guarding-trash-flat-vector",
+    "subject": "guarding-trash",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 101203,
+    "file": "024-guarding-trash-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 25,
+    "name": "025-guarding-trash-claymation",
+    "subject": "guarding-trash",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51204,
+    "file": "025-guarding-trash-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 26,
+    "name": "026-guarding-trash-felt-plush",
+    "subject": "guarding-trash",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "photo of a handmade felt plush toy diorama, everything is stitched felt, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "photo of a handmade felt plush toy diorama, everything is stitched felt, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "photo of a handmade felt plush toy diorama, everything is stitched felt, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1205,
+    "file": "026-guarding-trash-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 27,
+    "name": "027-guarding-trash-papercut",
+    "subject": "guarding-trash",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "layered paper cutout collage, cut construction paper, soft drop shadows, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "layered paper cutout collage, cut construction paper, soft drop shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "layered paper cutout collage, cut construction paper, soft drop shadows, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51206,
+    "file": "027-guarding-trash-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 28,
+    "name": "028-guarding-trash-pixel-art",
+    "subject": "guarding-trash",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "16-bit pixel art, visible square pixels, limited palette, retro game, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "16-bit pixel art, visible square pixels, limited palette, retro game, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "16-bit pixel art, visible square pixels, limited palette, retro game, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51207,
+    "file": "028-guarding-trash-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 29,
+    "name": "029-guarding-trash-cel-shaded",
+    "subject": "guarding-trash",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 101208,
+    "file": "029-guarding-trash-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 30,
+    "name": "030-guarding-trash-risograph",
+    "subject": "guarding-trash",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a round chubby grey tanuki sitting on top of a big heap of black garbage bags, guarding it",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "risograph print, black and fluorescent pink ink, grainy paper, a big heap of black garbage bags in a back alley, no characters",
+      "characters": {
+        "jimothy": "risograph print, black and fluorescent pink ink, grainy paper, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, sitting",
+        "crickets": "risograph print, black and fluorescent pink ink, grainy paper, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.04,
+          0.78,
+          0.62
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51209,
+    "file": "030-guarding-trash-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 31,
+    "name": "031-cricket-march-watercolour",
+    "subject": "cricket-march",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a marching line of sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer",
+    "ref_scale": 0.0,
+    "seed": 101300,
+    "file": "031-cricket-march-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 32,
+    "name": "032-cricket-march-gouache",
+    "subject": "cricket-march",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a marching line of sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer",
+    "ref_scale": 0.0,
+    "seed": 151301,
+    "file": "032-cricket-march-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 33,
+    "name": "033-cricket-march-painterly",
+    "subject": "cricket-march",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a marching line of sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer",
+    "ref_scale": 0.0,
+    "seed": 101302,
+    "file": "033-cricket-march-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 34,
+    "name": "034-cricket-march-flat-vector",
+    "subject": "cricket-march",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a marching line of sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer",
+    "ref_scale": 0.0,
+    "seed": 101303,
+    "file": "034-cricket-march-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 35,
+    "name": "035-cricket-march-claymation",
+    "subject": "cricket-march",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a marching line of sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer",
+    "ref_scale": 0.0,
+    "seed": 1304,
+    "file": "035-cricket-march-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 36,
+    "name": "036-cricket-march-felt-plush",
+    "subject": "cricket-march",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a marching line of sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer",
+    "ref_scale": 0.0,
+    "seed": 1305,
+    "file": "036-cricket-march-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 37,
+    "name": "037-cricket-march-papercut",
+    "subject": "cricket-march",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, three big round green cartoon crickets walking in a row along an alley path, each a soft green ball with little dot eyes, a small smile and floppy antennae",
+    "ref_scale": 0.0,
+    "seed": 101306,
+    "file": "037-cricket-march-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 38,
+    "name": "038-cricket-march-pixel-art",
+    "subject": "cricket-march",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a marching line of sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer",
+    "ref_scale": 0.0,
+    "seed": 151307,
+    "file": "038-cricket-march-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 39,
+    "name": "039-cricket-march-cel-shaded",
+    "subject": "cricket-march",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a marching line of sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly, advancing along an alley path toward the viewer",
+    "ref_scale": 0.0,
+    "seed": 51308,
+    "file": "039-cricket-march-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 40,
+    "name": "040-cricket-march-risograph",
+    "subject": "cricket-march",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a marching line of chubby round smiling cartoon crickets, soft ball-shaped bodies, little dot eyes, floppy antennae, stubby legs, along an alley path",
+    "ref_scale": 0.0,
+    "seed": 51309,
+    "file": "040-cricket-march-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 41,
+    "name": "041-cricket-boss-watercolour",
+    "subject": "cricket-boss",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 101400,
+    "file": "041-cricket-boss-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 42,
+    "name": "042-cricket-boss-gouache",
+    "subject": "cricket-boss",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 101401,
+    "file": "042-cricket-boss-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 43,
+    "name": "043-cricket-boss-painterly",
+    "subject": "cricket-boss",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 101402,
+    "file": "043-cricket-boss-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 44,
+    "name": "044-cricket-boss-flat-vector",
+    "subject": "cricket-boss",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 151403,
+    "file": "044-cricket-boss-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 45,
+    "name": "045-cricket-boss-claymation",
+    "subject": "cricket-boss",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 1404,
+    "file": "045-cricket-boss-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 46,
+    "name": "046-cricket-boss-felt-plush",
+    "subject": "cricket-boss",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 1405,
+    "file": "046-cricket-boss-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 47,
+    "name": "047-cricket-boss-papercut",
+    "subject": "cricket-boss",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 101406,
+    "file": "047-cricket-boss-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 48,
+    "name": "048-cricket-boss-pixel-art",
+    "subject": "cricket-boss",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, one giant gentle cartoon cricket with a big round ball-shaped bright green body, little dot eyes, small smile, floppy antennae, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 51407,
+    "file": "048-cricket-boss-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 49,
+    "name": "049-cricket-boss-cel-shaded",
+    "subject": "cricket-boss",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 1408,
+    "file": "049-cricket-boss-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 50,
+    "name": "050-cricket-boss-risograph",
+    "subject": "cricket-boss",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, one giant gentle sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, small gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, harmless and cuddly, sitting beside tiny trash cans",
+    "ref_scale": 0.0,
+    "seed": 151409,
+    "file": "050-cricket-boss-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 51,
+    "name": "051-alley-empty-watercolour",
+    "subject": "alley-empty",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1500,
+    "file": "051-alley-empty-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 52,
+    "name": "052-alley-empty-gouache",
+    "subject": "alley-empty",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1501,
+    "file": "052-alley-empty-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 53,
+    "name": "053-alley-empty-painterly",
+    "subject": "alley-empty",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1502,
+    "file": "053-alley-empty-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 54,
+    "name": "054-alley-empty-flat-vector",
+    "subject": "alley-empty",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1503,
+    "file": "054-alley-empty-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 55,
+    "name": "055-alley-empty-claymation",
+    "subject": "alley-empty",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1504,
+    "file": "055-alley-empty-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 56,
+    "name": "056-alley-empty-felt-plush",
+    "subject": "alley-empty",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1505,
+    "file": "056-alley-empty-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 57,
+    "name": "057-alley-empty-papercut",
+    "subject": "alley-empty",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1506,
+    "file": "057-alley-empty-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 58,
+    "name": "058-alley-empty-pixel-art",
+    "subject": "alley-empty",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1507,
+    "file": "058-alley-empty-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 59,
+    "name": "059-alley-empty-cel-shaded",
+    "subject": "alley-empty",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1508,
+    "file": "059-alley-empty-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 60,
+    "name": "060-alley-empty-risograph",
+    "subject": "alley-empty",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a cozy rainy Seattle back alley, dumpsters, fire escapes, string lights, puddles reflecting neon signs, no characters, environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1509,
+    "file": "060-alley-empty-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 61,
+    "name": "061-tower-build-watercolour",
+    "subject": "tower-build",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 151600,
+    "file": "061-tower-build-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 62,
+    "name": "062-tower-build-gouache",
+    "subject": "tower-build",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 101601,
+    "file": "062-tower-build-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 63,
+    "name": "063-tower-build-painterly",
+    "subject": "tower-build",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 51602,
+    "file": "063-tower-build-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 64,
+    "name": "064-tower-build-flat-vector",
+    "subject": "tower-build",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 201603,
+    "file": "064-tower-build-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 65,
+    "name": "065-tower-build-claymation",
+    "subject": "tower-build",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 51604,
+    "file": "065-tower-build-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 66,
+    "name": "066-tower-build-felt-plush",
+    "subject": "tower-build",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 1605,
+    "file": "066-tower-build-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 67,
+    "name": "067-tower-build-papercut",
+    "subject": "tower-build",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 151606,
+    "file": "067-tower-build-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 68,
+    "name": "068-tower-build-pixel-art",
+    "subject": "tower-build",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 51607,
+    "file": "068-tower-build-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 69,
+    "name": "069-tower-build-cel-shaded",
+    "subject": "tower-build",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 151608,
+    "file": "069-tower-build-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 70,
+    "name": "070-tower-build-risograph",
+    "subject": "tower-build",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, wearing a tiny yellow hard hat, stacking trash cans into a tower",
+    "ref_scale": 0.42,
+    "seed": 101609,
+    "file": "070-tower-build-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 71,
+    "name": "071-trash-fortress-watercolour",
+    "subject": "trash-fortress",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 51700,
+    "file": "071-trash-fortress-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 72,
+    "name": "072-trash-fortress-gouache",
+    "subject": "trash-fortress",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 101701,
+    "file": "072-trash-fortress-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 73,
+    "name": "073-trash-fortress-painterly",
+    "subject": "trash-fortress",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1702,
+    "file": "073-trash-fortress-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 74,
+    "name": "074-trash-fortress-flat-vector",
+    "subject": "trash-fortress",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1703,
+    "file": "074-trash-fortress-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 75,
+    "name": "075-trash-fortress-claymation",
+    "subject": "trash-fortress",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 101704,
+    "file": "075-trash-fortress-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 76,
+    "name": "076-trash-fortress-felt-plush",
+    "subject": "trash-fortress",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 51705,
+    "file": "076-trash-fortress-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 77,
+    "name": "077-trash-fortress-papercut",
+    "subject": "trash-fortress",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1706,
+    "file": "077-trash-fortress-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 78,
+    "name": "078-trash-fortress-pixel-art",
+    "subject": "trash-fortress",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1707,
+    "file": "078-trash-fortress-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 79,
+    "name": "079-trash-fortress-cel-shaded",
+    "subject": "trash-fortress",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 151708,
+    "file": "079-trash-fortress-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 80,
+    "name": "080-trash-fortress-risograph",
+    "subject": "trash-fortress",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a whimsical fortress with towers of stacked trash cans, walls of cardboard boxes and a cardboard gate, in an alley, cute video game environment concept art",
+    "ref_scale": 0.0,
+    "seed": 1709,
+    "file": "080-trash-fortress-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 81,
+    "name": "081-defender-watercolour",
+    "subject": "defender",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 101800,
+    "file": "081-defender-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 82,
+    "name": "082-defender-gouache",
+    "subject": "defender",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1801,
+    "file": "082-defender-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 83,
+    "name": "083-defender-painterly",
+    "subject": "defender",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "soft painterly animated film concept art, hand painted, atmospheric lighting, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "soft painterly animated film concept art, hand painted, atmospheric lighting, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "soft painterly animated film concept art, hand painted, atmospheric lighting, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51802,
+    "file": "083-defender-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 84,
+    "name": "084-defender-flat-vector",
+    "subject": "defender",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 101803,
+    "file": "084-defender-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 85,
+    "name": "085-defender-claymation",
+    "subject": "defender",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 101804,
+    "file": "085-defender-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 86,
+    "name": "086-defender-felt-plush",
+    "subject": "defender",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "photo of a handmade felt plush toy diorama, everything is stitched felt, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "photo of a handmade felt plush toy diorama, everything is stitched felt, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "photo of a handmade felt plush toy diorama, everything is stitched felt, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51805,
+    "file": "086-defender-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 87,
+    "name": "087-defender-papercut",
+    "subject": "defender",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "layered paper cutout collage, cut construction paper, soft drop shadows, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "layered paper cutout collage, cut construction paper, soft drop shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "layered paper cutout collage, cut construction paper, soft drop shadows, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1806,
+    "file": "087-defender-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 88,
+    "name": "088-defender-pixel-art",
+    "subject": "defender",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "16-bit pixel art, visible square pixels, limited palette, retro game, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "16-bit pixel art, visible square pixels, limited palette, retro game, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "16-bit pixel art, visible square pixels, limited palette, retro game, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1807,
+    "file": "088-defender-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 89,
+    "name": "089-defender-cel-shaded",
+    "subject": "defender",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 101808,
+    "file": "089-defender-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 90,
+    "name": "090-defender-risograph",
+    "subject": "defender",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a round chubby grey tanuki standing heroically on top of a mountain of black garbage bags and trash cans, evening",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "risograph print, black and fluorescent pink ink, grainy paper, a huge heap of black garbage bags piled high into a hill, filling the frame, in an alley at evening, no characters",
+      "characters": {
+        "jimothy": "risograph print, black and fluorescent pink ink, grainy paper, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face, standing proudly",
+        "crickets": "risograph print, black and fluorescent pink ink, grainy paper, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.31,
+          0.04,
+          0.69,
+          0.46
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 101809,
+    "file": "090-defender-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 91,
+    "name": "091-key-art-watercolour",
+    "subject": "key-art",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51900,
+    "file": "091-key-art-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 92,
+    "name": "092-key-art-gouache",
+    "subject": "key-art",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51901,
+    "file": "092-key-art-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 93,
+    "name": "093-key-art-painterly",
+    "subject": "key-art",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "soft painterly animated film concept art, hand painted, atmospheric lighting, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "soft painterly animated film concept art, hand painted, atmospheric lighting, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "soft painterly animated film concept art, hand painted, atmospheric lighting, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51902,
+    "file": "093-key-art-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 94,
+    "name": "094-key-art-flat-vector",
+    "subject": "key-art",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51903,
+    "file": "094-key-art-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 95,
+    "name": "095-key-art-claymation",
+    "subject": "key-art",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51904,
+    "file": "095-key-art-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 96,
+    "name": "096-key-art-felt-plush",
+    "subject": "key-art",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "photo of a handmade felt plush toy diorama, everything is stitched felt, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "photo of a handmade felt plush toy diorama, everything is stitched felt, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "photo of a handmade felt plush toy diorama, everything is stitched felt, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51905,
+    "file": "096-key-art-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 97,
+    "name": "097-key-art-papercut",
+    "subject": "key-art",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "layered paper cutout collage, cut construction paper, soft drop shadows, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "layered paper cutout collage, cut construction paper, soft drop shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "layered paper cutout collage, cut construction paper, soft drop shadows, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51906,
+    "file": "097-key-art-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 98,
+    "name": "098-key-art-pixel-art",
+    "subject": "key-art",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "16-bit pixel art, visible square pixels, limited palette, retro game, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "16-bit pixel art, visible square pixels, limited palette, retro game, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "16-bit pixel art, visible square pixels, limited palette, retro game, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1907,
+    "file": "098-key-art-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 99,
+    "name": "099-key-art-cel-shaded",
+    "subject": "key-art",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 51908,
+    "file": "099-key-art-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 100,
+    "name": "100-key-art-risograph",
+    "subject": "key-art",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, game poster, a round chubby grey tanuki in the centre, cheerful green cartoon crickets around him, glowing garbage pile behind",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "risograph print, black and fluorescent pink ink, grainy paper, a glowing pile of treasure-like garbage in an alley at dusk, no characters, game poster",
+      "characters": {
+        "jimothy": "risograph print, black and fluorescent pink ink, grainy paper, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "risograph print, black and fluorescent pink ink, grainy paper, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.22,
+          0.24,
+          0.78,
+          0.96
+        ],
+        [
+          "crickets",
+          0.0,
+          0.62,
+          0.3,
+          1.0
+        ],
+        [
+          "crickets",
+          0.7,
+          0.62,
+          1.0,
+          1.0
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 1909,
+    "file": "100-key-art-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 101,
+    "name": "101-standoff-watercolour",
+    "subject": "standoff",
+    "style": "watercolour",
+    "prompt": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "children's book watercolour illustration, soft pastel washes, gentle linework, paper texture, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 52000,
+    "file": "101-standoff-watercolour.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 102,
+    "name": "102-standoff-gouache",
+    "subject": "standoff",
+    "style": "gouache",
+    "prompt": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "gouache painting, flat matte opaque shapes, visible brush strokes, mid-century illustration, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 52001,
+    "file": "102-standoff-gouache.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 103,
+    "name": "103-standoff-painterly",
+    "subject": "standoff",
+    "style": "painterly",
+    "prompt": "soft painterly animated film concept art, hand painted, atmospheric lighting, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "soft painterly animated film concept art, hand painted, atmospheric lighting, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "soft painterly animated film concept art, hand painted, atmospheric lighting, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "soft painterly animated film concept art, hand painted, atmospheric lighting, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 152002,
+    "file": "103-standoff-painterly.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 104,
+    "name": "104-standoff-flat-vector",
+    "subject": "standoff",
+    "style": "flat-vector",
+    "prompt": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "bold flat vector illustration, solid flat colours, no gradients, clean geometric shapes, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 102003,
+    "file": "104-standoff-flat-vector.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 105,
+    "name": "105-standoff-claymation",
+    "subject": "standoff",
+    "style": "claymation",
+    "prompt": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "claymation stop motion still, everything sculpted from plasticine, tilt shift photo, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 152004,
+    "file": "105-standoff-claymation.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 106,
+    "name": "106-standoff-felt-plush",
+    "subject": "standoff",
+    "style": "felt-plush",
+    "prompt": "photo of a handmade felt plush toy diorama, everything is stitched felt, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "photo of a handmade felt plush toy diorama, everything is stitched felt, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "photo of a handmade felt plush toy diorama, everything is stitched felt, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "photo of a handmade felt plush toy diorama, everything is stitched felt, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 2005,
+    "file": "106-standoff-felt-plush.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 107,
+    "name": "107-standoff-papercut",
+    "subject": "standoff",
+    "style": "papercut",
+    "prompt": "layered paper cutout collage, cut construction paper, soft drop shadows, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "layered paper cutout collage, cut construction paper, soft drop shadows, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "layered paper cutout collage, cut construction paper, soft drop shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "layered paper cutout collage, cut construction paper, soft drop shadows, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 2006,
+    "file": "107-standoff-papercut.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 108,
+    "name": "108-standoff-pixel-art",
+    "subject": "standoff",
+    "style": "pixel-art",
+    "prompt": "16-bit pixel art, visible square pixels, limited palette, retro game, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "16-bit pixel art, visible square pixels, limited palette, retro game, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "16-bit pixel art, visible square pixels, limited palette, retro game, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "16-bit pixel art, visible square pixels, limited palette, retro game, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 2007,
+    "file": "108-standoff-pixel-art.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 109,
+    "name": "109-standoff-cel-shaded",
+    "subject": "standoff",
+    "style": "cel-shaded",
+    "prompt": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "cel shaded cartoon, thick black outlines, flat colour fills, hard shadows, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 102008,
+    "file": "109-standoff-cel-shaded.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  },
+  {
+    "n": 110,
+    "name": "110-standoff-risograph",
+    "subject": "standoff",
+    "style": "risograph",
+    "prompt": "risograph print, black and fluorescent pink ink, grainy paper, a playful face-off in an alley, a round chubby grey tanuki on the left, small round green cartoon crickets on the right",
+    "ref_scale": 0.42,
+    "composite": {
+      "background": "risograph print, black and fluorescent pink ink, grainy paper, an empty back alley with a few black garbage bags, no characters",
+      "characters": {
+        "jimothy": "risograph print, black and fluorescent pink ink, grainy paper, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, hunched round back, no neck, smooth round rump with a tiny stump, short stubby legs, cute, full body, side view, cute face",
+        "crickets": "risograph print, black and fluorescent pink ink, grainy paper, three sweet round cartoon crickets, soft rounded bright green bodies, little black dot eyes, small gentle closed-mouth smiles, floppy curved antennae, short stubby rounded legs, harmless and cuddly"
+      },
+      "regions": [
+        [
+          "jimothy",
+          0.02,
+          0.3,
+          0.56,
+          0.98
+        ],
+        [
+          "crickets",
+          0.56,
+          0.52,
+          0.98,
+          0.98
+        ]
+      ],
+      "inpaint": {
+        "strength": 1.0,
+        "crop": 24,
+        "blur": 16,
+        "shape": "ellipse",
+        "jim_ref": 0.2
+      }
+    },
+    "seed": 102009,
+    "file": "110-standoff-risograph.png",
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "size": 512
+  }
+]

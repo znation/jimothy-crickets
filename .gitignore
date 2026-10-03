@@ -4,3 +4,6 @@ __pycache__/
 # Qwen-Image-2.1 output: its Qwen Research License allows research or evaluation
 # use only, so it must not ship. Kept locally for reference, never committed.
 concept-art/qwen/
+
+# Unpicked SDXL candidates (~650 renders); regenerate with generate_sdxl.py.
+concept-art/sdxl/_candidates/
