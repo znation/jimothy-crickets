@@ -10,6 +10,8 @@ import l1_4 from "./levels/1-4.json" with { type: "json" };
 import l1_5 from "./levels/1-5.json" with { type: "json" };
 import referencesJson from "./references.json" with { type: "json" };
 import unitsJson from "./units.json" with { type: "json" };
+import upgradesJson from "./upgrades.json" with { type: "json" };
+import type { UpgradeDef } from "../sim/upgrades.ts";
 import type {
   AreaId,
   Content,
@@ -25,6 +27,7 @@ export interface Campaign {
   startUnits: UnitId[];
   areas: { id: AreaId; levels: string[] }[];
   recruits: Record<string, UnitId>;
+  acornsForMoons: number[]; // total acorns a level is worth at 0, 1, 2, 3 moons
 }
 
 // JSON imports are typed loosely (string instead of the id unions); validate.ts checks the data
@@ -35,6 +38,7 @@ export const rawData = {
   levels: [l1_1, l1_2, l1_3, l1_4, l1_5] as unknown[],
   campaign: campaignJson as unknown,
   references: referencesJson as unknown,
+  upgrades: upgradesJson as unknown[],
 };
 
 export const campaign = rawData.campaign as Campaign;
@@ -46,6 +50,7 @@ const levelMap = byId(rawData.levels as LevelDef[]);
 export const levelOrder: string[] = campaign.areas.flatMap((a) => a.levels);
 export const levels: LevelDef[] = levelOrder.map((id) => levelMap[id]!).filter(Boolean);
 export const references = rawData.references as Record<string, Reference>;
+export const upgrades = rawData.upgrades as UpgradeDef[];
 
 export function levelById(id: string): LevelDef | undefined {
   return levelMap[id];

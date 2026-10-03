@@ -1,13 +1,14 @@
 // Entry point: pick the platform adapter, load the save, start the app.
 
 import { App } from "./app.ts";
-import { webPlatform } from "./platform/web.ts";
+import { registerServiceWorker, webPlatform } from "./platform/web.ts";
 import type { Platform } from "./platform/types.ts";
 import { SaveStore } from "./save.ts";
 import "./ui/style.css";
 
 function pickPlatform(): Platform {
   // Capacitor (window.Capacitor) and Tauri (window.__TAURI__) adapters arrive with their shells.
+  registerServiceWorker();
   return webPlatform();
 }
 

@@ -289,7 +289,8 @@ button:focus-visible {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-.map {
+.map,
+.shop {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -298,13 +299,231 @@ button:focus-visible {
   background: rgba(16, 18, 40, 0.55);
 }
 
-.map .topbar {
+.topbar {
   position: absolute;
   top: max(10px, env(safe-area-inset-top));
   left: max(12px, env(safe-area-inset-left));
   right: max(12px, env(safe-area-inset-right));
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.shop-btn {
+  min-width: 0;
+}
+
+.area-pager {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 2vw, 28px);
+}
+
+.pager:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.dot.on {
+  background: var(--accent);
+}
+
+.screen-title {
+  margin: 48px 0 0;
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 44px);
+  -webkit-text-stroke: 2px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 0 4px 0 var(--ink);
+}
+
+.shop-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  max-width: 1100px;
+  max-height: calc(100% - 140px);
+  overflow-y: auto;
+  padding: 6px 6px 12px;
+  pointer-events: auto;
+}
+
+.upgrade {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  border: 4px solid var(--ink);
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 5px 0 var(--ink);
+}
+
+.upgrade .econ .icon {
+  width: 60px;
+  height: 60px;
+}
+
+.upgrade-name {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 800;
+  text-align: center;
+  min-height: 2.4em;
+  display: grid;
+  place-items: center;
+}
+
+.pips {
+  display: flex;
+  gap: 6px;
+}
+
+.pip {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: #ddd3c2;
+}
+
+.pip.on {
+  background: var(--green);
+}
+
+.big.buy {
+  min-width: 0;
+  width: 100%;
+  min-height: 48px;
+  padding: 4px 12px;
+  font-size: 22px;
+}
+
+.big:disabled {
+  background: #c9c2b4;
+  cursor: default;
+  box-shadow: 0 3px 0 var(--ink);
+}
+
+.price {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.price .icon {
+  width: 26px;
+  height: 26px;
+}
+
+.acorns-won {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--display);
+  font-size: 26px !important;
+  font-weight: 900;
+}
+
+.acorns-won .icon {
+  width: 34px;
+  height: 34px;
+}
+
+.settings {
+  align-items: stretch;
+  text-align: left;
+  max-width: min(820px, 94vw);
+}
+
+.settings .cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+}
+
+.settings .col {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings .footer {
+  text-align: center;
+}
+
+.settings h2,
+.settings h3 {
+  text-align: center;
+}
+
+.settings h3 {
+  margin: 6px 0 0;
+  font-family: var(--display);
+  font-size: 22px;
+}
+
+.settings .row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.settings .big {
+  white-space: nowrap;
+  padding: 8px 14px;
+}
+
+.settings .slider span {
+  min-width: 5em;
+}
+
+.settings input[type="range"] {
+  flex: 1;
+  min-height: 44px;
+  accent-color: var(--accent-2);
+}
+
+.code {
+  width: 100%;
+  padding: 8px;
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  font: 13px/1.3 ui-monospace, monospace;
+  color: var(--ink);
+  background: #fff;
+  resize: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.settings .big {
+  min-width: 0;
+  flex: 1;
+}
+
+.status:empty {
+  display: none;
 }
 
 .area {
@@ -574,6 +793,31 @@ button:focus-visible {
 /* ---------------------------------------------------------------- small screens */
 
 @media (max-height: 500px) {
+  .upgrade {
+    width: 150px;
+    padding: 8px;
+    gap: 4px;
+  }
+  .upgrade .portrait {
+    transform: scale(0.75);
+    margin: -8px 0;
+  }
+  .upgrade-name {
+    font-size: 16px;
+  }
+  .screen-title {
+    margin-top: 0;
+    font-size: 26px;
+  }
+  .shop {
+    justify-content: flex-start;
+    padding-top: 12px;
+    gap: 8px;
+  }
+  .shop-list {
+    max-height: calc(100% - 60px);
+    margin-top: 0;
+  }
   .pill {
     height: 46px;
     font-size: 22px;
@@ -607,6 +851,15 @@ button:focus-visible {
   }
   .card h2 {
     font-size: 26px;
+  }
+  .settings .col {
+    gap: 2px;
+  }
+  .settings h3 {
+    margin: 0;
+  }
+  .settings input[type="range"] {
+    min-height: 36px;
   }
   .big {
     min-height: 48px;
@@ -672,6 +925,18 @@ button:focus-visible {
   color: #9f9;
   font: 12px/1.4 ui-monospace, monospace;
   pointer-events: none;
+}
+
+.large-text .card p,
+.large-text .card label.row,
+.large-text .tagline,
+.large-text .upgrade-name,
+.large-text .tutorial .bubble {
+  font-size: 1.3em;
+}
+
+.large-text .big {
+  font-size: 28px;
 }
 
 .reduced-motion *,

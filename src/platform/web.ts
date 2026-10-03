@@ -3,6 +3,13 @@ import type { Platform } from "./types.ts";
 const SAVE_KEY = "jimothy-crickets.save";
 const BACKUP_KEY = "jimothy-crickets.save.backup";
 
+/** Offline play for the web build (production only; dev servers must not be cached). */
+export function registerServiceWorker() {
+  if (import.meta.env.PROD && "serviceWorker" in navigator) {
+    window.addEventListener("load", () => void navigator.serviceWorker.register("./sw.js").catch(() => {}));
+  }
+}
+
 export function webPlatform(): Platform {
   const standalone = matchMedia("(display-mode: standalone)").matches;
   // Ask the browser not to evict our save under storage pressure (Safari evicts after ~7 days

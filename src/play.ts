@@ -2,7 +2,8 @@
 // fixed-timestep accumulator (plan §4.2). Every accepted input is recorded, so any attempt can be
 // saved and replayed exactly.
 
-import { content, unitsAvailableAt } from "./data/content.ts";
+import { content, unitsAvailableAt, upgrades } from "./data/content.ts";
+import { applyUpgrades, type Upgrades } from "./sim/upgrades.ts";
 import type { Policy } from "./sim/run.ts";
 import { createSim, sendBlocker, step, DT, type SimState } from "./sim/sim.ts";
 import type { LevelDef, SendInput, SimEvent, UnitId } from "./sim/types.ts";
@@ -27,10 +28,14 @@ export class LevelSession {
   /** A bot driving the attempt instead of the player (the title screen's attract mode). */
   private autoplay: Policy | null;
 
-  constructor(level: LevelDef, opts: { seed: number; available?: UnitId[]; replay?: SendInput[]; autoplay?: Policy }) {
+  constructor(
+    level: LevelDef,
+    opts: { seed: number; available?: UnitId[]; replay?: SendInput[]; autoplay?: Policy; upgrades?: Upgrades },
+  ) {
     this.level = level;
     const available = opts.available ?? unitsAvailableAt(level.id);
-    this.st = createSim(level, content, { seed: opts.seed, available });
+    const upgraded = applyUpgrades(content, level, upgrades, opts.upgrades ?? {});
+    this.st = createSim(upgraded.level, upgraded.content, { seed: opts.seed, available });
     this.replay = opts.replay ? [...opts.replay].sort((a, b) => a.tick - b.tick) : null;
     this.autoplay = opts.autoplay ?? null;
   }

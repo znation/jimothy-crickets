@@ -2,12 +2,12 @@
 // focus rings, keyboard access and readable text for free.
 
 import type { App } from "../app.ts";
-import { campaign, levelOrder } from "../data/content.ts";
+import { campaign, levelOrder, upgrades } from "../data/content.ts";
 import type { LevelSession } from "../play.ts";
 import { closestS } from "../sim/lane.ts";
 import { UNIT_IDS, type UnitId } from "../sim/types.ts";
 import { h, svg } from "./dom.ts";
-import { cogIcon, handIcon, moonIcon, pauseIcon, pileIcon, snackIcon } from "./icons.ts";
+import { acornIcon, cogIcon, handIcon, moonIcon, pauseIcon, pileIcon, snackIcon } from "./icons.ts";
 import { portrait } from "./portrait.ts";
 import { t } from "./strings.ts";
 
@@ -59,79 +59,222 @@ export class TitleScreen implements Screen {
 export class MapScreen implements Screen {
   name = "map";
   el: HTMLElement;
-  private first: HTMLButtonElement | null = null;
   private app: App;
+  private area = 0;
+  private body = h("div.area-pager");
+  private focusLevel: string | null = null;
 
-  constructor(app: App) {
+  constructor(app: App, opts: { area?: number } = {}) {
     this.app = app;
-    const save = app.save.data;
-    const unlockAll = app.params.get("unlock") === "all";
-    const areas = campaign.areas.map((area) => {
-      const nodes = area.levels.map((id) => {
-        const i = levelOrder.indexOf(id);
-        const unlocked = unlockAll || i === 0 || !!save.levels[levelOrder[i - 1]!]?.cleared;
-        const best = save.levels[id]?.moons ?? 0;
-        const btn = h(
-          "button.level-node",
-          {
-            disabled: !unlocked,
-            onclick: () => app.playLevel(id),
-            "aria-label": unlocked ? `Level ${id}` : `Level ${id}, ${t("map.locked")}`,
-            "data-level": id,
-          },
-          h("span.level-id", null, id),
-          unlocked ? moons(best, "moons small") : h("span.lock", null, "🔒"),
-        );
-        if (unlocked) this.first = btn; // focus the furthest unlocked level
-        return btn;
-      });
-      return h("section.area", null, h("h2", null, t(`area.${area.id}`)), h("div.path", null, ...nodes));
-    });
-    this.el = h(
-      "div.screen.map",
-      null,
-      h(
-        "div.topbar",
-        null,
-        h("button.icon-btn", { onclick: () => app.showTitle(), "aria-label": "Back" }, "‹"),
-        h("button.icon-btn", { onclick: () => this.settings(), "aria-label": "Settings" }, svg(cogIcon)),
-      ),
-      ...areas,
-    );
+    // Open on the area holding the furthest level you can play.
+    const furthest = levelOrder.filter((id) => this.unlocked(id)).at(-1) ?? levelOrder[0]!;
+    this.focusLevel = furthest;
+    this.area = opts.area ?? Math.max(0, campaign.areas.findIndex((a) => a.levels.includes(furthest)));
+    this.el = h("div.screen.map", null, topBar(app, () => app.showTitle()), this.body);
+    this.render();
   }
 
   focus() {
-    this.first?.focus();
+    const target =
+      this.body.querySelector<HTMLButtonElement>(`[data-level="${this.focusLevel}"]:not(:disabled)`) ??
+      this.body.querySelector<HTMLButtonElement>(".level-node:not(:disabled)");
+    target?.focus();
   }
 
-  private settings() {
-    const save = this.app.save;
-    const reduced = h("input", {
-      type: "checkbox",
-      checked: save.data.settings.reducedMotion,
-      onchange: () => {
-        save.data.settings.reducedMotion = reduced.checked;
-        this.app.applySettings();
-        void save.store();
-      },
-    });
-    const close = h("button.big.primary", { onclick: () => dialog.remove() }, "OK");
-    const dialog = h(
-      "div.overlay",
-      { role: "dialog", "aria-modal": "true" },
-      h(
-        "div.card",
-        null,
-        h("h2", null, "Settings"),
-        h("label.row", null, reduced, " Less motion"),
-        h("p.small", null, t("settings.privacy")),
-        h("p.small", null, `Version ${__APP_VERSION__}`),
-        close,
-      ),
-    );
-    this.el.append(dialog);
-    close.focus();
+  private unlocked(id: string) {
+    const i = levelOrder.indexOf(id);
+    return this.app.params.get("unlock") === "all" || i === 0 || !!this.app.save.data.levels[levelOrder[i - 1]!]?.cleared;
   }
+
+  private render() {
+    const save = this.app.save.data;
+    const area = campaign.areas[this.area]!;
+    const nodes = area.levels.map((id) => {
+      const open = this.unlocked(id);
+      const best = save.levels[id]?.moons ?? 0;
+      return h(
+        "button.level-node",
+        {
+          disabled: !open,
+          onclick: () => this.app.playLevel(id),
+          "aria-label": open ? `Level ${id}, ${best} of 3 moons` : `Level ${id}, ${t("map.locked")}`,
+          "data-level": id,
+        },
+        h("span.level-id", null, id),
+        open ? moons(best, "moons small") : h("span.lock", null, "🔒"),
+      );
+    });
+    const flip = (d: number) => {
+      this.area += d;
+      this.focusLevel = null;
+      this.render();
+      this.focus();
+    };
+    const n = campaign.areas.length;
+    this.body.replaceChildren(
+      h("button.icon-btn.pager", { disabled: this.area === 0, onclick: () => flip(-1), "aria-label": "Previous area" }, "‹"),
+      h(
+        "section.area",
+        { "data-area": area.id },
+        h("h2", null, t(`area.${area.id}`)),
+        h("div.path", null, ...nodes),
+        n > 1 ? h("div.dots", null, ...campaign.areas.map((_, i) => h(`span.dot${i === this.area ? ".on" : ""}`))) : null,
+      ),
+      h("button.icon-btn.pager", { disabled: this.area === n - 1, onclick: () => flip(1), "aria-label": "Next area" }, "›"),
+    );
+  }
+}
+
+/** Back button on the left; acorns, shop and settings on the right. */
+function topBar(app: App, back: () => void, opts: { shop?: boolean } = { shop: true }) {
+  return h(
+    "div.topbar",
+    null,
+    h("button.icon-btn", { onclick: back, "aria-label": "Back" }, "‹"),
+    h(
+      "div.hud-right",
+      null,
+      h("div.pill.acorns", { "aria-label": `${app.save.data.acorns} ${t("hud.acorns")}` }, svg(acornIcon), h("span.value", null, String(app.save.data.acorns))),
+      opts.shop ? h("button.big.shop-btn", { onclick: () => app.show(new ShopScreen(app)) }, t("shop.button")) : null,
+      h("button.icon-btn", { onclick: () => openSettings(app), "aria-label": t("settings.title") }, svg(cogIcon)),
+    ),
+  );
+}
+
+// ---------------------------------------------------------------- shop
+
+export class ShopScreen implements Screen {
+  name = "shop";
+  el: HTMLElement;
+  private app: App;
+  private list = h("div.shop-list");
+
+  constructor(app: App) {
+    this.app = app;
+    this.el = h(
+      "div.screen.shop",
+      null,
+      topBar(app, () => app.showMap(), { shop: false }),
+      h("h2.screen-title", null, t("shop.title")),
+      this.list,
+    );
+    this.render();
+  }
+
+  focus() {
+    this.list.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
+  }
+
+  private render() {
+    const save = this.app.save.data;
+    const shown = upgrades.filter((u) => !u.unit || save.unlockedUnits.includes(u.unit));
+    this.list.replaceChildren(
+      ...shown.map((u) => {
+        const tier = save.upgrades[u.id] ?? 0;
+        const cost = u.costs[tier];
+        const buy = h(
+          "button.big.buy",
+          {
+            disabled: cost === undefined || save.acorns < cost,
+            "aria-label": cost === undefined ? t("shop.max") : `${t(`upgrade.${u.id}`)}, ${cost} acorns`,
+            onclick: () => {
+              if (this.app.save.buyUpgrade(u)) {
+                void this.app.save.store();
+                this.app.show(new ShopScreen(this.app));
+              }
+            },
+          },
+          cost === undefined ? t("shop.max") : h("span.price", null, svg(acornIcon), String(cost)),
+        );
+        return h(
+          "div.upgrade",
+          { "data-upgrade": u.id },
+          u.unit ? portrait(u.unit, 84, 60) : h("div.econ", null, svg(snackIcon)),
+          h("div.upgrade-name", null, t(`upgrade.${u.id}`)),
+          h("div.pips", { "aria-label": `${tier} of ${u.costs.length}` }, ...u.costs.map((_, i) => h(`span.pip${i < tier ? ".on" : ""}`))),
+          buy,
+        );
+      }),
+    );
+  }
+}
+
+// ---------------------------------------------------------------- settings
+
+export function openSettings(app: App) {
+  const save = app.save;
+  const s = save.data.settings;
+  const store = () => {
+    app.applySettings();
+    void save.store();
+  };
+  const toggle = (label: string, get: () => boolean, set: (v: boolean) => void) => {
+    const box = h("input", { type: "checkbox", checked: get(), onchange: () => (set(box.checked), store()) });
+    return h("label.row", null, box, label);
+  };
+  const slider = (label: string, get: () => number, set: (v: number) => void) => {
+    const input = h("input", { type: "range", min: "0", max: "1", step: "0.05", value: String(get()), oninput: () => (set(Number(input.value)), store()) });
+    return h("label.row.slider", null, h("span", null, label), input);
+  };
+  const code = h("textarea.code", { rows: 3, spellcheck: false, value: save.exportCode(), "aria-label": t("settings.saveCode") });
+  const status = h("p.small.status", { role: "status" });
+  const copy = h("button.big", {
+    onclick: async () => {
+      code.select();
+      try {
+        await navigator.clipboard.writeText(code.value);
+      } catch {
+        document.execCommand?.("copy");
+      }
+      status.textContent = t("settings.copied");
+    },
+  }, t("settings.copy"));
+  const load = h("button.big", {
+    onclick: async () => {
+      if (save.importCode(code.value)) {
+        await save.store();
+        app.applySettings();
+        status.textContent = t("settings.loaded");
+        setTimeout(() => (dialog.remove(), app.showMap()), 600);
+      } else status.textContent = t("settings.badCode");
+    },
+  }, t("settings.load"));
+  const close = h("button.big.primary", { onclick: () => dialog.remove() }, t("settings.done"));
+  const dialog = h(
+    "div.overlay",
+    { role: "dialog", "aria-modal": "true", "data-kind": "settings" },
+    h(
+      "div.card.settings",
+      null,
+      h("h2", null, t("settings.title")),
+      h(
+        "div.cols",
+        null,
+        h(
+          "div.col",
+          null,
+          slider(t("settings.music"), () => s.music, (v) => (s.music = v)),
+          slider(t("settings.sfx"), () => s.sfx, (v) => (s.sfx = v)),
+          toggle(t("settings.reducedMotion"), () => s.reducedMotion, (v) => (s.reducedMotion = v)),
+          toggle(t("settings.largeText"), () => s.largeText, (v) => (s.largeText = v)),
+        ),
+        h(
+          "div.col",
+          null,
+          h("h3", null, t("settings.saveCode")),
+          h("p.small", null, t("settings.saveCodeHelp")),
+          code,
+          h("div.row", null, copy, load),
+          status,
+        ),
+      ),
+      h("p.small.footer", null, `${t("settings.privacy")} · ${t("settings.version", { v: __APP_VERSION__ })}`),
+      close,
+    ),
+  );
+  dialog.addEventListener("keydown", (e) => e.key === "Escape" && dialog.remove());
+  (app.screen?.el ?? app.ui).append(dialog);
+  close.focus();
 }
 
 // ---------------------------------------------------------------- level
@@ -415,6 +558,7 @@ export class LevelScreen implements Screen {
         h("button.big", { onclick: () => this.app.playLevel(this.session.level.id, { skipIntro: true }) }, t("pause.restart")),
         h("button.big", { onclick: () => this.showNightEnded() }, t("pause.callIt")),
         h("button.big", { onclick: () => this.app.showMap() }, t("pause.map")),
+        h("button.big", { onclick: () => openSettings(this.app) }, t("settings.title")),
       ),
       resume,
     );
@@ -436,7 +580,7 @@ export class LevelScreen implements Screen {
     const st = this.session.st;
     const id = this.session.level.id;
     const earned = st.outcome!.moons;
-    const recruit = this.app.save.recordWin(id, earned);
+    const { recruit, acorns } = this.app.save.recordWin(id, earned);
     void this.app.save.store();
     const nextId = levelOrder[levelOrder.indexOf(id) + 1];
     const next = nextId
@@ -450,6 +594,7 @@ export class LevelScreen implements Screen {
         null,
         h("h2", null, t("results.title")),
         moons(earned, "moons large"),
+        acorns > 0 ? h("p.acorns-won", null, svg(acornIcon), t("results.acorns", { n: acorns })) : null,
         recruit
           ? h("div.recruit", null, portrait(recruit, 112, 80), h("p", null, t("results.recruit", { unit: t(`unit.${recruit}`) })))
           : null,

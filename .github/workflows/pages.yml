@@ -22,6 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Only the game's own images (public/); the concept art (~130 MB of LFS) isn't needed.
+      - run: git lfs pull --include="public/**"
       - uses: actions/setup-node@v4
         with:
           node-version: 24

@@ -8,8 +8,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # The game needs no LFS images yet; the concept art (~130 MB) stays unfetched.
       - uses: actions/checkout@v4
+      # Only the game's own images (public/); the concept art (~130 MB of LFS) isn't needed.
+      - run: git lfs pull --include="public/**"
       - uses: actions/setup-node@v4
         with:
           node-version: 24

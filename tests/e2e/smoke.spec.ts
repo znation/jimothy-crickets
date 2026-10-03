@@ -53,3 +53,17 @@ test("title, map and a level load without page errors", async ({ page }) => {
   await page.waitForTimeout(1000);
   expect(errors).toEqual([]);
 });
+
+test("the installed game plays offline", async ({ page, context }) => {
+  await page.goto("/");
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+  });
+  await page.reload(); // now controlled by the service worker
+  await context.setOffline(true);
+  await page.reload();
+  await page.getByRole("button", { name: "Play" }).click();
+  await page.locator('[data-level="1-1"]').click();
+  await expect(page.getByRole("button", { name: "Let's go!" })).toBeVisible();
+  await context.setOffline(false);
+});

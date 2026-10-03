@@ -84,6 +84,7 @@ export class App {
     const session = new LevelSession(level, {
       seed: replay ? ref!.seed : (Math.random() * 2 ** 32) >>> 0,
       available: replay ? undefined : this.availableFor(level),
+      upgrades: replay ? undefined : this.save.data.upgrades,
       replay,
     });
     const speed = Number(this.params.get("speed"));
@@ -103,6 +104,7 @@ export class App {
     const reduce = s.reducedMotion || matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.scene.reducedMotion = reduce;
     document.documentElement.classList.toggle("reduced-motion", reduce);
+    document.documentElement.classList.toggle("large-text", s.largeText);
   }
 
   /** Make sure a frame is coming. The loop stops itself when nothing is animating. */

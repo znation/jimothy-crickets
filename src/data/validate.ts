@@ -19,6 +19,7 @@ export interface RawData {
   levels: unknown[];
   campaign: unknown;
   references: unknown;
+  upgrades: unknown[];
 }
 
 export function validate(data: RawData): string[] {
@@ -122,6 +123,23 @@ export function validate(data: RawData): string[] {
     if (!levelIds.has(id)) err("campaign", `recruit on unknown level "${id}"`);
     if (!unitIds.has(u as string)) err("campaign", `unknown recruit "${u}"`);
   }
+
+  const upgradeIds = new Set<string>();
+  const STATS = ["hp", "cost", "speed", "haul", "chewDps", "trickle", "startSnacks"];
+  for (const [i, u] of (data.upgrades as Record<string, any>[]).entries()) {
+    const w = `upgrades[${u?.id ?? i}]`;
+    if (upgradeIds.has(u.id)) err(w, "duplicate id");
+    upgradeIds.add(u.id);
+    if (u.unit !== undefined && !unitIds.has(u.unit)) err(w, `unknown unit "${u.unit}"`);
+    if (!Array.isArray(u.costs) || u.costs.length === 0 || u.costs.some((c: number) => !(c > 0))) err(w, "costs must be positive");
+    if (!STATS.includes(u.effect?.stat)) err(w, `unknown stat "${u.effect?.stat}"`);
+    if ((u.effect?.add === undefined) === (u.effect?.mul === undefined)) err(w, "effect needs exactly one of add / mul");
+    if (["trickle", "startSnacks"].includes(u.effect?.stat) === (u.unit !== undefined)) err(w, "economy upgrades have no unit; unit upgrades need one");
+    if (!str[`upgrade.${u.id}`]) err(w, `no string "upgrade.${u.id}"`);
+  }
+  const acorns = campaign.acornsForMoons;
+  if (!Array.isArray(acorns) || acorns.length !== 4 || acorns.some((a: number, i: number) => i > 0 && a < acorns[i - 1]))
+    err("campaign", "acornsForMoons must be 4 non-decreasing numbers");
 
   for (const [id, ref] of Object.entries(data.references as Record<string, any>)) {
     if (!levelIds.has(id)) err("references", `reference for unknown level "${id}"`);

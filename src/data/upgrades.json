@@ -1,0 +1,14 @@
+[
+  { "id": "cricket.hp", "unit": "cricket", "costs": [4, 8, 12], "effect": { "stat": "hp", "add": 1 } },
+  { "id": "possum.cost", "unit": "possum", "costs": [4, 8, 12], "effect": { "stat": "cost", "add": -4 } },
+  {
+    "id": "squirrel.speed",
+    "unit": "squirrel",
+    "costs": [4, 8, 12],
+    "effect": { "stat": "speed", "mul": 0.12 }
+  },
+  { "id": "crow.haul", "unit": "crow", "costs": [4, 8, 12], "effect": { "stat": "haul", "add": 1 } },
+  { "id": "rat.chew", "unit": "rat", "costs": [4, 8, 12], "effect": { "stat": "chewDps", "mul": 0.3 } },
+  { "id": "trickle", "costs": [5, 10, 15], "effect": { "stat": "trickle", "add": 0.5 } },
+  { "id": "startSnacks", "costs": [3, 6, 9], "effect": { "stat": "startSnacks", "add": 10 } }
+]
