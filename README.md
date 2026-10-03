@@ -146,7 +146,9 @@ a children's book about a raccoon, animated lightly. Not retro pixel art, not co
   Northwest: damp, mossy, evergreen, overcast.
 - UI matches: rounded, friendly, large touch-friendly targets, minimal text.
 
-Concept art is being produced outside this repo. Final assets and a style guide will land here later.
+Concept art lives in [`concept-art/`](concept-art/) (SDXL-Turbo; see its README). The game currently
+draws placeholder characters with canvas paths; final assets and a style guide come with milestone M5
+of the [implementation plan](docs/implementation-plan.md).
 
 ---
 
@@ -173,9 +175,37 @@ Design constraints that follow from this:
 
 ## Current status
 
-Nothing implemented yet. No implementation plan yet. This README is the design brief.
+Being built. [`docs/implementation-plan.md`](docs/implementation-plan.md) is the build plan, and its
+milestone section tracks progress. Built so far:
 
-Rough order of work once we start:
+- the TypeScript + canvas scaffold, fixed-timestep loop, screen fit with bleed, pointer and keyboard
+  input, auto-pause (plan M1)
+- the deterministic simulation with every unit, defense and trait from the tables below, a headless
+  level runner, and reference solutions checked in CI (M2, M3)
+- area 1 (levels 1-1 to 1-5) as data, with the in-level economy, unit bar, press-and-hold sending,
+  night timer, moons, soft "night ends" card, retry and a 1-1 tutorial (most of M4)
+- placeholder art, drawn in code; the CI and GitHub Pages workflows
+
+Where the open questions below needed an answer to build anything, the build uses the plan's
+proposed answers (§6 of the plan) as working defaults. They stay open until Zach confirms them.
+
+### Development
+
+```bash
+npm install
+npm run dev                                  # play at http://127.0.0.1:5173
+npm test                                     # sim + data unit tests
+npm run sim -- --level 1-3 --replay reference   # headless run, JSON out
+npm run sim -- --all --report                # every level: reference + bot
+npm run test:e2e                             # Playwright browser tests
+npm run build                                # static site in dist/
+```
+
+Debug URL parameters: `?level=1-3` jumps into a level, `&replay=reference` plays its stored
+solution, `&speed=8` runs fast, `&skipIntro`, `?unlock=all` opens every level on the map, and
+`?debug` shows frame timing.
+
+Rough order of work:
 
 1. Scaffold the TS project and the bare canvas loop.
 2. Get one lane, one unit type, one defense type, and a pile moving on screen with placeholder art.
@@ -233,3 +263,4 @@ These are decided. Don't relitigate them without asking Zach first.
 | Art direction | Hand-drawn / storybook |
 | Human side | Fully authored per level. No adaptive AI, no defense-placement logic |
 | Jimothy's likeness | No permission needed — he's a wild animal, not owned by anyone |
+| Pricing | Free and non-commercial on every platform: no price, ads or in-app purchases |

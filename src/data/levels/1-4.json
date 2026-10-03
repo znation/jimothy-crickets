@@ -1,0 +1,16 @@
+{
+  "id": "1-4",
+  "area": "alley",
+  "background": "alley",
+  "intro": { "textKey": "intro.1-4" },
+  "lanes": [{ "id": 0, "points": [[260, 560], [520, 720], [860, 760], [1180, 640], [1420, 520], [1660, 600]] }],
+  "pile": { "pos": [1760, 590], "hp": 36 },
+  "defenses": [
+    { "def": "sprinkler", "pos": [560, 600] },
+    { "def": "broomNeighbor", "pos": [980, 560] },
+    { "def": "sprinkler", "pos": [1450, 680] }
+  ],
+  "economy": { "startSnacks": 50, "trickle": 6 },
+  "nightLength": 180,
+  "moons": [0, 55, 85]
+}

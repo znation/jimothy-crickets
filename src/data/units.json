@@ -1,0 +1,60 @@
+[
+  {
+    "id": "cricket",
+    "cost": 10,
+    "hp": 4,
+    "speed": 110,
+    "pileDamage": 1,
+    "haul": 2,
+    "sendCooldown": 0.35,
+    "tags": ["ground"],
+    "sprite": "cricket"
+  },
+  {
+    "id": "possum",
+    "cost": 35,
+    "hp": 16,
+    "speed": 55,
+    "pileDamage": 4,
+    "haul": 6,
+    "sendCooldown": 2.5,
+    "pushbackScale": 0.35,
+    "tags": ["ground"],
+    "traits": { "playDead": { "chance": 0.25, "ignoreHits": 3, "secs": 1.5 } },
+    "sprite": "possum"
+  },
+  {
+    "id": "squirrel",
+    "cost": 20,
+    "hp": 3,
+    "speed": 240,
+    "pileDamage": 2,
+    "haul": 3,
+    "sendCooldown": 1.2,
+    "tags": ["ground"],
+    "sprite": "squirrel"
+  },
+  {
+    "id": "crow",
+    "cost": 30,
+    "hp": 6,
+    "speed": 140,
+    "pileDamage": 3,
+    "haul": 3,
+    "sendCooldown": 2,
+    "tags": ["air"],
+    "sprite": "crow"
+  },
+  {
+    "id": "rat",
+    "cost": 25,
+    "hp": 6,
+    "speed": 100,
+    "pileDamage": 1,
+    "haul": 2,
+    "sendCooldown": 2,
+    "tags": ["ground", "sapper"],
+    "traits": { "sapper": { "chewDps": 1 } },
+    "sprite": "rat"
+  }
+]

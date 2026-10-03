@@ -1,6 +1,8 @@
 # Jimothy Crickets — Implementation Plan
 
-Status: **draft for review.** Nothing here is built yet.
+Status: **in progress.** M1, M3 and the simulation half of M2 are built; most of M4 is built. See
+[§13](#13-milestones) for what's done and what's left in each milestone. The §6 proposals are used as
+working defaults until Zach confirms or changes them.
 
 This plan turns the design brief in [`README.md`](../README.md) into a build order. It covers how
 the game ships to every platform we can reasonably reach (browser, phones, tablets and desktop)
@@ -143,13 +145,21 @@ These constraints shape the engine from day one. Retrofitting them later is expe
   sprite size is authored in these units.
 - **Fit:** scale the world uniformly so the 16:9 **core playfield** always fits on screen, centered.
 - **Bleed:** level backgrounds are painted larger than 16:9 (to 2400 × 1350 logical) so wider and
-  taller screens show more scenery, never black bars. This covers:
+  taller screens show more scenery, never black bars. *Correction found while building:* 2400 wide
+  only reaches about 2.2:1 at full height. A 2560 × 1080 ultrawide shows about 2560 logical units
+  across, so painted backgrounds need about **2600 × 1350**. The placeholder backgrounds are
+  procedural and simply paint whatever is visible. This covers:
   - 21:9 ultrawide monitors
   - 19.5:9 phones
   - 16:10 laptops and the Steam Deck
   - 4:3 iPads
 - **UI** is anchored to screen edges and safe areas, not to the playfield. HUD elements therefore
   move into the bleed on wide screens and over the playfield edges on narrow ones.
+  - On a 667 × 375 phone the HUD covers about y < 190 and y > 810 of the playfield. So lanes,
+    defenses and the pile must stay inside **y 220–780**. `validate_data` enforces this band.
+- **UI technology (decided while building):** the playfield is canvas; everything you tap (HUD,
+  cards, menus) is **DOM over the canvas**. Buttons get focus rings, keyboard access, screen-reader
+  labels and crisp text for free, and Playwright can find them by role and name.
 - **Orientation: landscape only.**
   - Lanes run left to right: the troupe on the left, the pile on the right.
   - The concept art is side-view, which is how Jimothy's round body, missing neck and nub tail read
@@ -284,6 +294,8 @@ Music and sound effects get separate volume sliders.
 │  ├─ platform/                 adapters: save, audio, lifecycle, haptics, orientation
 │  ├─ data/                     units, defenses, upgrades, levels, strings (JSON)
 │  ├─ app.ts                    wiring: main loop, screen stack
+│  ├─ play.ts                   one attempt: sim + inputs + fixed-timestep accumulator + replay
+│  ├─ save.ts                   save format, migrations, SaveStore
 │  └─ main.ts                   entry point; picks platform adapters
 ├─ public/                      PWA manifest, icons, service worker
 ├─ tests/                       Vitest unit/sim tests, Playwright browser tests
@@ -364,8 +376,10 @@ interface LevelDef {
   unitsAvailable?: UnitId[];   // default: everything unlocked in the campaign
   moons: [number, number, number];   // seconds of night remaining needed for 1/2/3 moons
   intro?: { textKey: string; art?: string };
-  reference: { seed: number; inputs: SendInput[] };       // a known winning attempt (see §11)
 }
+// Built: each level's reference solution lives in src/data/references.json (keyed by level id,
+// [tick, unit, lane] tuples), written by `npm run sim -- --make-reference`. That keeps the
+// hand-written level files short and lets the tool rewrite references without touching them.
 ```
 
 **Behaviors are a small closed set of shared systems, not per-unit code**:
@@ -991,6 +1005,9 @@ a big-bang risk at the end. Each milestone has a concrete exit check that an age
 
 ### M0 — Plan sign-off
 
+**Progress:** "free and non-commercial" is in the README's settled decisions. The §14 answers are
+still open; the build uses the plan's defaults until then.
+
 - Add "free and non-commercial" to the README's **Settled decisions** table.
 - Zach reviews this document and answers the rest of §14. Accepted proposals are copied into the README's
   **Settled decisions** table, and the open questions they answer are marked resolved.
@@ -1003,6 +1020,11 @@ a big-bang risk at the end. Each milestone has a concrete exit check that an age
 - `pages` workflow deploys an empty scene to GitHub Pages.
 - **Exit:** a coloured test scene renders correctly at all five §10.3 sizes in Playwright; CI is
   green; the Pages URL is live.
+- **Progress: built**, except that the workflows haven't run on GitHub yet: the branch isn't
+  pushed, and Pages needs Settings → Pages → Source set to "GitHub Actions". Playwright checks all
+  five sizes on a real level (core fits, DPR cap, every button on screen and ≥ 44 px, no scroll) and
+  the portrait "turn sideways" card. Not built: screenshot baselines (fonts differ between this
+  machine and CI runners, so they'd need generating on CI).
 
 ### M2 — First playable lane plus platform smoke builds (README step 2)
 
@@ -1012,6 +1034,11 @@ a big-bang risk at the end. Each milestone has a concrete exit check that an age
   scene. Measure fps on a phone and on WebKitGTK; decide Tauri vs Electron for Linux (§2.3).
 - **Exit:** crickets walk, get sprinkled, and knock the pile down in the browser, in the Android APK
   and in the Linux desktop build; the fps numbers are recorded in this doc.
+- **Progress:** the browser half is built, and the sim went further than M2 asks: every unit,
+  defense and trait from §5 is in, with unit tests. **Not built: the platform smoke builds.** This
+  machine has no Java or Android SDK for the Capacitor APK. Tauri's Linux prerequisites (Rust,
+  WebKitGTK 4.1) are present, but its first build compiles several hundred crates, which is a long
+  CPU job on this iMac (see the thermal notes).
 
 ### M3 — Levels as data (README step 3)
 
@@ -1019,6 +1046,9 @@ a big-bang risk at the end. Each milestone has a concrete exit check that an age
 - Unit and defense tables; possum and broom neighbor added as data plus their traits.
 - **Exit:** a third level can be added with **no engine change**, checked by doing exactly that in
   review.
+- **Progress: built.** Area 1 has five level files; adding a level is a JSON file, one import line in
+  `src/data/content.ts` and an entry in `campaign.json`. `validate_data` checks units, defenses,
+  levels, the campaign, strings and the HUD-free band.
 
 ### M4 — Economy, send UI, soft fail; area 1 slice (README step 4)
 
@@ -1028,6 +1058,12 @@ a big-bang risk at the end. Each milestone has a concrete exit check that an age
 - **Exit:** area 1 is fully playable start to finish on the web, all of it headless-verified;
   informal playtest with at least one child and one adult. **This is the "is it fun?" checkpoint.**
   Tune before building more content.
+- **Progress:** everything above is built except the playtest. Area 1 plays start to finish, and
+  each level's reference wins headlessly with ≥ 40 % of the night left. The first balance pass
+  (`npm run tune`) shows a usable ramp: the plain bot wins 1-1 to 1-4 and fails 1-5. Its best
+  strategy differs by level: bunched crickets beat the broom on 1-3, and possum rushes win 1-4 and
+  1-5. The possum may be too strong; that's for the playtest to say. A minimal save is in (best
+  moons, recruits, settings), ahead of M6.
 
 ### M5 — Art pipeline and style lock (README step 7, started early)
 

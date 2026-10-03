@@ -7,3 +7,10 @@ concept-art/qwen/
 
 # Unpicked SDXL candidates (~650 renders); regenerate with generate_sdxl.py.
 concept-art/sdxl/_candidates/
+
+# Game build
+node_modules/
+dist/
+test-results/
+playwright-report/
+tests/e2e/__screenshots__/actual/

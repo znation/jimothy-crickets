@@ -1,0 +1,22 @@
+{
+  "1-1": {
+    "seed": 1,
+    "inputs": [[0,"cricket",0],[21,"cricket",0],[42,"cricket",0],[63,"cricket",0],[121,"cricket",0],[241,"cricket",0],[361,"cricket",0],[481,"cricket",0],[601,"cricket",0],[721,"cricket",0],[841,"cricket",0],[887,"cricket",0],[961,"cricket",0],[1065,"cricket",0],[1177,"cricket",0],[1273,"cricket",0],[1369,"cricket",0],[1465,"cricket",0],[1560,"cricket",0],[1665,"cricket",0],[1752,"cricket",0],[1848,"cricket",0],[1944,"cricket",0],[2040,"cricket",0]]
+  },
+  "1-2": {
+    "seed": 1,
+    "inputs": [[0,"cricket",0],[21,"cricket",0],[42,"cricket",0],[63,"cricket",0],[121,"cricket",0],[241,"cricket",0],[361,"cricket",0],[481,"cricket",0],[601,"cricket",0],[721,"cricket",0],[841,"cricket",0],[937,"cricket",0],[1007,"cricket",0],[1104,"cricket",0],[1200,"cricket",0],[1296,"cricket",0],[1392,"cricket",0],[1488,"cricket",0],[1607,"cricket",0],[1704,"cricket",0],[1800,"cricket",0],[1896,"cricket",0],[1990,"cricket",0],[2088,"cricket",0],[2201,"cricket",0],[2304,"cricket",0],[2400,"cricket",0],[2496,"cricket",0],[2590,"cricket",0],[2688,"cricket",0],[2801,"cricket",0],[2895,"cricket",0],[3000,"cricket",0],[3096,"cricket",0],[3190,"cricket",0],[3288,"cricket",0]]
+  },
+  "1-3": {
+    "seed": 1,
+    "inputs": [[1200,"cricket",0],[1221,"cricket",0],[1242,"cricket",0],[1263,"cricket",0],[1284,"cricket",0],[1305,"cricket",0],[1326,"cricket",0],[1347,"cricket",0],[1368,"cricket",0],[1389,"cricket",0],[1410,"cricket",0],[1431,"cricket",0],[1452,"cricket",0],[1473,"cricket",0],[1494,"cricket",0],[1515,"cricket",0],[1536,"cricket",0],[1557,"cricket",0],[1578,"cricket",0],[2880,"cricket",0],[2901,"cricket",0],[2922,"cricket",0],[2943,"cricket",0],[2964,"cricket",0],[2985,"cricket",0],[3006,"cricket",0],[3027,"cricket",0],[3048,"cricket",0],[3069,"cricket",0],[3090,"cricket",0],[3111,"cricket",0],[3132,"cricket",0],[3153,"cricket",0],[3174,"cricket",0],[3195,"cricket",0],[3216,"cricket",0],[3237,"cricket",0],[3258,"cricket",0]]
+  },
+  "1-4": {
+    "seed": 1,
+    "inputs": [[701,"possum",0],[851,"possum",0],[1001,"possum",0],[1151,"possum",0],[1301,"possum",0],[2451,"possum",0],[2601,"possum",0],[2751,"possum",0],[2901,"possum",0],[3051,"possum",0],[3961,"possum",0],[4111,"possum",0],[4261,"possum",0],[4411,"possum",0],[4561,"possum",0]]
+  },
+  "1-5": {
+    "seed": 1,
+    "inputs": [[924,"possum",0],[1074,"possum",0],[1224,"possum",0],[1374,"possum",0],[1524,"possum",0],[1674,"possum",0],[1824,"possum",0],[3185,"possum",0],[3335,"possum",0],[3485,"possum",0],[3635,"possum",0],[3785,"possum",0],[3935,"possum",0],[4085,"possum",0],[4235,"possum",0],[5493,"possum",0],[5643,"possum",0],[5793,"possum",0],[5943,"possum",0],[6093,"possum",0],[6243,"possum",0]]
+  }
+}

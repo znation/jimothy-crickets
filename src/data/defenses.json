@@ -1,0 +1,41 @@
+[
+  {
+    "id": "sprinkler",
+    "targets": ["ground"],
+    "shape": { "kind": "radius", "r": 210 },
+    "effect": { "all": true, "damage": 0.5, "rate": 1, "slow": { "factor": 0.6, "secs": 0.8 } },
+    "chewHp": 6,
+    "sprite": "sprinkler"
+  },
+  {
+    "id": "motionLight",
+    "targets": ["ground", "air"],
+    "shape": { "kind": "cone", "r": 380, "arcDeg": 70 },
+    "effect": { "all": true, "rate": 0.25, "stun": { "secs": 1.6 } },
+    "chewHp": 5,
+    "sprite": "motionLight"
+  },
+  {
+    "id": "yardDog",
+    "targets": ["ground"],
+    "shape": { "kind": "radius", "r": 150 },
+    "effect": { "damage": 6, "rate": 0.8, "windup": 0.35 },
+    "chewHp": 8,
+    "sprite": "yardDog"
+  },
+  {
+    "id": "fence",
+    "targets": [],
+    "shape": { "kind": "radius", "r": 60 },
+    "effect": { "blocks": { "hp": 12 } },
+    "sprite": "fence"
+  },
+  {
+    "id": "broomNeighbor",
+    "targets": ["ground"],
+    "shape": { "kind": "radius", "r": 260 },
+    "effect": { "damage": 1, "rate": 0.6, "windup": 0.3, "pushback": { "px": 160 } },
+    "chewHp": 8,
+    "sprite": "broomNeighbor"
+  }
+]

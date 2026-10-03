@@ -1,0 +1,29 @@
+{
+  "name": "jimothy-crickets",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A cute reverse tower defense game starring Jimothy the raccoon.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run validate && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "validate": "node tools/validate_data.ts",
+    "sim": "node tools/sim.ts",
+    "tune": "node tools/tune.ts",
+    "format:data": "node tools/format_json.ts src/data/units.json src/data/defenses.json src/data/campaign.json src/data/levels/*.json"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=23.6"
+  }
+}

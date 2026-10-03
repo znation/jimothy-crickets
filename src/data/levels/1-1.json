@@ -1,0 +1,13 @@
+{
+  "id": "1-1",
+  "area": "alley",
+  "background": "alley",
+  "tutorial": true,
+  "intro": { "textKey": "intro.1-1" },
+  "lanes": [{ "id": 0, "points": [[260, 640], [620, 610], [1000, 660], [1380, 620], [1660, 630]] }],
+  "pile": { "pos": [1760, 600], "hp": 16 },
+  "defenses": [{ "def": "sprinkler", "pos": [1050, 500] }],
+  "economy": { "startSnacks": 40, "trickle": 5 },
+  "nightLength": 150,
+  "moons": [0, 70, 100]
+}

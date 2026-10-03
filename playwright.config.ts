@@ -1,0 +1,25 @@
+import { defineConfig, devices } from "@playwright/test";
+
+// Browser tests (plan §11.4) run against the production build.
+export default defineConfig({
+  testDir: "tests/e2e",
+  timeout: 60_000,
+  fullyParallel: true,
+  reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
+  use: { baseURL: "http://127.0.0.1:4173", trace: "retain-on-failure" },
+  webServer: {
+    command: "npx vite build && npx vite preview --strictPort",
+    url: "http://127.0.0.1:4173",
+    reuseExistingServer: !process.env.CI,
+  },
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    // WebKit stands in for iOS Safari and the macOS/Linux webviews; Firefox for completeness.
+    ...(process.env.ALL_BROWSERS
+      ? [
+          { name: "webkit", use: { ...devices["Desktop Safari"] } },
+          { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+        ]
+      : []),
+  ],
+});
