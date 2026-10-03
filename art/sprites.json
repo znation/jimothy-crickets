@@ -1,0 +1,18 @@
+{
+  "comment": "In-game size of each sprite, in logical world units (the atlas stores them at 2x). height is the trimmed sprite's height; anchor is where it stands: bottom-center unless noted. flip mirrors sprites that came out facing left.",
+  "outline": { "width": 2.5, "colour": "#2a2233" },
+  "sprites": {
+    "jimothy": { "height": 150 },
+    "cricket": { "height": 62 },
+    "possum": { "height": 72 },
+    "squirrel": { "height": 80 },
+    "crow": { "height": 64 },
+    "rat": { "height": 56 },
+    "sprinkler": { "height": 72 },
+    "broomNeighbor": { "height": 170 },
+    "yardDog": { "height": 112 },
+    "fence": { "height": 110 },
+    "motionLight": { "height": 64 },
+    "pile": { "height": 300 }
+  }
+}

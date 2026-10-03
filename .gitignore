@@ -14,3 +14,7 @@ dist/
 test-results/
 playwright-report/
 tests/e2e/__screenshots__/actual/
+
+# Art pipeline: unpicked candidates and contact sheets are regenerable.
+art/raw/*/_candidates/
+art/raw/*/_sheets/

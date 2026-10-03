@@ -225,9 +225,11 @@ export function drawBroomNeighbor(ctx: Ctx, swing: number) {
   ctx.restore();
 }
 
-export function drawSprinkler(ctx: Ctx, spray: number) {
-  ellipse(ctx, 0, 6, 20, 9, "#7d858f");
-  ellipse(ctx, 0, -6, 8, 14, "#aab3bd");
+export function drawSprinkler(ctx: Ctx, spray: number, body = true) {
+  if (body) {
+    ellipse(ctx, 0, 6, 20, 9, "#7d858f");
+    ellipse(ctx, 0, -6, 8, 14, "#aab3bd");
+  }
   if (spray > 0) {
     ctx.save();
     ctx.globalAlpha = 1 - spray;

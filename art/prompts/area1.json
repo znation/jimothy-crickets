@@ -1,0 +1,118 @@
+{
+  "comment": "Area 1 (alley) sprites and background. Style: the plan's 'inked watercolour' hybrid (§8.1). Keep every full prompt within 77 CLIP tokens; generate.py refuses longer ones. Framing v1 is pass 1's (isolation words at the end); v2 puts them straight after the style, which frames sprites better.",
+  "style": "children's picture book illustration, soft watercolour fills, bold dark ink outlines",
+  "default_framing": "v2",
+  "framings": {
+    "v1": {
+      "suffix": {
+        "sprite": "single character, full body, side view facing right, isolated on plain white background",
+        "object": "single object, isolated on plain white background",
+        "background": "wide landscape, no characters, no animals, no people"
+      }
+    },
+    "v2": {
+      "prefix": {
+        "sprite": "one cute character sticker, whole body with white space around it, plain white background",
+        "object": "one object sticker, whole object with white space around it, plain white background, no scenery"
+      },
+      "suffix": {
+        "sprite": "side view facing right",
+        "object": "",
+        "background": "wide landscape, no characters, no animals, no people"
+      }
+    }
+  },
+  "assets": [
+    {
+      "name": "jimothy-009",
+      "seed": 7000,
+      "ref": "concept-art/sdxl/009-hero-portrait-cel-shaded.png",
+      "ref_scale": 0.35,
+      "prompt": "a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, no neck, smooth round rump, short stubby legs"
+    },
+    {
+      "name": "jimothy-001",
+      "seed": 7000,
+      "ref": "concept-art/sdxl/001-hero-portrait-watercolour.png",
+      "ref_scale": 0.35,
+      "prompt": "a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, no neck, smooth round rump, short stubby legs"
+    },
+    {
+      "name": "jimothy-photo",
+      "seed": 7050,
+      "ref": "concept-art/reference/jimothy-rear.jpg",
+      "ref_scale": 0.42,
+      "prompt": "a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, no neck, smooth round rump with a tiny stump, short stubby legs",
+      "seeds": 12
+    },
+    {
+      "name": "cricket",
+      "seed": 7100,
+      "prompt": "a sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, cuddly"
+    },
+    {
+      "name": "possum",
+      "seed": 7200,
+      "prompt": "a cute round chubby opossum, pale grey and white fur, white face, pink nose, small round ears, pink tail"
+    },
+    {
+      "name": "squirrel",
+      "seed": 7300,
+      "prompt": "a cute round chubby red squirrel, orange brown fur, big fluffy curled tail"
+    },
+    {
+      "name": "crow",
+      "seed": 7400,
+      "prompt": "a cute round chubby black crow flying, glossy black feathers, small orange beak, friendly eyes",
+      "framing": "v1"
+    },
+    {
+      "name": "rat",
+      "seed": 7500,
+      "prompt": "a cute round chubby grey rat, big round pink ears, pink nose, long pink tail"
+    },
+    {
+      "name": "sprinkler",
+      "seed": 7600,
+      "kind": "object",
+      "prompt": "a small round garden lawn sprinkler on the ground spraying a fan of water"
+    },
+    {
+      "name": "broomNeighbor",
+      "seed": 7700,
+      "prompt": "a bewildered old man in slippers and a blue cardigan holding a broom, surprised face"
+    },
+    {
+      "name": "yardDog",
+      "seed": 7800,
+      "prompt": "a sleepy fluffy goofy golden dog sitting, tongue out, kind droopy eyes"
+    },
+    {
+      "name": "fence",
+      "seed": 7900,
+      "kind": "object",
+      "prompt": "a short section of wooden picket fence with a little gate",
+      "framing": "v1"
+    },
+    {
+      "name": "motionLight",
+      "seed": 8000,
+      "kind": "object",
+      "prompt": "an outdoor motion sensor floodlight lamp on a small wall bracket",
+      "framing": "v1"
+    },
+    {
+      "name": "pile",
+      "seed": 8100,
+      "kind": "object",
+      "prompt": "a small heap of tied black trash bags leaning on a dented metal trash can"
+    },
+    {
+      "name": "alley",
+      "seed": 8200,
+      "kind": "background",
+      "size": [1024, 576],
+      "prompt": "high angle view of an empty paved back alley at night, a long brick wall with warm lit windows along the top, open damp ground, moss, puddles"
+    }
+  ]
+}

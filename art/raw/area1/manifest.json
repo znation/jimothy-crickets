@@ -1,0 +1,142 @@
+{
+  "jimothy-photo": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a single very round chubby tailless tanuki, charcoal grey and black fur, bandit mask, no neck, smooth round rump with a tiny stump, short stubby legs, side view facing right",
+    "ref": "concept-art/reference/jimothy-rear.jpg",
+    "ref_scale": 0.42,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 9050,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "cricket": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a sweet round cartoon cricket, soft rounded bright green body, little black dot eyes, gentle closed-mouth smile, floppy curved antennae, short stubby rounded legs, cuddly, side view facing right",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 8100,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "possum": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a cute round chubby opossum, pale grey and white fur, white face, pink nose, small round ears, pink tail, side view facing right",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 8200,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "squirrel": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a cute round chubby red squirrel, orange brown fur, big fluffy curled tail, side view facing right",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 9300,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "crow": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, a cute round chubby black crow flying, glossy black feathers, small orange beak, friendly eyes, single character, full body, side view facing right, isolated on plain white background",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 7400,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "rat": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a cute round chubby grey rat, big round pink ears, pink nose, long pink tail, side view facing right",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 9500,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "broomNeighbor": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a bewildered old man in slippers and a blue cardigan holding a broom, surprised face, side view facing right",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 7700,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "yardDog": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a sleepy fluffy goofy golden dog sitting, tongue out, kind droopy eyes, side view facing right",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 9800,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "motionLight": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, an outdoor motion sensor floodlight lamp on a small wall bracket, single object, isolated on plain white background",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 11000,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "pile": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one object sticker, whole object with white space around it, plain white background, no scenery, a small heap of tied black trash bags leaning on a dented metal trash can",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "seed": 11100,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  }
+}

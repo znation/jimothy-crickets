@@ -13,11 +13,11 @@ jobs:
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: git lfs pull --include="public/**,platforms/**"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 24, cache: npm }
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with: { distribution: temurin, java-version: 21 }
       - run: npm ci
       - run: npm ci
@@ -26,7 +26,7 @@ jobs:
         working-directory: platforms/capacitor
       - run: ./gradlew assembleDebug
         working-directory: platforms/capacitor/android
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: jimothy-crickets-android-debug
           path: platforms/capacitor/android/app/build/outputs/apk/debug/*.apk
@@ -34,9 +34,9 @@ jobs:
   ios:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: git lfs pull --include="public/**,platforms/**"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 24, cache: npm }
       - run: npm ci
       - run: npm ci
@@ -54,9 +54,9 @@ jobs:
         os: [ubuntu-22.04, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: git lfs pull --include="public/**,platforms/**"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 24, cache: npm }
       - uses: dtolnay/rust-toolchain@stable
       - if: runner.os == 'Linux'
@@ -66,7 +66,7 @@ jobs:
         working-directory: platforms/tauri
       - run: npx tauri build
         working-directory: platforms/tauri
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: jimothy-crickets-${{ runner.os }}
           path: |

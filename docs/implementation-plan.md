@@ -1094,11 +1094,31 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
 - Produce area 1's assets: cricket, possum, squirrel, sprinkler, broom neighbor, area-1 pile
   stages, alley background, Jimothy commander poses, core UI icons.
 - **Exit:** area 1 runs with real art at all §10.3 sizes. Zach approves the look.
-- **Progress: not started.** It needs Zach to pick the anchor images, and it needs overnight CPU
-  generation runs. Meanwhile, all art is drawn in code (`src/render/sprites.ts`) in the target
-  style: chunky ink outlines and soft fills. The placeholder doubles as a readability baseline for
-  the real sprites. App icons and splash screens are rendered from the same code
-  (`tools/make_icons.ts`).
+- **Progress:** the pipeline is built and area 1's characters ship with **provisional** picks.
+  Zach still needs to choose the anchors (the style guide lists Claude's picks and why).
+  - **Pipeline** (`art/README.md`):
+    - `tools/asset_gen/generate.py`: prompt sets as data, candidates with prompt hashes and
+      sidecars, contact sheets, named framings so earlier picks stay reproducible
+    - `tools/asset_gen/matte.py`: BiRefNet-lite, MIT; drops small islands
+    - `tools/build_atlas.ts`: trim, scale to 2×, a uniform ink outline, pack, WebP; in Chromium,
+      with no image libraries
+    - The game loads `public/atlas/area1.*` and animates one pose per sprite in code. Anything
+      missing falls back to the vector art.
+  - **Spikes** (about 130 renders, two passes, 2026-10-03):
+    - **Matting works.** BiRefNet-lite strips ground, leaves and branches cleanly. A threshold is
+      no longer needed.
+    - **Framing words must follow the style lead**, or SDXL paints scenes and crops subjects.
+    - **IP-Adapter anchors didn't stop Jimothy's tail.** Both concept anchors (`001`, `009`) have
+      tails themselves. The rear photo at 0.42 plus 12 seeds gave one clean pick. Expect Krita
+      touch-ups for his model sheet.
+    - **Wide 1024 × 576 renders are clean**, but SDXL-Turbo kept drawing street-level perspective
+      even when asked for a high angle. That doesn't fit a flat lane layout. **Backgrounds stay
+      procedural for now.** A painted version needs another approach: e.g. a skyline strip for
+      the top band plus a ground texture, or img2img over the procedural layout.
+  - **Shipped from the model:** Jimothy, all five friends, the broom neighbor, the yard dog, the
+    motion light, the pile. **Still drawn in code:** the sprinkler (it always came out as a garden
+    scene), the fence (matting lost its rails), and backgrounds.
+  - **Frame times are unchanged** (the atlas is one `drawImage` per sprite). The atlas is 200 KB.
 
 ### M6 — Campaign wrapper and saves (README step 5); mobile beta
 

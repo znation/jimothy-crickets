@@ -4,6 +4,7 @@
 import { directionAt, pointAt } from "../sim/lane.ts";
 import { TICK_RATE, type SimState } from "../sim/sim.ts";
 import type { SimEvent, UnitId, Vec } from "../sim/types.ts";
+import type { Frame } from "./atlas.ts";
 import {
   drawBroomNeighbor,
   drawFence,
@@ -15,6 +16,7 @@ import {
   INK,
   pileStage,
 } from "./sprites.ts";
+import { drawFrame, frameHeight, type Atlas } from "./atlas.ts";
 import { UnitSprites } from "./unitSprites.ts";
 import { BLEED_H, BLEED_W, BLEED_X, BLEED_Y, type View } from "./view.ts";
 
@@ -46,6 +48,13 @@ export class SceneRenderer {
   private cheer = 0;
   private tmp: Vec = [0, 0];
   private sprites = new UnitSprites();
+  /** Painted sprites from tools/build_atlas.ts; null means the vector placeholders. */
+  private atlas: Atlas | null = null;
+
+  setAtlas(atlas: Atlas | null) {
+    this.atlas = atlas;
+    this.bgKey = "";
+  }
   reducedMotion = false;
   selectedLane = -1;
   highlightLanes = false;
@@ -109,6 +118,13 @@ export class SceneRenderer {
       ctx.save();
       ctx.translate(d.pos[0], d.pos[1]);
       if (d.disabled && !d.def.effect.blocks) ctx.globalAlpha = 0.45;
+      const art = this.atlas?.frames[d.def.id];
+      if (art) {
+        this.defenseOverlay(d, age);
+        this.drawDefenseArt(d.def.id, art, age, t, d.disabled);
+        ctx.restore();
+        continue;
+      }
       switch (d.def.id) {
         case "sprinkler":
           drawSprinkler(ctx, age < 0.6 ? age / 0.6 : 0);
@@ -138,7 +154,13 @@ export class SceneRenderer {
     this.pileShake = Math.max(0, this.pileShake - dt);
     ctx.save();
     ctx.translate(st.level.pile.pos[0], st.level.pile.pos[1]);
-    drawPile(ctx, pileStage(st.pileHp, st.level.pile.hp), this.pileShake);
+    const stage = pileStage(st.pileHp, st.level.pile.hp);
+    const pileArt = this.atlas?.frames.pile;
+    if (pileArt) {
+      // the painted pile shrinks toward its base as it's carried off
+      ctx.translate(Math.sin(this.pileShake * 60) * this.pileShake * 10, 70);
+      if (stage > 0) drawFrame(ctx, this.atlas!, pileArt, 1, 1, 0.3 + (0.7 * stage) / 5);
+    } else drawPile(ctx, stage, this.pileShake);
     ctx.restore();
 
     // units, back to front
@@ -162,7 +184,9 @@ export class SceneRenderer {
       }
       ctx.translate(x, y - (air ? FLY_HEIGHT : 0));
       const moving = u.stunTicks === 0 && u.flopTicks === 0 && u.chewing < 0;
-      this.sprites.draw(ctx, k, UNIT_SCALE, u.def.id, moving ? simT : 0, u.uid * 1.7, { flopped: u.flopTicks > 0, chewing: u.chewing >= 0 });
+      const art = this.atlas?.frames[u.def.id];
+      if (art) this.drawUnitArt(u.def.id, art, moving ? simT : 0, u.uid * 1.7, u.flopTicks > 0, u.chewing >= 0);
+      else this.sprites.draw(ctx, k, UNIT_SCALE, u.def.id, moving ? simT : 0, u.uid * 1.7, { flopped: u.flopTicks > 0, chewing: u.chewing >= 0 });
       ctx.scale(UNIT_SCALE, UNIT_SCALE);
       if (u.stunTicks > 0) this.drawStars(t);
       ctx.restore();
@@ -185,11 +209,115 @@ export class SceneRenderer {
     // Jimothy in the staging area, between the lanes
     this.cheer = Math.max(0, this.cheer - dt);
     ctx.save();
-    ctx.translate(JIMOTHY_X, stagingY(st) - 40);
-    drawJimothy(ctx, t, st.outcome?.kind === "nightEnded" ? "sleepy" : this.cheer > 0 || st.outcome?.kind === "won" ? "cheer" : "idle");
+    const mood = st.outcome?.kind === "nightEnded" ? "sleepy" : this.cheer > 0 || st.outcome?.kind === "won" ? "cheer" : "idle";
+    const jim = this.atlas?.frames.jimothy;
+    if (jim) {
+      ctx.translate(JIMOTHY_X, stagingY(st) + 22);
+      const hop = mood === "cheer" ? -Math.abs(Math.sin(t * 9)) * 22 : 0;
+      const breathe = 1 + Math.sin(t * (mood === "sleepy" ? 1.2 : 2.4)) * 0.025;
+      ctx.translate(0, hop);
+      if (mood === "sleepy") ctx.rotate(-0.12);
+      drawFrame(ctx, this.atlas!, jim, 1 / breathe, breathe);
+    } else {
+      ctx.translate(JIMOTHY_X, stagingY(st) - 40);
+      drawJimothy(ctx, t, mood);
+    }
     ctx.restore();
 
     this.drawEffects(t, dt);
+  }
+
+  /**
+   * One painted pose per unit, animated in code (plan §8.4): hops, waddles, flaps and squash and
+   * stretch. The origin is the unit's position on the lane; sprites stand on it.
+   */
+  private drawUnitArt(id: UnitId, f: Frame, t: number, phase: number, flopped: boolean, chewing: boolean) {
+    const ctx = this.view.ctx;
+    const h = frameHeight(f);
+    ctx.translate(0, 18); // feet on the path
+    let lift = 0;
+    let rot = 0;
+    let sy = 1;
+    switch (id) {
+      case "cricket": {
+        const a = t * 11 + phase;
+        lift = Math.abs(Math.sin(a)) * 10;
+        sy = 1 + Math.sin(2 * a) * 0.07;
+        break;
+      }
+      case "possum":
+        rot = Math.sin(t * 5 + phase) * 0.06;
+        lift = Math.abs(Math.sin(t * 5 + phase)) * 3;
+        break;
+      case "squirrel":
+        lift = Math.abs(Math.sin(t * 14 + phase)) * 12;
+        rot = -0.08;
+        break;
+      case "crow":
+        lift = Math.sin(t * 8 + phase) * 6;
+        sy = 1 + Math.sin(t * 16 + phase) * 0.08;
+        break;
+      case "rat":
+        lift = Math.abs(Math.sin(t * 16 + phase)) * 3;
+        if (chewing) rot = Math.sin(performance.now() / 25) * 0.06;
+        break;
+    }
+    if (this.reducedMotion) sy = 1;
+    ctx.translate(0, -lift);
+    if (flopped) {
+      // playing dead: belly-up, very convincingly asleep
+      ctx.translate(0, -h / 2);
+      ctx.rotate(Math.PI);
+      ctx.translate(0, -h / 2);
+    }
+    ctx.rotate(rot);
+    drawFrame(ctx, this.atlas!, f, 1 / sy, sy);
+  }
+
+  private drawDefenseArt(id: string, f: Frame, age: number, t: number, disabled: boolean) {
+    const ctx = this.view.ctx;
+    const h = frameHeight(f);
+    ctx.translate(0, h / 2); // centered on the defense's position
+    switch (id) {
+      case "sprinkler": {
+        drawFrame(ctx, this.atlas!, f);
+        if (age < 0.6 && !disabled) {
+          ctx.translate(0, -h * 0.7);
+          drawSprinkler(ctx, age / 0.6, false);
+        }
+        break;
+      }
+      case "broomNeighbor": {
+        const swing = age < 0.5 ? Math.sin((age / 0.5) * Math.PI) : 0;
+        ctx.rotate(-swing * 0.12);
+        drawFrame(ctx, this.atlas!, f);
+        break;
+      }
+      case "yardDog": {
+        const lunge = age < 0.3 ? 1 - age / 0.3 : 0;
+        const breathe = 1 + Math.sin(t * 2) * 0.02;
+        ctx.translate(lunge * 16, 0);
+        drawFrame(ctx, this.atlas!, f, 1 / breathe, breathe);
+        break;
+      }
+      case "fence":
+        if (disabled) {
+          ctx.globalAlpha = 0.6;
+          ctx.rotate(1.2);
+        }
+        drawFrame(ctx, this.atlas!, f);
+        break;
+      default:
+        drawFrame(ctx, this.atlas!, f);
+    }
+  }
+
+  /** Effects that sit on top of a defense whatever its art (the motion light's beam). */
+  private defenseOverlay(d: SimState["defenses"][number], age: number) {
+    if (d.def.id === "motionLight" && age < 1.2 && !d.disabled) {
+      const shape = d.def.shape as { r: number; arcDeg?: number };
+      this.drawCone(d.facingDeg, shape.r, shape.arcDeg ?? 60, 1 - age / 1.2);
+    }
   }
 
   unitPos(st: SimState, lane: number, s: number, jitter: number, air: boolean): Vec {
@@ -273,7 +401,11 @@ export class SceneRenderer {
         const hop = this.reducedMotion ? 0 : k;
         ctx.translate(e.x + e.dir! * hop * 120, e.y - Math.sin(hop * Math.PI) * 90 - hop * 30);
         ctx.rotate(e.dir! * hop * 0.6);
-        this.sprites.draw(ctx, this.view.scale * this.view.dpr, UNIT_SCALE, e.unit, t, 0, {});
+        const art = this.atlas?.frames[e.unit];
+        if (art) {
+          ctx.translate(0, frameHeight(art) / 2);
+          drawFrame(ctx, this.atlas!, art);
+        } else this.sprites.draw(ctx, this.view.scale * this.view.dpr, UNIT_SCALE, e.unit, t, 0, {});
       } else if (e.kind === "text") {
         ctx.font = "bold 44px ui-rounded, 'Arial Rounded MT Bold', system-ui, sans-serif";
         ctx.textAlign = "center";
@@ -318,7 +450,7 @@ export class SceneRenderer {
       this.bg.width = v.canvas.width;
       this.bg.height = v.canvas.height;
       const ctx = this.bg.getContext("2d")!;
-      paintBackground(ctx, v, st);
+      paintBackground(ctx, v, st, this.atlas?.backgrounds[st.level.area] ?? null);
       this.bgKey = key;
     }
     v.ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -333,7 +465,7 @@ export function stagingY(st: SimState): number {
 }
 
 /** Paint the static layer. Decorations are placed from a PRNG seeded by the level id. */
-function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState) {
+function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState, painted: HTMLImageElement | null) {
   let seed = [...st.level.id].reduce((a, c) => a * 31 + c.charCodeAt(0), 7);
   const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
 
@@ -368,6 +500,9 @@ function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState) {
   ctx.globalAlpha = 1;
 
   paintScenery(ctx, st.level.area, { x0, y0, W, H, horizon }, rnd);
+  // A painted background covers the bleed area; the procedural scenery shows only beyond it
+  // (ultrawide extremes). Lanes, ranges and the staging box are drawn over it, as §8.3 plans.
+  if (painted) ctx.drawImage(painted, -BLEED_X, -BLEED_Y, BLEED_W, BLEED_H);
 
   // defense ranges, faint, so players can read the layout
   for (const d of st.defenses) {
