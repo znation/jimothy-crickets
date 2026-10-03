@@ -1,0 +1,77 @@
+name: platforms
+
+# Smoke builds of the native shells (plan §2, M2): an Android debug APK, an iOS simulator build,
+# and Tauri desktop bundles for Linux, Windows and macOS. Unsigned; for testing, not stores.
+# Run from the Actions tab, or by pushing a v* tag.
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: git lfs pull --include="public/**,platforms/**"
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - run: npm ci
+      - run: npm ci
+        working-directory: platforms/capacitor
+      - run: npm run sync
+        working-directory: platforms/capacitor
+      - run: ./gradlew assembleDebug
+        working-directory: platforms/capacitor/android
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jimothy-crickets-android-debug
+          path: platforms/capacitor/android/app/build/outputs/apk/debug/*.apk
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: git lfs pull --include="public/**,platforms/**"
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci
+      - run: npm ci
+        working-directory: platforms/capacitor
+      - run: npm run sync
+        working-directory: platforms/capacitor
+      - name: Build for the simulator (unsigned)
+        working-directory: platforms/capacitor/ios/App
+        run: xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination "generic/platform=iOS Simulator" CODE_SIGNING_ALLOWED=NO build
+
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: git lfs pull --include="public/**,platforms/**"
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - uses: dtolnay/rust-toolchain@stable
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev librsvg2-dev patchelf libayatana-appindicator3-dev
+      - run: npm ci
+      - run: npm ci
+        working-directory: platforms/tauri
+      - run: npx tauri build
+        working-directory: platforms/tauri
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jimothy-crickets-${{ runner.os }}
+          path: |
+            platforms/tauri/src-tauri/target/release/bundle/**/*.deb
+            platforms/tauri/src-tauri/target/release/bundle/**/*.AppImage
+            platforms/tauri/src-tauri/target/release/bundle/**/*.msi
+            platforms/tauri/src-tauri/target/release/bundle/**/*.exe
+            platforms/tauri/src-tauri/target/release/bundle/**/*.dmg

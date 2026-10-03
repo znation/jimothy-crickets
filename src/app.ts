@@ -14,6 +14,8 @@ import { installNavigation } from "./ui/gamepad.ts";
 import { LevelScreen, MapScreen, TitleScreen, type Screen } from "./ui/screens.ts";
 
 const MAX_FRAME_GAP = 0.25; // s; a longer gap (tab switch, breakpoint) is not simulated
+const SLOW_FRAME = 1 / 52; // s; a median frame slower than this lowers the canvas resolution
+const SAMPLE_FRAMES = 90;
 
 export class App {
   readonly view: View;
@@ -25,6 +27,7 @@ export class App {
   private raf = 0;
   private last = 0;
   private debug: DebugOverlay | null = null;
+  private frameSamples: number[] = [];
 
   readonly platform: Platform;
   readonly save: SaveStore;
@@ -39,7 +42,10 @@ export class App {
     this.view = new View(canvas);
     this.scene = new SceneRenderer(this.view);
     this.applySettings();
-    if (params.has("debug")) this.debug = new DebugOverlay(ui.parentElement!);
+    if (params.has("debug")) {
+      this.debug = new DebugOverlay(ui.parentElement!);
+      this.debug.dpr = () => this.view.dpr;
+    }
 
     new ResizeObserver(() => {
       this.view.resize();
@@ -66,6 +72,7 @@ export class App {
   }
 
   start() {
+    if (this.params.has("stress")) return this.stress();
     const levelId = this.params.get("level");
     const level = levelId ? levelById(levelId) : undefined;
     if (level) {
@@ -113,6 +120,17 @@ export class App {
     return UNIT_IDS.filter((u) => have.has(u));
   }
 
+  /**
+   * ?stress (plan §11.5): the busiest level with endless snacks and a bot sending everyone it can,
+   * so the swarm sits at the unit cap on all three lanes. Used for frame-time measurements.
+   */
+  private stress() {
+    const base = levelById("4-5")!;
+    const level = { ...base, economy: { startSnacks: 1e9, trickle: 0 }, nightLength: 3600, pile: { ...base.pile, hp: 1e9 } };
+    const session = new LevelSession(level, { seed: 1, available: [...UNIT_IDS], autoplay: bot({ weights: { cricket: 4, possum: 1, squirrel: 1, crow: 1, rat: 1 } }) });
+    this.show(new LevelScreen(this, session, { skipIntro: true }));
+  }
+
   applySettings() {
     const s = this.save.data.settings;
     const reduce = s.reducedMotion || matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -142,8 +160,26 @@ export class App {
     this.scene.draw(session.st, alpha, t, dt);
     this.screen?.frame?.(dt, t);
     this.debug?.frame(dt, session);
+    if (this.screen?.session && !session.frozen && dt > 0) this.adaptResolution(dt);
     if (this.screen?.animating?.() ?? true) this.raf = requestAnimationFrame(this.frame);
   };
+
+  /**
+   * Plan §11.5: if the device can't keep up, render fewer pixels. Steps the backing-store density
+   * down (2 → 1.5 → 1) while the median frame is slow. Software canvases (WebKitGTK on some Linux
+   * setups) are fill-rate bound, so this is the lever that matters.
+   */
+  private adaptResolution(dt: number) {
+    const s = this.frameSamples;
+    s.push(dt);
+    if (s.length < SAMPLE_FRAMES) return;
+    const median = [...s].sort((a, b) => a - b)[s.length >> 1]!;
+    s.length = 0;
+    if (median > SLOW_FRAME && this.view.dpr > 1) {
+      this.view.maxDpr = Math.max(1, this.view.dpr - 0.5);
+      this.view.resize();
+    }
+  }
 
   /** Title and map screens show the first level playing itself behind them. */
   private attractSession(dt: number): LevelSession {

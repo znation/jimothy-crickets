@@ -45,6 +45,7 @@ export class TitleScreen implements Screen {
         h("h1", null, "Jimothy ", h("span", null, "Crickets")),
         h("p.tagline", null, t("title.tagline")),
         this.play,
+        app.platform.quit ? h("button.big", { onclick: () => app.platform.quit!() }, t("title.quit")) : null,
       ),
     );
   }
@@ -307,6 +308,10 @@ export class LevelScreen implements Screen {
     session.onEvents((events) => {
       app.scene.onEvents(st, events);
       app.audio.onEvents(events, (i) => st.defenses[i]!.def.id);
+      for (const e of events) {
+        if (e.type === "unitSent" && !session.replaying) app.platform.haptics?.tap();
+        else if (e.type === "levelWon") app.platform.haptics?.bump();
+      }
       for (const e of events) {
         if (e.type === "unitSent" && this.tutorialStep === 1) this.advanceTutorial();
         if (e.type === "levelWon" || e.type === "nightEnded") this.endTimer = 1.4;

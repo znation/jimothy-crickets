@@ -1,14 +1,19 @@
 // Entry point: pick the platform adapter, load the save, start the app.
 
 import { App } from "./app.ts";
+import { capacitorGlobal, capacitorPlatform } from "./platform/capacitor.ts";
+import { tauriGlobal, tauriPlatform } from "./platform/tauri.ts";
 import { registerServiceWorker, webPlatform } from "./platform/web.ts";
 import type { Platform } from "./platform/types.ts";
 import { SaveStore } from "./save.ts";
 import "./ui/style.css";
 
 function pickPlatform(): Platform {
-  // Capacitor (window.Capacitor) and Tauri (window.__TAURI__) adapters arrive with their shells.
-  registerServiceWorker();
+  const cap = capacitorGlobal();
+  if (cap) return capacitorPlatform(cap);
+  const tauri = tauriGlobal();
+  if (tauri) return tauriPlatform(tauri);
+  registerServiceWorker(); // offline play for the web build only; native shells bundle everything
   return webPlatform();
 }
 

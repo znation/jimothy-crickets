@@ -176,15 +176,21 @@ Design constraints that follow from this:
 ## Current status
 
 Being built. [`docs/implementation-plan.md`](docs/implementation-plan.md) is the build plan, and its
-milestone section tracks progress. Built so far:
+milestone section tracks progress. The whole campaign is playable in the browser:
 
-- the TypeScript + canvas scaffold, fixed-timestep loop, screen fit with bleed, pointer and keyboard
-  input, auto-pause (plan M1)
-- the deterministic simulation with every unit, defense and trait from the tables below, a headless
-  level runner, and reference solutions checked in CI (M2, M3)
-- area 1 (levels 1-1 to 1-5) as data, with the in-level economy, unit bar, press-and-hold sending,
-  night timer, moons, soft "night ends" card, retry and a 1-1 tutorial (most of M4)
-- placeholder art, drawn in code; the CI and GitHub Pages workflows
+- **20 levels in 4 areas** (alley, back yards, cul-de-sac, strip mall), one to three lanes, all five
+  friends and all five defenses. Every level has a stored winning solution that CI replays, and a
+  difficulty-curve check keeps each area's ramp in order.
+- **The full loop:** in-level snacks, unit bar with press-and-hold, lane buttons, night timer,
+  moons, the soft "night ends" card, recruits, acorns, the upgrade shop, saves with an
+  export/import code, settings, a tutorial, and first-time pictures of new defenses and friends.
+- **Every input:** touch, mouse, keyboard (1–5, Q/W/E, arrows, Esc) and gamepad (Steam Deck).
+- **Sound:** synthesized effects and a small music loop per area; no audio files yet.
+- **Offline:** installable as a PWA; a service worker precaches the game.
+- **Native shells:** a Tauri desktop app (built here: a 1.6 MB Linux `.deb`) and Capacitor Android
+  and iOS projects. A GitHub workflow builds all of them; Android and iOS can't be built on this
+  machine.
+- **Placeholder art**, drawn in code. Real art is milestone M5 and needs Zach to pick the style.
 
 Where the open questions below needed an answer to build anything, the build uses the plan's
 proposed answers (§6 of the plan) as working defaults. They stay open until Zach confirms them.
@@ -193,17 +199,23 @@ proposed answers (§6 of the plan) as working defaults. They stay open until Zac
 
 ```bash
 npm install
-npm run dev                                  # play at http://127.0.0.1:5173
-npm test                                     # sim + data unit tests
+npm run dev                                     # play at http://127.0.0.1:5173
+npm test                                        # sim, data and save unit tests
 npm run sim -- --level 1-3 --replay reference   # headless run, JSON out
-npm run sim -- --all --report                # every level: reference + bot
-npm run test:e2e                             # Playwright browser tests
-npm run build                                # static site in dist/
+npm run sim -- --all --report                   # every level: reference + bot
+npm run sim -- --all --curve                    # difficulty ramp per area
+npm run tune                                    # balance table: plain bot vs. best strategy
+node tools/lanes.ts 3-4                         # which defenses cover which lane
+npm run test:e2e                                # Playwright browser tests
+npm run build                                   # static site in dist/
+node tools/make_icons.ts                        # re-render app icons and splash screens
 ```
 
 Debug URL parameters: `?level=1-3` jumps into a level, `&replay=reference` plays its stored
-solution, `&speed=8` runs fast, `&skipIntro`, `?unlock=all` opens every level on the map, and
-`?debug` shows frame timing.
+solution, `&speed=8` runs fast, `&skipIntro`, `?unlock=all` opens every level on the map,
+`?stress` runs a full swarm for performance checks, and `?debug` shows frame timing.
+
+Native shells live in `platforms/` with their own `package.json`; see the plan's §2.
 
 Rough order of work:
 

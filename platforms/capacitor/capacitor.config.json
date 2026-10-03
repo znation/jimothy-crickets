@@ -1,0 +1,8 @@
+{
+  "appId": "com.znation.jimothycrickets",
+  "appName": "Jimothy Crickets",
+  "webDir": "../../dist",
+  "backgroundColor": "#1a2147",
+  "android": { "allowMixedContent": false },
+  "ios": { "contentInset": "never" }
+}

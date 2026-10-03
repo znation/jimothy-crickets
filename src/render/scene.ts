@@ -11,11 +11,11 @@ import {
   drawMotionLight,
   drawPile,
   drawSprinkler,
-  drawUnit,
   drawYardDog,
   INK,
   pileStage,
 } from "./sprites.ts";
+import { UnitSprites } from "./unitSprites.ts";
 import { BLEED_H, BLEED_W, BLEED_X, BLEED_Y, type View } from "./view.ts";
 
 const LANE_WIDTH = 120;
@@ -45,6 +45,7 @@ export class SceneRenderer {
   private pileShake = 0;
   private cheer = 0;
   private tmp: Vec = [0, 0];
+  private sprites = new UnitSprites();
   reducedMotion = false;
   selectedLane = -1;
   highlightLanes = false;
@@ -100,6 +101,7 @@ export class SceneRenderer {
     this.view.worldTransform();
 
     const simT = (st.tick + alpha) / TICK_RATE;
+    const k = this.view.scale * this.view.dpr; // device px per world unit
     if (this.selectedLane >= 0 && this.highlightLanes) this.drawLaneHighlight(st, this.selectedLane, t);
 
     for (const d of st.defenses) {
@@ -147,6 +149,7 @@ export class SceneRenderer {
       return { u, x, y, air };
     });
     order.sort((a, b) => a.y - b.y);
+    const drops = new Path2D();
     for (const { u, x, y, air } of order) {
       ctx.save();
       if (air) {
@@ -158,22 +161,26 @@ export class SceneRenderer {
         ctx.globalAlpha = 1;
       }
       ctx.translate(x, y - (air ? FLY_HEIGHT : 0));
-      ctx.scale(UNIT_SCALE, UNIT_SCALE);
       const moving = u.stunTicks === 0 && u.flopTicks === 0 && u.chewing < 0;
-      drawUnit(ctx, u.def.id, moving ? simT : 0, u.uid * 1.7, { flopped: u.flopTicks > 0, chewing: u.chewing >= 0 });
-      if (u.slowTicks > 0) {
-        ctx.globalAlpha = 0.8;
-        for (let i = 0; i < 3; i++) {
-          const k = (t * 2 + i / 3) % 1;
-          ctx.beginPath();
-          ctx.arc(-14 + i * 14, -26 + k * 30, 3.5, 0, Math.PI * 2);
-          ctx.fillStyle = "#8fd3ff";
-          ctx.fill();
-        }
-      }
+      this.sprites.draw(ctx, k, UNIT_SCALE, u.def.id, moving ? simT : 0, u.uid * 1.7, { flopped: u.flopTicks > 0, chewing: u.chewing >= 0 });
+      ctx.scale(UNIT_SCALE, UNIT_SCALE);
       if (u.stunTicks > 0) this.drawStars(t);
       ctx.restore();
+      if (u.slowTicks > 0) {
+        // water drops on soaked units, batched into one path for all of them
+        const top = y - (air ? FLY_HEIGHT : 0);
+        for (let i = 0; i < 3; i++) {
+          const q = (t * 2 + i / 3) % 1;
+          drops.moveTo(x - 14 + i * 14 + 3.5, top - 26 + q * 30);
+          drops.arc(x - 14 + i * 14, top - 26 + q * 30, 3.5, 0, Math.PI * 2);
+        }
+      }
     }
+    ctx.save();
+    ctx.globalAlpha = 0.8;
+    ctx.fillStyle = "#8fd3ff";
+    ctx.fill(drops);
+    ctx.restore();
 
     // Jimothy in the staging area, between the lanes
     this.cheer = Math.max(0, this.cheer - dt);
@@ -191,6 +198,28 @@ export class SceneRenderer {
     const [dx, dy] = directionAt(l, s);
     const off = jitter * LANE_WIDTH * 0.28;
     return [x - dy * off, y + dx * off - (air ? FLY_HEIGHT : 0)];
+  }
+
+  private mark: HTMLCanvasElement | null = null;
+  private markK = 0;
+
+  private startleMark(): HTMLCanvasElement {
+    const k = this.view.scale * this.view.dpr;
+    if (this.mark && this.markK === k) return this.mark;
+    const c = (this.mark ??= document.createElement("canvas"));
+    this.markK = k;
+    c.width = Math.ceil(40 * k);
+    c.height = Math.ceil(48 * k);
+    const m = c.getContext("2d")!;
+    m.setTransform(k, 0, 0, k, 20 * k, 40 * k);
+    m.font = "bold 36px ui-rounded, 'Arial Rounded MT Bold', system-ui, sans-serif";
+    m.textAlign = "center";
+    m.lineWidth = 6;
+    m.strokeStyle = INK;
+    m.strokeText("!", 0, 0);
+    m.fillStyle = "#fff";
+    m.fillText("!", 0, 0);
+    return c;
   }
 
   private drawStars(t: number) {
@@ -244,8 +273,7 @@ export class SceneRenderer {
         const hop = this.reducedMotion ? 0 : k;
         ctx.translate(e.x + e.dir! * hop * 120, e.y - Math.sin(hop * Math.PI) * 90 - hop * 30);
         ctx.rotate(e.dir! * hop * 0.6);
-        ctx.scale(UNIT_SCALE, UNIT_SCALE);
-        drawUnit(ctx, e.unit, t, 0);
+        this.sprites.draw(ctx, this.view.scale * this.view.dpr, UNIT_SCALE, e.unit, t, 0, {});
       } else if (e.kind === "text") {
         ctx.font = "bold 44px ui-rounded, 'Arial Rounded MT Bold', system-ui, sans-serif";
         ctx.textAlign = "center";
@@ -255,13 +283,9 @@ export class SceneRenderer {
         ctx.fillStyle = "#ffe08a";
         ctx.fillText(e.text!, e.x, e.y - k * 50);
       } else if (e.kind === "startle") {
-        ctx.font = "bold 36px ui-rounded, 'Arial Rounded MT Bold', system-ui, sans-serif";
-        ctx.textAlign = "center";
-        ctx.lineWidth = 6;
-        ctx.strokeStyle = INK;
-        ctx.strokeText("!", e.x, e.y - k * 14);
-        ctx.fillStyle = "#fff";
-        ctx.fillText("!", e.x, e.y - k * 14);
+        // drawn once and blitted: text rendering per mark is slow in WebKit during big swarms
+        const mark = this.startleMark();
+        ctx.drawImage(mark, e.x - 20, e.y - k * 14 - 40, 40, 48);
       } else if (e.kind === "confetti") {
         const x = e.x + e.vx! * e.age;
         const y = e.y + e.vy! * e.age + 700 * e.age * e.age; // a little gravity

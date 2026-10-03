@@ -9,6 +9,8 @@ export class DebugOverlay {
   private time = 0;
   private worst = 0;
 
+  dpr: () => number = () => window.devicePixelRatio;
+
   constructor(parent: HTMLElement) {
     parent.append(this.el);
   }
@@ -21,7 +23,7 @@ export class DebugOverlay {
     const st = s.st;
     this.el.textContent =
       `${(this.frames / this.time).toFixed(0)} fps  worst ${(this.worst * 1000).toFixed(1)} ms\n` +
-      `tick ${st.tick}  units ${st.units.length}  sent ${st.stats.sent}  speed ${s.speed}×`;
+      `tick ${st.tick}  units ${st.units.length}  sent ${st.stats.sent}  speed ${s.speed}×  dpr ${this.dpr()}`;
     this.frames = 0;
     this.time = 0;
     this.worst = 0;

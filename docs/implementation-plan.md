@@ -1,8 +1,10 @@
 # Jimothy Crickets — Implementation Plan
 
-Status: **in progress.** M1, M3 and the simulation half of M2 are built; most of M4 is built. See
-[§13](#13-milestones) for what's done and what's left in each milestone. The §6 proposals are used as
-working defaults until Zach confirms or changes them.
+Status: **in progress.** The whole campaign is playable on the web with placeholder art: M1, M3
+and M7 are built, and M2, M4, M6 and M8 are built except for the parts that need real devices,
+store accounts or a playtest. M5 (real art) hasn't started; it needs Zach to pick the style. See
+[§13](#13-milestones) for what's done and what's left in each milestone. The §6 proposals are used
+as working defaults until Zach confirms or changes them.
 
 This plan turns the design brief in [`README.md`](../README.md) into a build order. It covers how
 the game ships to every platform we can reasonably reach (browser, phones, tablets and desktop)
@@ -1034,11 +1036,26 @@ still open; the build uses the plan's defaults until then.
   scene. Measure fps on a phone and on WebKitGTK; decide Tauri vs Electron for Linux (§2.3).
 - **Exit:** crickets walk, get sprinkled, and knock the pile down in the browser, in the Android APK
   and in the Linux desktop build; the fps numbers are recorded in this doc.
-- **Progress:** the browser half is built, and the sim went further than M2 asks: every unit,
-  defense and trait from §5 is in, with unit tests. **Not built: the platform smoke builds.** This
-  machine has no Java or Android SDK for the Capacitor APK. Tauri's Linux prerequisites (Rust,
-  WebKitGTK 4.1) are present, but its first build compiles several hundred crates, which is a long
-  CPU job on this iMac (see the thermal notes).
+- **Progress:** built, apart from measuring on real devices.
+  - **Tauri:** `platforms/tauri` builds here (`npx tauri build --bundles deb`): a 1.6 MB `.deb` in
+    about two minutes at idle priority. It hasn't been launched on this desktop.
+  - **Capacitor:** `platforms/capacitor` has Android and iOS projects, landscape-locked, with
+    icons and splash screens rendered from the game's sprite code. This machine has no Java,
+    Android SDK or Xcode, so the `platforms` GitHub workflow builds the debug APK, an iOS
+    simulator build and Tauri bundles for Linux, Windows and macOS. It hasn't run yet.
+  - **Frame times** on the stress level (`?stress`: about 60–120 units on three lanes), 1280 ×
+    720, this iMac, software rendering:
+
+    | Engine | DPR 1 | DPR 2 |
+    |---|---|---|
+    | Chromium (Playwright) | 60 fps | 60 fps |
+    | WebKit (Playwright's Linux build; the engine family of Tauri's WebKitGTK) | 50–60 fps | 22 fps with vector units; 40 fps with cached unit frames; about 50 fps with automatic resolution fallback |
+
+  - **Decision: Tauri for Linux and the Deck**, with Electron kept as the fallback. The Deck is DPR
+    1, where WebKit holds 50–60 fps. Two changes made that possible. Unit animation frames are now
+    drawn once and blitted (`src/render/unitSprites.ts`); the M5 atlases replace them. And the
+    backing-store density steps down (2 → 1.5 → 1) when frames run slow, as §11.5 planned.
+  - **Still to do:** fps on a real phone and on a real Deck.
 
 ### M3 — Levels as data (README step 3)
 
@@ -1077,6 +1094,11 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
 - Produce area 1's assets: cricket, possum, squirrel, sprinkler, broom neighbor, area-1 pile
   stages, alley background, Jimothy commander poses, core UI icons.
 - **Exit:** area 1 runs with real art at all §10.3 sizes. Zach approves the look.
+- **Progress: not started.** It needs Zach to pick the anchor images, and it needs overnight CPU
+  generation runs. Meanwhile, all art is drawn in code (`src/render/sprites.ts`) in the target
+  style: chunky ink outlines and soft fills. The placeholder doubles as a readability baseline for
+  the real sprites. App icons and splash screens are rendered from the same code
+  (`tools/make_icons.ts`).
 
 ### M6 — Campaign wrapper and saves (README step 5); mobile beta
 
@@ -1087,6 +1109,20 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
   the Play closed-test clock here.**
 - **Exit:** progress persists across app kill and relaunch on a real iPhone and a real Android
   phone. The PWA installs and plays offline.
+- **Progress:** built, except the store tracks and the real-device checks.
+  - Acorns pay out only for improving a level's best moons. The seven upgrades in
+    `upgrades.json` are applied to content before an attempt, so the sim never knows about them.
+  - The map pages through the areas. There are shop and settings screens (volumes, less motion,
+    bigger text, save code).
+  - Save adapters:
+    - web: `localStorage` plus `storage.persist()`
+    - Capacitor: native Preferences
+    - Tauri: the webview's `localStorage`, which Tauri keeps in the OS app-data folder. *Changed
+      from §3.4's JSON file:* it needs no extra plugin, and Steam Auto-Cloud can sync that
+      folder just the same.
+  - PWA: manifest and icons, and a service worker generated at build time that precaches
+    everything. A browser test plays the game offline.
+  - Not done: TestFlight and the Play closed track (they need store accounts, §14 #16).
 
 ### M7 — Multi-lane and the full campaign (README step 6)
 
@@ -1097,6 +1133,22 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
   early.
 - **Exit:** all 20 levels are winnable headlessly with no upgrades; a full playthrough is done on
   web, one phone and the Deck (or a 1280 × 800 gamepad session).
+- **Progress:** built, except the art and the real-device playthroughs.
+  - **Levels:** 20 levels; each one's reference wins with no upgrades and ≥ 40 % of the night
+    left. `npm run sim -- --all --curve` runs in CI and fails if a level is easier than the one
+    before it (tolerance 0.08 of the night).
+  - **Balance:**
+    - The squirrel is now a flanker (2 hp, 1 pile damage), not a damage dealer.
+    - The crow deals 2.
+    - The broom neighbor swats crows too, so air units have a counter.
+    - Every lane faces something, usually something different (`node tools/lanes.ts`).
+    - The best strategy found varies by level: possum pushes, bunched crickets, crows over
+      fences, rat-led mixes.
+  - **Input and presentation:**
+    - Lane buttons sit at each path's start, alongside Q/W/E and tapping a lane.
+    - Arrow keys and gamepads move focus between controls on screen; A sends (holding A
+      streams), B goes back, Start pauses. A browser test drives a mocked gamepad.
+    - Intro cards picture each defense or friend the first time it appears (§10.2).
 
 ### M8 — Audio, polish, accessibility (README step 7)
 
@@ -1104,6 +1156,16 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
 - Juice: squash and stretch, startle marks, pile-crunch shake, celebration.
 - A full playtest pass and a balance pass.
 - **Exit:** the §11.6 real-device checklist passes. No deny-listed words appear in the strings.
+- **Progress:** built, except sourced audio, the playtest and the device checklist.
+  - *Changed from §9:* every sound is **synthesized** with Web Audio (`src/platform/audio.ts`):
+    - per-unit send chirps and defense sounds
+    - shoo boing, pile crunch, chew, fanfare, yawn, UI taps
+    - a small procedural loop per area
+    - It needs no files and has no licenses, and each sound has a named slot that a recorded or
+      CC0 sound can fill later.
+  - Haptics on Capacitor; less motion, bigger text, 1× / 2× / ¾× speed.
+  - Juice: startle marks, pile shake, hop-offs, confetti on a win. The deny-list test covers all
+    strings.
 
 ### M9 — Launch
 
