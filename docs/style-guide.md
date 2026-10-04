@@ -29,8 +29,10 @@ Areas 2–4 (`art/raw/areas/picks.json`):
 | Background (back yards) | 9600 at 0.75 | lit houses behind a picket fence, stars |
 | Background (cul-de-sac) | 10700 at 0.75 | houses around the turning circle, which sits under the pile |
 | Background (strip mall) | 10800 at 0.75 | lit storefronts over a lined parking lot |
+| Background (alley) | `bg-alley-lot-75` 13900 | red-brick terraces with warm windows over an open lot |
 
-Still procedural: the alley's background.
+Every area now has a painted background; the procedural scenery shows only beyond the bleed on
+extreme ultrawides.
 
 ## The look: inked watercolour
 
@@ -92,6 +94,9 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
   Strength **0.75** is right: 0.5–0.65 only blurs the input, and 0.9 redraws the composition
   (foreground fences and trees, a lower horizon). Each area's horizon is the lowest any of its
   levels needs, so no lane runs through a painted building.
+- **Avoid perspective nouns in background prompts.** "Back alley" pulled even img2img toward a
+  vanishing-point street with paths; "a flat open asphalt lot behind brick apartment buildings"
+  kept the layout.
 - **Fences:** ask for a solid gate. Picket fences lose their rails in matting.
 - **Sprinklers** always come out as garden scenes; the best candidates read as small fountains.
 

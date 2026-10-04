@@ -1128,7 +1128,9 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
       `tools/render_scenery.ts` renders the starting images, using each area's lowest horizon.
     - The game merges the `area1` and `areas` atlases and looks up `pile-<area>` before `pile`.
     - All three backgrounds total about 130 KB.
-    - The alley's background is still procedural; the same method would cover it.
+    - The alley got the same treatment. The word "alley" pulled the model toward a perspective
+      street, so the prompt describes "a flat open asphalt lot behind brick apartment buildings".
+      Every area now has a painted background.
   - **Frame times are unchanged** (the atlas is one `drawImage` per sprite). The atlas is 200 KB.
 
 ### M6 — Campaign wrapper and saves (README step 5); mobile beta

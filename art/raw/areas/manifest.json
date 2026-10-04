@@ -126,5 +126,21 @@
     "model": "stabilityai/sdxl-turbo",
     "steps": 4,
     "guidance": 0.0
+  },
+  "bg-alley-lot-75": {
+    "kind": "background",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, night, flat open asphalt lot behind brick apartment buildings with warm lit windows, evergreen trees, moss, puddles, wide landscape, no characters, no animals, no people",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      1024,
+      576
+    ],
+    "init": "art/raw/areas/init/alley.png",
+    "strength": 0.75,
+    "seed": 13900,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
   }
 }
