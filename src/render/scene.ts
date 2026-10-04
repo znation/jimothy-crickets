@@ -155,11 +155,11 @@ export class SceneRenderer {
     ctx.save();
     ctx.translate(st.level.pile.pos[0], st.level.pile.pos[1]);
     const stage = pileStage(st.pileHp, st.level.pile.hp);
-    const pileArt = this.atlas?.frames.pile;
+    const pileArt = this.atlas?.frames[`pile-${st.level.area}`] ?? this.atlas?.frames.pile;
     if (pileArt) {
       // the painted pile shrinks toward its base as it's carried off
       ctx.translate(Math.sin(this.pileShake * 60) * this.pileShake * 10, 70);
-      if (stage > 0) drawFrame(ctx, this.atlas!, pileArt, 1, 1, 0.3 + (0.7 * stage) / 5);
+      if (stage > 0) drawFrame(ctx, pileArt, 1, 1, 0.3 + (0.7 * stage) / 5);
     } else drawPile(ctx, stage, this.pileShake);
     ctx.restore();
 
@@ -217,7 +217,7 @@ export class SceneRenderer {
       const breathe = 1 + Math.sin(t * (mood === "sleepy" ? 1.2 : 2.4)) * 0.025;
       ctx.translate(0, hop);
       if (mood === "sleepy") ctx.rotate(-0.12);
-      drawFrame(ctx, this.atlas!, jim, 1 / breathe, breathe);
+      drawFrame(ctx, jim, 1 / breathe, breathe);
     } else {
       ctx.translate(JIMOTHY_X, stagingY(st) - 40);
       drawJimothy(ctx, t, mood);
@@ -271,7 +271,7 @@ export class SceneRenderer {
       ctx.translate(0, -h / 2);
     }
     ctx.rotate(rot);
-    drawFrame(ctx, this.atlas!, f, 1 / sy, sy);
+    drawFrame(ctx, f, 1 / sy, sy);
   }
 
   private drawDefenseArt(id: string, f: Frame, age: number, t: number, disabled: boolean) {
@@ -280,7 +280,7 @@ export class SceneRenderer {
     ctx.translate(0, h / 2); // centered on the defense's position
     switch (id) {
       case "sprinkler": {
-        drawFrame(ctx, this.atlas!, f);
+        drawFrame(ctx, f);
         if (age < 0.6 && !disabled) {
           ctx.translate(0, -h * 0.7);
           drawSprinkler(ctx, age / 0.6, false);
@@ -290,14 +290,14 @@ export class SceneRenderer {
       case "broomNeighbor": {
         const swing = age < 0.5 ? Math.sin((age / 0.5) * Math.PI) : 0;
         ctx.rotate(-swing * 0.12);
-        drawFrame(ctx, this.atlas!, f);
+        drawFrame(ctx, f);
         break;
       }
       case "yardDog": {
         const lunge = age < 0.3 ? 1 - age / 0.3 : 0;
         const breathe = 1 + Math.sin(t * 2) * 0.02;
         ctx.translate(lunge * 16, 0);
-        drawFrame(ctx, this.atlas!, f, 1 / breathe, breathe);
+        drawFrame(ctx, f, 1 / breathe, breathe);
         break;
       }
       case "fence":
@@ -305,10 +305,10 @@ export class SceneRenderer {
           ctx.globalAlpha = 0.6;
           ctx.rotate(1.2);
         }
-        drawFrame(ctx, this.atlas!, f);
+        drawFrame(ctx, f);
         break;
       default:
-        drawFrame(ctx, this.atlas!, f);
+        drawFrame(ctx, f);
     }
   }
 
@@ -404,7 +404,7 @@ export class SceneRenderer {
         const art = this.atlas?.frames[e.unit];
         if (art) {
           ctx.translate(0, frameHeight(art) / 2);
-          drawFrame(ctx, this.atlas!, art);
+          drawFrame(ctx, art);
         } else this.sprites.draw(ctx, this.view.scale * this.view.dpr, UNIT_SCALE, e.unit, t, 0, {});
       } else if (e.kind === "text") {
         ctx.font = "bold 44px ui-rounded, 'Arial Rounded MT Bold', system-ui, sans-serif";
@@ -458,6 +458,12 @@ export class SceneRenderer {
   }
 }
 
+/** The skyline sits just above the highest lane, so paths never run through buildings. */
+export function horizonFor(level: { lanes: { points: Vec[] }[] }): number {
+  const highestLane = Math.min(...level.lanes.flatMap((l) => l.points.map((pt) => pt[1])));
+  return Math.min(330, highestLane - 90);
+}
+
 /** The middle of the lanes' starting points: where Jimothy stands. */
 export function stagingY(st: SimState): number {
   const ys = st.lanes.map((l) => l.points[0]![1]);
@@ -480,9 +486,7 @@ function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState, p
   const y0 = Math.min(-BLEED_Y, Math.floor(vis.y0));
   const W = Math.max(BLEED_W - BLEED_X, Math.ceil(vis.x1)) - x0;
   const H = Math.max(BLEED_H - BLEED_Y, Math.ceil(vis.y1)) - y0;
-  // The skyline sits just above the highest lane, so paths never run through buildings.
-  const highestLane = Math.min(...st.lanes.flatMap((l) => l.points.map((pt) => pt[1])));
-  const horizon = Math.min(330, highestLane - 90);
+  const horizon = horizonFor(st.level);
 
   const sky = ctx.createLinearGradient(0, y0, 0, horizon);
   sky.addColorStop(0, "#1a2147");
@@ -578,7 +582,7 @@ const RANGE_COLOURS: Record<string, string> = {
   motionLight: "rgba(255, 243, 176, 0.08)",
 };
 
-interface Box {
+export interface Box {
   x0: number;
   y0: number;
   W: number;
@@ -587,7 +591,7 @@ interface Box {
 }
 
 /** The skyline and ground for each area (README art direction: damp, mossy, evergreen PNW). */
-function paintScenery(ctx: CanvasRenderingContext2D, area: string, b: Box, rnd: () => number) {
+export function paintScenery(ctx: CanvasRenderingContext2D, area: string, b: Box, rnd: () => number) {
   const { x0, y0, W, H, horizon } = b;
   const evergreens = (base: number, minH: number, maxH: number) => {
     for (let x = x0 - 40; x < x0 + W + 80; x += 70 + rnd() * 60) {

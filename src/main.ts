@@ -5,7 +5,7 @@ import { capacitorGlobal, capacitorPlatform } from "./platform/capacitor.ts";
 import { tauriGlobal, tauriPlatform } from "./platform/tauri.ts";
 import { registerServiceWorker, webPlatform } from "./platform/web.ts";
 import type { Platform } from "./platform/types.ts";
-import { loadAtlas } from "./render/atlas.ts";
+import { loadAtlases } from "./render/atlas.ts";
 import { SaveStore } from "./save.ts";
 import { setPortraitAtlas } from "./ui/portrait.ts";
 import "./ui/style.css";
@@ -53,8 +53,9 @@ async function main() {
   void platform.orientation.lockLandscape();
   // Painted sprites, when an atlas has been built; otherwise the vector placeholders stay.
   // ?atlas=<set> tries another atlas; ?atlas=none forces the vector art.
-  const atlasSet = new URLSearchParams(location.search).get("atlas") ?? "area1";
-  const atlas = atlasSet === "none" ? null : await loadAtlas(atlasSet);
+  // Shared characters first, then per-area piles and backgrounds.
+  const atlasSet = new URLSearchParams(location.search).get("atlas");
+  const atlas = atlasSet === "none" ? null : await loadAtlases(atlasSet ? atlasSet.split(",") : ["area1", "areas"]);
   app.scene.setAtlas(atlas);
   setPortraitAtlas(atlas);
   app.start();

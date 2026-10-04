@@ -25,6 +25,7 @@ per 512² image. ~/venv's transformers needs the project-only overlay:
 import argparse
 import hashlib
 import json
+import math
 import os
 import shutil
 import time
@@ -55,9 +56,13 @@ def load_set(name):
         ref = a.get("ref")
         scale = a.get("ref_scale", 0.0) if ref else 0.0
         size = a.get("size", [512, 512])
-        h = hashlib.sha1(json.dumps([prompt, ref, scale, size]).encode()).hexdigest()[:8]
+        # img2img: start from an image (e.g. the game's own procedural scenery) instead of noise.
+        init = a.get("init")
+        strength = a.get("strength") if init else None
+        key = [prompt, ref, scale, size] + ([init, strength] if init else [])
+        h = hashlib.sha1(json.dumps(key).encode()).hexdigest()[:8]
         out.append({**a, "kind": kind, "full_prompt": prompt, "ref": ref, "ref_scale": scale,
-                    "size": size, "hash": h})
+                    "size": size, "init": init, "strength": strength, "hash": h})
     return data, out
 
 
@@ -103,13 +108,28 @@ def load_pipe(threads, refs):
     return pipe, embeds
 
 
+_img2img = None
+
+
 def render(pipe, embeds, a, seed):
     import torch
     pipe.set_ip_adapter_scale(a["ref_scale"])
     w, h = a["size"]
+    gen = torch.Generator("cpu").manual_seed(seed)
+    if a["init"]:
+        global _img2img
+        from diffusers import AutoPipelineForImage2Image
+        from PIL import Image
+        _img2img = _img2img or AutoPipelineForImage2Image.from_pipe(pipe)
+        init = Image.open(ROOT / a["init"]).convert("RGB").resize((w, h))
+        # Turbo runs int(steps × strength) denoising steps: aim for four whatever the strength
+        # (with a fixed 4 steps, 0.5 and 0.65 both ran two and barely changed the image).
+        steps = math.ceil(4 / a["strength"])
+        return _img2img(prompt=a["full_prompt"], image=init, strength=a["strength"],
+                        num_inference_steps=steps, guidance_scale=0.0,
+                        ip_adapter_image_embeds=embeds[a["ref"]], generator=gen).images[0]
     return pipe(prompt=a["full_prompt"], num_inference_steps=4, guidance_scale=0.0,
-                width=w, height=h, ip_adapter_image_embeds=embeds[a["ref"]],
-                generator=torch.Generator("cpu").manual_seed(seed)).images[0]
+                width=w, height=h, ip_adapter_image_embeds=embeds[a["ref"]], generator=gen).images[0]
 
 
 def seeds_for(a, k):
@@ -152,7 +172,7 @@ def assemble(set_name, assets):
         if not src.exists():
             raise SystemExit(f"{a['name']}: picked seed {seed} has no render for the current prompt")
         shutil.copy(src, RAW / set_name / f"{a['name']}.png")
-        manifest[a["name"]] = {k: a[k] for k in ("kind", "full_prompt", "ref", "ref_scale", "size")} | {
+        manifest[a["name"]] = {k: a[k] for k in ("kind", "full_prompt", "ref", "ref_scale", "size", "init", "strength")} | {
             "seed": seed, "model": "stabilityai/sdxl-turbo", "steps": 4, "guidance": 0.0}
     (RAW / set_name / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"assembled {len(manifest)} assets")
@@ -190,7 +210,7 @@ def main():
         render(pipe, embeds, a, seed).save(path)
         # Record exactly what made this render, next to it.
         path.with_suffix(".json").write_text(json.dumps(
-            {k: a[k] for k in ("full_prompt", "ref", "ref_scale", "size")} | {"seed": seed}) + "\n")
+            {k: a[k] for k in ("full_prompt", "ref", "ref_scale", "size", "init", "strength")} | {"seed": seed}) + "\n")
         print(f"{a['name']} {seed} {time.time() - t:.1f}s", flush=True)
 
 

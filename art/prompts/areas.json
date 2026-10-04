@@ -1,0 +1,112 @@
+{
+  "comment": "Areas 2-4: per-area piles and backgrounds, plus the fence and sprinkler retried. Backgrounds are img2img over the game's own procedural scenery (tools/render_scenery.ts), which keeps the flat ground the lanes need; a plain text prompt draws street-level perspective.",
+  "style": "children's picture book illustration, soft watercolour fills, bold dark ink outlines",
+  "default_framing": "v2",
+  "framings": {
+    "v2": {
+      "prefix": {
+        "sprite": "one cute character sticker, whole body with white space around it, plain white background",
+        "object": "one object sticker, whole object with white space around it, plain white background, no scenery"
+      },
+      "suffix": {
+        "sprite": "side view facing right",
+        "object": "",
+        "background": "wide landscape, no characters, no animals, no people"
+      }
+    }
+  },
+  "assets": [
+    {
+      "name": "pile-backyards",
+      "seed": 9100,
+      "kind": "object",
+      "prompt": "a small heap of tied black trash bags spilling from a green wheelie bin, grass clippings"
+    },
+    {
+      "name": "pile-culdesac",
+      "seed": 9200,
+      "kind": "object",
+      "prompt": "a small heap of tidy black trash bags beside blue recycling bins and flattened cardboard boxes"
+    },
+    {
+      "name": "pile-stripmall",
+      "seed": 9300,
+      "kind": "object",
+      "prompt": "a small overflowing green metal dumpster with black trash bags and cardboard boxes"
+    },
+    {
+      "name": "fence",
+      "seed": 9400,
+      "kind": "object",
+      "seeds": 6,
+      "prompt": "a short solid wooden garden gate between two posts, closed"
+    },
+    {
+      "name": "sprinkler",
+      "seed": 9500,
+      "kind": "object",
+      "seeds": 6,
+      "prompt": "a small metal garden sprinkler head on a round base spraying water"
+    },
+    {
+      "name": "bg-backyards-75",
+      "seed": 9600,
+      "kind": "background",
+      "size": [1024, 576],
+      "init": "art/raw/areas/init/backyards.png",
+      "strength": 0.75,
+      "seeds": 3,
+      "prompt": "night back yards, a wooden fence, cozy houses with warm windows, evergreen trees, damp lawn, moss"
+    },
+    {
+      "name": "bg-backyards-90",
+      "seed": 9600,
+      "kind": "background",
+      "size": [1024, 576],
+      "init": "art/raw/areas/init/backyards.png",
+      "strength": 0.9,
+      "seeds": 3,
+      "prompt": "night back yards, a wooden fence, cozy houses with warm windows, evergreen trees, damp lawn, moss"
+    },
+    {
+      "name": "bg-culdesac-75",
+      "seed": 9700,
+      "kind": "background",
+      "size": [1024, 576],
+      "init": "art/raw/areas/init/culdesac.png",
+      "strength": 0.75,
+      "seeds": 3,
+      "prompt": "night suburban cul-de-sac, tidy houses with garages, a round paved turning circle, damp lawns, evergreen trees"
+    },
+    {
+      "name": "bg-culdesac-90",
+      "seed": 9700,
+      "kind": "background",
+      "size": [1024, 576],
+      "init": "art/raw/areas/init/culdesac.png",
+      "strength": 0.9,
+      "seeds": 3,
+      "prompt": "night suburban cul-de-sac, tidy houses with garages, a round paved turning circle, damp lawns, evergreen trees"
+    },
+    {
+      "name": "bg-stripmall-75",
+      "seed": 9800,
+      "kind": "background",
+      "size": [1024, 576],
+      "init": "art/raw/areas/init/stripmall.png",
+      "strength": 0.75,
+      "seeds": 3,
+      "prompt": "night strip mall parking lot, shop fronts with glowing signs, painted parking lines, wet asphalt, evergreens"
+    },
+    {
+      "name": "bg-stripmall-90",
+      "seed": 9800,
+      "kind": "background",
+      "size": [1024, 576],
+      "init": "art/raw/areas/init/stripmall.png",
+      "strength": 0.9,
+      "seeds": 3,
+      "prompt": "night strip mall parking lot, shop fronts with glowing signs, painted parking lines, wet asphalt, evergreens"
+    }
+  ]
+}

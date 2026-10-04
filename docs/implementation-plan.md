@@ -1118,6 +1118,17 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
   - **Shipped from the model:** Jimothy, all five friends, the broom neighbor, the yard dog, the
     motion light, the pile. **Still drawn in code:** the sprinkler (it always came out as a garden
     scene), the fence (matting lost its rails), and backgrounds.
+  - **Areas 2–4** (second set, `art/prompts/areas.json`, 2026-10-04):
+    - **Piles:** one per area.
+    - **Fence and sprinkler:** generated after all. The fence is asked for as a solid gate; the
+      sprinkler reads as a small fountain.
+    - **Painted backgrounds** for the back yards, cul-de-sac and strip mall.
+    - **Backgrounds work as img2img over the procedural scenery** at strength 0.75. That keeps the
+      flat ground and skyline the lanes need, and replaces the text-only approach that failed.
+      `tools/render_scenery.ts` renders the starting images, using each area's lowest horizon.
+    - The game merges the `area1` and `areas` atlases and looks up `pile-<area>` before `pile`.
+    - All three backgrounds total about 130 KB.
+    - The alley's background is still procedural; the same method would cover it.
   - **Frame times are unchanged** (the atlas is one `drawImage` per sprite). The atlas is 200 KB.
 
 ### M6 — Campaign wrapper and saves (README step 5); mobile beta

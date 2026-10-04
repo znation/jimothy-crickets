@@ -1,0 +1,130 @@
+{
+  "pile-backyards": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one object sticker, whole object with white space around it, plain white background, no scenery, a small heap of tied black trash bags spilling from a green wheelie bin, grass clippings",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 10100,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "pile-culdesac": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one object sticker, whole object with white space around it, plain white background, no scenery, a small heap of tidy black trash bags beside blue recycling bins and flattened cardboard boxes",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 12200,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "pile-stripmall": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one object sticker, whole object with white space around it, plain white background, no scenery, a small overflowing green metal dumpster with black trash bags and cardboard boxes",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 11300,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "fence": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one object sticker, whole object with white space around it, plain white background, no scenery, a short solid wooden garden gate between two posts, closed",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 11400,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "sprinkler": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one object sticker, whole object with white space around it, plain white background, no scenery, a small metal garden sprinkler head on a round base spraying water",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 12500,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "bg-backyards-75": {
+    "kind": "background",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, night back yards, a wooden fence, cozy houses with warm windows, evergreen trees, damp lawn, moss, wide landscape, no characters, no animals, no people",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      1024,
+      576
+    ],
+    "init": "art/raw/areas/init/backyards.png",
+    "strength": 0.75,
+    "seed": 9600,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "bg-culdesac-75": {
+    "kind": "background",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, night suburban cul-de-sac, tidy houses with garages, a round paved turning circle, damp lawns, evergreen trees, wide landscape, no characters, no animals, no people",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      1024,
+      576
+    ],
+    "init": "art/raw/areas/init/culdesac.png",
+    "strength": 0.75,
+    "seed": 10700,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "bg-stripmall-75": {
+    "kind": "background",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, night strip mall parking lot, shop fronts with glowing signs, painted parking lines, wet asphalt, evergreens, wide landscape, no characters, no animals, no people",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      1024,
+      576
+    ],
+    "init": "art/raw/areas/init/stripmall.png",
+    "strength": 0.75,
+    "seed": 10800,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  }
+}

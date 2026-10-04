@@ -39,7 +39,7 @@ export function portrait(id: UnitId | DefenseId | "jimothy", cssW: number, cssH:
     const w = art.w / art.scale;
     const fit = Math.min((cssW * 0.92) / w, (cssH * 0.92) / h) * zoom * dpr;
     ctx.setTransform(fit, 0, 0, fit, c.width / 2, c.height / 2 + (h * fit) / 2);
-    drawFrame(ctx, atlas!, art);
+    drawFrame(ctx, art);
     return c;
   }
   const k = dpr * zoom * (cssH / (FRAME[id] ?? 60));

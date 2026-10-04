@@ -25,9 +25,10 @@ const sources: Record<string, string> = existsSync(`${dir}/sources.json`)
 const inputs = Object.entries(spec.sprites)
   .map(([name, s]) => ({ name, ...s, file: `${dir}/${sources[name] ?? name}.png` }))
   .filter((s) => existsSync(s.file));
-const backgrounds = existsSync(`${dir}/backgrounds.json`)
-  ? (JSON.parse(readFileSync(`${dir}/backgrounds.json`, "utf8")) as string[])
-  : [];
+// backgrounds.json maps a background's name (the area id the game looks up) to its curated file.
+const backgrounds: Record<string, string> = existsSync(`${dir}/backgrounds.json`)
+  ? JSON.parse(readFileSync(`${dir}/backgrounds.json`, "utf8"))
+  : {};
 
 const browser = await chromium.launch();
 const page = await browser.newPage();
@@ -130,7 +131,7 @@ const result = (await page.evaluate(
     PAD,
     MAX_W,
     outline: spec.outline,
-    backgrounds: backgrounds.map((name) => ({ name, data: readFileSync(`${dir}/${name}.png`).toString("base64") })),
+    backgrounds: Object.entries(backgrounds).map(([name, file]) => ({ name, data: readFileSync(`${dir}/${file}.png`).toString("base64") })),
   },
 )) as { webp: string; frames: Record<string, unknown>; size: [number, number]; bgs: Record<string, string> };
 await browser.close();

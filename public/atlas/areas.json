@@ -1,0 +1,59 @@
+{
+ "image": "areas.webp",
+ "size": [
+  1924,
+  852
+ ],
+ "frames": {
+  "pile-backyards": {
+   "x": 4,
+   "y": 4,
+   "w": 626,
+   "h": 610,
+   "ax": 313,
+   "ay": 605,
+   "scale": 2
+  },
+  "pile-culdesac": {
+   "x": 634,
+   "y": 4,
+   "w": 616,
+   "h": 610,
+   "ax": 308,
+   "ay": 605,
+   "scale": 2
+  },
+  "pile-stripmall": {
+   "x": 1254,
+   "y": 4,
+   "w": 666,
+   "h": 610,
+   "ax": 333,
+   "ay": 605,
+   "scale": 2
+  },
+  "fence": {
+   "x": 4,
+   "y": 618,
+   "w": 200,
+   "h": 230,
+   "ax": 100,
+   "ay": 225,
+   "scale": 2
+  },
+  "sprinkler": {
+   "x": 208,
+   "y": 618,
+   "w": 212,
+   "h": 154,
+   "ax": 106,
+   "ay": 149,
+   "scale": 2
+  }
+ },
+ "backgrounds": [
+  "backyards",
+  "culdesac",
+  "stripmall"
+ ]
+}

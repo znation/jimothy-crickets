@@ -13,6 +13,9 @@
     "yardDog": { "height": 112 },
     "fence": { "height": 110 },
     "motionLight": { "height": 64 },
-    "pile": { "height": 300 }
+    "pile": { "height": 300 },
+    "pile-backyards": { "height": 300 },
+    "pile-culdesac": { "height": 300 },
+    "pile-stripmall": { "height": 300 }
   }
 }

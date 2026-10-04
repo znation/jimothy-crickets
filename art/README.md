@@ -36,6 +36,13 @@ chrt --idle 0 ionice -c 3 ~/venv/bin/python tools/asset_gen/matte.py area1
 node tools/build_atlas.ts area1
 ```
 
+Sets: `area1` holds the shared characters and defenses; `areas` holds each area's pile
+(`pile-<area>`), the fence, the sprinkler and the painted backgrounds. The game merges both.
+
+**Backgrounds** are img2img, not text-to-image: `node tools/render_scenery.ts` paints each area's
+procedural scenery into `art/raw/areas/init/`, and assets with `"init"` and `"strength"` (0.75)
+repaint it. `art/curated/<set>/backgrounds.json` maps each area to its picked background.
+
 About 22 s per 512² render and 3–5 s per matte on this iMac.
 
 ## Licenses

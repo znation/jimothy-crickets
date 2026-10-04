@@ -15,9 +15,22 @@ ships them as working art:
 | Broom neighbor | 7700 | bewildered, comic, broom and bucket |
 | Yard dog | 9800 | a sitting puppy: the goofiest and least threatening |
 | Motion light | 11000 (framing v1) | isolated lamp on a bracket |
-| Pile | 11100 | an overflowing can with bags and boxes |
+| Pile (alley) | 11100 | an overflowing can with bags and boxes |
 
-Not from the model yet: the sprinkler, the fence and backgrounds (see the plan's M5 notes).
+Areas 2–4 (`art/raw/areas/picks.json`):
+
+| Sprite | Pick | Why |
+|---|---|---|
+| Pile (back yards) | 10100 | an overflowing green wheelie bin |
+| Pile (cul-de-sac) | 12200 | a blue recycling bin spilling boxes |
+| Pile (strip mall) | 11300 | an open green dumpster |
+| Fence | 11400 | a solid gate with its post: cuts out cleanly, unlike picket fences |
+| Sprinkler | 12500 | reads as a little garden fountain, the best of twelve; the code adds the spray |
+| Background (back yards) | 9600 at 0.75 | lit houses behind a picket fence, stars |
+| Background (cul-de-sac) | 10700 at 0.75 | houses around the turning circle, which sits under the pile |
+| Background (strip mall) | 10800 at 0.75 | lit storefronts over a lined parking lot |
+
+Still procedural: the alley's background.
 
 ## The look: inked watercolour
 
@@ -72,9 +85,15 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
 - **Crickets:** keep the concept wording ("sweet round cartoon cricket, soft rounded bright green
   body, little black dot eyes, gentle closed-mouth smile, floppy curved antennae, short stubby
   rounded legs, cuddly"). Wings still appear; small rounded ones are acceptable.
-- **Wide backgrounds** render cleanly at 1024 × 576, but SDXL-Turbo draws street-level
-  perspective even when asked for a high-angle view of open ground, which fights the flat lane
-  layout. Backgrounds stay procedural until another approach works (plan, M5 notes).
+- **Backgrounds are img2img over the game's own scenery.** From a text prompt alone, SDXL-Turbo
+  draws street-level perspective even when asked for a high angle, which fights the flat lane
+  layout. Starting instead from the procedural scenery (`tools/render_scenery.ts`) keeps the
+  skyline and open ground where the lanes need them, and repaints them in the house style.
+  Strength **0.75** is right: 0.5–0.65 only blurs the input, and 0.9 redraws the composition
+  (foreground fences and trees, a lower horizon). Each area's horizon is the lowest any of its
+  levels needs, so no lane runs through a painted building.
+- **Fences:** ask for a solid gate. Picket fences lose their rails in matting.
+- **Sprinklers** always come out as garden scenes; the best candidates read as small fountains.
 
 ## Animation
 
