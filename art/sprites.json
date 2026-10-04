@@ -17,8 +17,8 @@
     "pile-backyards": { "height": 300 },
     "pile-culdesac": { "height": 300 },
     "pile-stripmall": { "height": 300 },
-    "box": { "height": 60 },
     "snack": { "height": 48 },
-    "acorn": { "height": 48 }
+    "acorn": { "height": 48 },
+    "mat": { "height": 88 }
   }
 }

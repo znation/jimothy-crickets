@@ -37,9 +37,9 @@ Props (`art/raw/props/picks.json`):
 |---|---|---|
 | Snack (cookie) | 22200, cropped | a single round chocolate-chip cookie; the crop drops a dip bowl beside it |
 | Acorn | `acorn-cup` 20700, cropped | the only real capped acorn in 26 renders, sitting in a corner of a teacup scene |
+| Staging mat | `mat-60` 21000 | img2img at 0.6 over the game's own drawing of the mat: flat cardboard with a fold line and packing tape. Text-to-image gave open boxes of toys, a shed, a truck and a book; at 0.75 it turns into a 3D box |
 
-Still drawn in code, on purpose: the staging-area cardboard mat (14 renders gave open boxes of
-toys, a shed, a truck and a book), lanes, range rings, effects, moons and UI buttons.
+Still drawn in code, on purpose: lanes, range rings, effects, moons and UI buttons.
 
 Every area now has a painted background; the procedural scenery shows only beyond the bleed on
 extreme ultrawides.

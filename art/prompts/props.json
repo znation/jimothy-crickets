@@ -1,5 +1,5 @@
 {
-  "comment": "Small painted props: the staging-area cardboard box under Jimothy, and the snack (cookie) and acorn currency icons used across the HUD, cards, shop and results.",
+  "comment": "Small painted props: the staging mat under Jimothy (img2img over the game's own drawing of it, tools/render_scenery.ts; text-to-image never drew a flat box), and the snack (cookie) and acorn currency icons.",
   "style": "children's picture book illustration, soft watercolour fills, bold dark ink outlines",
   "default_framing": "v2",
   "framings": {
@@ -16,13 +16,6 @@
     }
   },
   "assets": [
-    {
-      "name": "box",
-      "seed": 20600,
-      "kind": "object",
-      "prompt": "a single flat sheet of brown corrugated cardboard lying on the ground, seen from the side",
-      "seeds": 4
-    },
     {
       "name": "snack",
       "seed": 20200,
@@ -49,6 +42,24 @@
       "kind": "object",
       "seeds": 4,
       "prompt": "one plump cartoon acorn with a scaly cupule and a tiny stem, autumn harvest icon"
+    },
+    {
+      "name": "mat-60",
+      "seed": 21000,
+      "kind": "object",
+      "seeds": 4,
+      "init": "art/raw/props/init/mat.png",
+      "strength": 0.6,
+      "prompt": "a flattened brown cardboard box lying flat, corrugated cardboard texture, creases and a strip of packing tape"
+    },
+    {
+      "name": "mat-75",
+      "seed": 21000,
+      "kind": "object",
+      "seeds": 4,
+      "init": "art/raw/props/init/mat.png",
+      "strength": 0.75,
+      "prompt": "a flattened brown cardboard box lying flat, corrugated cardboard texture, creases and a strip of packing tape"
     }
   ]
 }

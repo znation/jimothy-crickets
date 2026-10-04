@@ -4,7 +4,6 @@
 import { directionAt, pointAt } from "../sim/lane.ts";
 import { TICK_RATE, type SimState } from "../sim/sim.ts";
 import type { SimEvent, UnitId, Vec } from "../sim/types.ts";
-import type { Frame } from "./atlas.ts";
 import {
   drawBroomNeighbor,
   drawFence,
@@ -16,7 +15,7 @@ import {
   INK,
   pileStage,
 } from "./sprites.ts";
-import { drawFrame, frameHeight, type Atlas } from "./atlas.ts";
+import { drawFrame, frameHeight, type Atlas, type Frame } from "./atlas.ts";
 import { UnitSprites } from "./unitSprites.ts";
 import { BLEED_H, BLEED_W, BLEED_X, BLEED_Y, type View } from "./view.ts";
 
@@ -450,12 +449,39 @@ export class SceneRenderer {
       this.bg.width = v.canvas.width;
       this.bg.height = v.canvas.height;
       const ctx = this.bg.getContext("2d")!;
-      paintBackground(ctx, v, st, this.atlas?.backgrounds[st.level.area] ?? null);
+      paintBackground(ctx, v, st, this.atlas?.backgrounds[st.level.area] ?? null, this.atlas?.frames.mat ?? null);
       this.bgKey = key;
     }
     v.ctx.setTransform(1, 0, 0, 1, 0, 0);
     v.ctx.drawImage(this.bg, 0, 0);
   }
+}
+
+/**
+ * The staging mat under Jimothy, centered on the origin: about 220 × 80 world units, tilted a
+ * little. The painted version (atlas frame "mat") is img2img over this drawing.
+ */
+export function drawStagingMat(ctx: CanvasRenderingContext2D, painted: Frame | null = null) {
+  ctx.save();
+  if (painted) {
+    ctx.translate(0, 44); // the frame stands on its bottom edge; its tilt is painted in
+    drawFrame(ctx, painted);
+  } else {
+    ctx.rotate(-0.04);
+    ctx.beginPath();
+    ctx.roundRect(-110, -40, 220, 80, 10);
+    ctx.fillStyle = "#b98a57";
+    ctx.fill();
+    // a fold line and a strip of packing tape: enough structure for the painted version to keep
+    ctx.fillStyle = "#a77a4a";
+    ctx.fillRect(-106, -4, 212, 6);
+    ctx.fillStyle = "rgba(225, 205, 160, 0.85)";
+    ctx.fillRect(-14, -40, 28, 80);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = INK;
+    ctx.stroke();
+  }
+  ctx.restore();
 }
 
 /** The skyline sits just above the highest lane, so paths never run through buildings. */
@@ -471,7 +497,13 @@ export function stagingY(st: SimState): number {
 }
 
 /** Paint the static layer. Decorations are placed from a PRNG seeded by the level id. */
-function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState, painted: HTMLImageElement | null) {
+function paintBackground(
+  ctx: CanvasRenderingContext2D,
+  v: View,
+  st: SimState,
+  painted: HTMLImageElement | null,
+  mat: Frame | null,
+) {
   let seed = [...st.level.id].reduce((a, c) => a * 31 + c.charCodeAt(0), 7);
   const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
 
@@ -556,14 +588,7 @@ function paintBackground(ctx: CanvasRenderingContext2D, v: View, st: SimState, p
   // staging area: a flattened cardboard box under Jimothy, between the lanes' starts
   ctx.save();
   ctx.translate(st.lanes[0]!.points[0]![0] - 120, stagingY(st) + 20);
-  ctx.rotate(-0.04);
-  ctx.beginPath();
-  ctx.roundRect(-110, -40, 220, 80, 10);
-  ctx.fillStyle = "#b98a57";
-  ctx.fill();
-  ctx.lineWidth = 4;
-  ctx.strokeStyle = INK;
-  ctx.stroke();
+  drawStagingMat(ctx, mat);
   ctx.restore();
 
   // a streetlamp glowing over the pile

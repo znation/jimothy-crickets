@@ -23,5 +23,12 @@ for (const area of campaign.areas) {
   await page.locator("canvas").screenshot({ path: `${out}/${area.id}.png` });
   console.log(`${out}/${area.id}.png  horizon ${horizon}`);
 }
+// The staging mat, for the painted "mat" prop.
+mkdirSync("art/raw/props/init", { recursive: true });
+await page.setViewportSize({ width: 512, height: 512 });
+await page.goto(`${base}tools/scenery/index.html?mat`);
+await page.waitForFunction(() => document.title === "ready");
+await page.locator("canvas").screenshot({ path: "art/raw/props/init/mat.png" });
+console.log("art/raw/props/init/mat.png");
 await browser.close();
 await server.close();
