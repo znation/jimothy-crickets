@@ -6,7 +6,10 @@ const BACKUP_KEY = "jimothy-crickets.save.backup";
 /** Offline play for the web build (production only; dev servers must not be cached). */
 export function registerServiceWorker() {
   if (import.meta.env.PROD && "serviceWorker" in navigator) {
-    window.addEventListener("load", () => void navigator.serviceWorker.register("./sw.js").catch(() => {}));
+    const register = () => void navigator.serviceWorker.register("./sw.js").catch(() => {});
+    // Startup awaits the font first, so "load" may already have fired by the time we get here.
+    if (document.readyState === "complete") register();
+    else window.addEventListener("load", register);
   }
 }
 
