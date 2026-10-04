@@ -174,6 +174,18 @@ def assemble(set_name, assets):
         shutil.copy(src, RAW / set_name / f"{a['name']}.png")
         manifest[a["name"]] = {k: a[k] for k in ("kind", "full_prompt", "ref", "ref_scale", "size", "init", "strength")} | {
             "seed": seed, "model": "stabilityai/sdxl-turbo", "steps": 4, "guidance": 0.0}
+    # Touch-ups (tools/asset_gen/inpaint.py) are picked by candidate file name; their sidecar
+    # records the recipe, source and seed.
+    names = {a["name"] for a in assets}
+    for name, pick in picks.items():
+        if name in names or not isinstance(pick, str):
+            continue
+        src = RAW / set_name / "_candidates" / name / f"{pick}.png"
+        if not src.exists():
+            raise SystemExit(f"{name}: touch-up {pick} not found")
+        shutil.copy(src, RAW / set_name / f"{name}.png")
+        side = json.loads(src.with_suffix(".json").read_text())
+        manifest[name] = {"kind": "sprite", "touchup": side, "model": "stabilityai/sdxl-turbo (inpainting)"}
     (RAW / set_name / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"assembled {len(manifest)} assets")
 

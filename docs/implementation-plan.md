@@ -1131,6 +1131,9 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
     - The alley got the same treatment. The word "alley" pulled the model toward a perspective
       street, so the prompt describes "a flat open asphalt lot behind brick apartment buildings".
       Every area now has a painted background.
+  - **Jimothy without the tail:** the pick is now an inpainted touch-up
+    (`tools/asset_gen/inpaint.py`). Paint the body over the tail in flat fur grey, then re-texture
+    at 0.72 with a fur-only prompt. Inpainting a "rump" from scratch drew tails again.
   - **Frame times are unchanged** (the atlas is one `drawImage` per sprite). The atlas is 200 KB.
 
 ### M6 — Campaign wrapper and saves (README step 5); mobile beta

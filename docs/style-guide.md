@@ -6,7 +6,7 @@ ships them as working art:
 
 | Sprite | Pick | Why |
 |---|---|---|
-| Jimothy | `jimothy-photo` 9050 | the only candidate of 28 that is a round ball with no tail showing |
+| Jimothy | `jimothy-notail` 24 (a touch-up of `jimothy-photo` 9050) | 9050 was the roundest of 28 renders, but a ringed tail peeked out behind his hind leg and the frame cropped his rump. Inpainting removed the tail, completed the rump and cleared the grass |
 | Cricket | 8100 | round green ball, dot eyes, smile; small wings |
 | Possum | 8200 | the roundest, softest face |
 | Squirrel | 9300 | side view, facing right, whole tail in frame |
@@ -82,8 +82,11 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
 - **Matting fixes backgrounds; it can't fix cropping.** BiRefNet-lite cleanly removes ground,
   leaves and branches, so props in a render are fine. A tail cut off by the frame is not.
 - **Jimothy's tail** survives every wording and both concept anchors (`sdxl/001`, `sdxl/009`, both
-  of which have tails themselves). The rear-view photo at 0.42 does better, and more seeds help:
-  pick the candidate whose tail is hidden or stubby, and touch up in Krita if needed.
+  of which have tails themselves). The rear-view photo at 0.42 does better, and more seeds help.
+  **To remove a tail, don't inpaint a "rump" from scratch**: that drew a new tail on 5 of 6 seeds.
+  Instead paint the missing body in flat fur grey first (continue his body's ellipse), then
+  re-texture it at strength ~0.72 with a prompt that names only fur. The recipe is
+  `art/prompts/touchups/jimothy-notail.json` (`tools/asset_gen/inpaint.py`).
 - **Crickets:** keep the concept wording ("sweet round cartoon cricket, soft rounded bright green
   body, little black dot eyes, gentle closed-mouth smile, floppy curved antennae, short stubby
   rounded legs, cuddly"). Wings still appear; small rounded ones are acceptable.

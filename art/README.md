@@ -39,6 +39,11 @@ node tools/build_atlas.ts area1
 Sets: `area1` holds the shared characters and defenses; `areas` holds each area's pile
 (`pile-<area>`), the fence, the sprinkler and the painted backgrounds. The game merges both.
 
+**Touch-ups** repaint part of a pick: `tools/asset_gen/inpaint.py <recipe>` (recipes in
+`art/prompts/touchups/`) places the pick on a canvas, optionally paints over regions in flat
+colour, and inpaints masked regions. Pick a result by its candidate file name in `picks.json`
+(e.g. `"jimothy-notail": "24-f59944ee"`); `--assemble` copies it and records the recipe.
+
 **Backgrounds** are img2img, not text-to-image: `node tools/render_scenery.ts` paints each area's
 procedural scenery into `art/raw/areas/init/`, and assets with `"init"` and `"strength"` (0.75)
 repaint it. `art/curated/<set>/backgrounds.json` maps each area to its picked background.

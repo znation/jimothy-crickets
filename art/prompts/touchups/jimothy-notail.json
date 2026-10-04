@@ -1,0 +1,26 @@
+{
+  "comment": "Remove the ringed tail peeking out behind Jimothy's hind leg, complete the rump the original framing cropped, and clear the grass in front of his legs. Inpainting a 'tanuki rump' from scratch drew a tail on 5 of 6 seeds, so the rump is first painted in flat fur grey (his body's ellipse, continued) and then only re-textured.",
+  "src": "art/raw/area1/jimothy-photo.png",
+  "out": "art/raw/area1/_candidates/jimothy-notail",
+  "scale": 0.85,
+  "offset": [70, 70],
+  "seeds": [21, 22, 23, 24],
+  "passes": [
+    {
+      "prompt": "soft fluffy grey fur, watercolour texture, plain white background",
+      "mask": [["rect", 0, 90, 158, 482]],
+      "blur": 16,
+      "strength": 0.72
+    },
+    {
+      "prompt": "short stubby black legs and paws of a chubby grey tanuki, plain white background",
+      "mask": [["rect", 158, 330, 262, 506]],
+      "blur": 10,
+      "strength": 0.9
+    }
+  ],
+  "prefill": [
+    { "fill": "#ffffff", "within": [["rect", 0, 290, 148, 480]] },
+    { "fill": "#9b958b", "within": [["ellipse", 25, 95, 500, 470]], "clip": [["rect", 0, 0, 148, 480]] }
+  ]
+}
