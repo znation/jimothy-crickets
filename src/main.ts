@@ -8,6 +8,9 @@ import type { Platform } from "./platform/types.ts";
 import { loadAtlases } from "./render/atlas.ts";
 import { SaveStore } from "./save.ts";
 import { hasPainted, portrait, setPortraitAtlas } from "./ui/portrait.ts";
+import "@fontsource/fredoka/latin-500.css";
+import "@fontsource/fredoka/latin-600.css";
+import "@fontsource/fredoka/latin-700.css";
 import "./ui/style.css";
 
 function pickPlatform(): Platform {
@@ -20,6 +23,8 @@ function pickPlatform(): Platform {
 }
 
 async function main() {
+  // Canvas text (startle marks, "+2") needs the font loaded before the first draw.
+  await Promise.all(["500", "700"].map((w) => document.fonts.load(`${w} 24px Fredoka`))).catch(() => {});
   const platform = pickPlatform();
   const save = new SaveStore(platform);
   await save.load();

@@ -23,10 +23,14 @@ jobs:
         run: npm run sim -- --all --report > /dev/null
       - name: Difficulty curve
         run: npm run sim -- --all --curve
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit firefox
+      # All three engines: WebKit stands in for iOS Safari and the macOS/Linux webviews.
       - run: npm run test:e2e
         env:
           CI: "1"
+          ALL_BROWSERS: "1"
+          # Screenshot comparisons, once baselines exist (the update-screenshots workflow makes them).
+          VISUAL: ${{ hashFiles('tests/e2e/__screenshots__/**') != '' && '1' || '' }}
       - uses: actions/upload-artifact@v7
         if: always()
         with:

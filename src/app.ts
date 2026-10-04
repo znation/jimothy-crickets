@@ -7,6 +7,7 @@ import { SceneRenderer } from "./render/scene.ts";
 import { View } from "./render/view.ts";
 import type { SaveStore } from "./save.ts";
 import { bot, referenceInputs } from "./sim/run.ts";
+import { DT } from "./sim/sim.ts";
 import { UNIT_IDS, type LevelDef, type UnitId } from "./sim/types.ts";
 import { GameAudio } from "./platform/audio.ts";
 import { DebugOverlay } from "./ui/debug.ts";
@@ -28,6 +29,8 @@ export class App {
   private last = 0;
   private debug: DebugOverlay | null = null;
   private frameSamples: number[] = [];
+  /** ?still=<tick> (debug, screenshots): draw that sim tick once, frozen. */
+  private readonly stillTick: number | null;
 
   readonly platform: Platform;
   readonly save: SaveStore;
@@ -39,6 +42,8 @@ export class App {
     this.save = save;
     this.params = params;
     this.ui = ui;
+    const still = params.get("still");
+    this.stillTick = still === null ? null : Number(still) || 0;
     this.view = new View(canvas);
     this.scene = new SceneRenderer(this.view);
     this.applySettings();
@@ -150,6 +155,7 @@ export class App {
 
   private frame = (nowMs: number) => {
     this.raf = 0;
+    if (this.stillTick !== null) return this.stillFrame(this.stillTick);
     const t = nowMs / 1000;
     const dt = this.last ? Math.min(t - this.last, MAX_FRAME_GAP) : 0;
     this.last = t;
@@ -163,6 +169,22 @@ export class App {
     if (this.screen?.session && !session.frozen && dt > 0) this.adaptResolution(dt);
     if (this.screen?.animating?.() ?? true) this.raf = requestAnimationFrame(this.frame);
   };
+
+  /**
+   * ?still=<tick>: fast-forward the deterministic sim to that tick and draw one frame at a fixed
+   * animation time with no transient effects, then stop. Every run draws the same pixels, which is
+   * what screenshot comparisons (tests/e2e/visual.spec.ts) and store screenshots need.
+   */
+  private stillFrame(tick: number) {
+    const session = this.screen?.session ?? this.attractSession(0);
+    while (session.st.tick < tick && !session.st.outcome && !session.frozen) session.advance(DT);
+    this.scene.clearEffects();
+    this.scene.highlightLanes = session.st.lanes.length > 1;
+    this.scene.selectedLane = session.lane;
+    this.scene.draw(session.st, 0, 0, 0);
+    this.screen?.frame?.(0, 0);
+    document.documentElement.dataset.still = "ready";
+  }
 
   /**
    * Plan §11.5: if the device can't keep up, render fewer pixels. Steps the backing-store density

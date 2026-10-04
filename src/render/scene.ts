@@ -20,6 +20,7 @@ import { UnitSprites } from "./unitSprites.ts";
 import { BLEED_H, BLEED_W, BLEED_X, BLEED_Y, type View } from "./view.ts";
 
 const LANE_WIDTH = 120;
+const FONT_BOLD = (px: number) => `700 ${px}px Fredoka, ui-rounded, system-ui, sans-serif`;
 const JIMOTHY_X = 130;
 const FLY_HEIGHT = 90;
 /** Units are drawn larger than life so they stay readable on phones (~0.35 CSS px per unit). */
@@ -62,6 +63,13 @@ export class SceneRenderer {
 
   constructor(view: View) {
     this.view = view;
+  }
+
+  /** Drop transient effects (hop-offs, marks, shakes), e.g. for a deterministic still frame. */
+  clearEffects() {
+    this.effects = [];
+    this.pileShake = 0;
+    this.cheer = 0;
   }
 
   /** Turn sim events into presentation effects. */
@@ -339,7 +347,7 @@ export class SceneRenderer {
     c.height = Math.ceil(48 * k);
     const m = c.getContext("2d")!;
     m.setTransform(k, 0, 0, k, 20 * k, 40 * k);
-    m.font = "bold 36px ui-rounded, 'Arial Rounded MT Bold', system-ui, sans-serif";
+    m.font = FONT_BOLD(36);
     m.textAlign = "center";
     m.lineWidth = 6;
     m.strokeStyle = INK;
@@ -406,7 +414,7 @@ export class SceneRenderer {
           drawFrame(ctx, art);
         } else this.sprites.draw(ctx, this.view.scale * this.view.dpr, UNIT_SCALE, e.unit, t, 0, {});
       } else if (e.kind === "text") {
-        ctx.font = "bold 44px ui-rounded, 'Arial Rounded MT Bold', system-ui, sans-serif";
+        ctx.font = FONT_BOLD(44);
         ctx.textAlign = "center";
         ctx.lineWidth = 8;
         ctx.strokeStyle = INK;

@@ -3,6 +3,9 @@ import { expect, test } from "@playwright/test";
 // Plan §11.5: frame times on the stress level. Prints percentiles; fails only if the game can't
 // sustain ~30 fps on this machine, since CI runners vary too much for a tighter gate.
 test("stress level frame times", async ({ page, browserName }, info) => {
+  // A timing gate only means something in one engine on a quiet machine: Chromium in CI. Other
+  // engines are measured on demand (PERF_ALL=1 ALL_BROWSERS=1 npx playwright test perf).
+  test.skip(browserName !== "chromium" && !process.env.PERF_ALL, "frame times are gated in Chromium only");
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/?stress&debug");
   // Let the swarm build up and the resolution fallback settle.

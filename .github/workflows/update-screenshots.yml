@@ -1,0 +1,30 @@
+name: update-screenshots
+
+# Regenerates the screenshot baselines for tests/e2e/visual.spec.ts on the same runner image CI
+# compares on. Run from the Actions tab after an intended visual change, download the
+# "screenshots" artifact into tests/e2e/__screenshots__/, review, and commit.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: git lfs pull --include="public/**"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit firefox
+      - run: npx playwright test visual --update-snapshots
+        env:
+          CI: "1"
+          ALL_BROWSERS: "1"
+          VISUAL: "1"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: screenshots
+          path: tests/e2e/__screenshots__/

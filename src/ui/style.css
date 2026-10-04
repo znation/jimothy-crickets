@@ -6,8 +6,9 @@
   --accent-2: #ff8f5a;
   --green: #6cc24a;
   --night: #1a2147;
-  --display: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Nunito", "Varela Round", system-ui, sans-serif;
-  --text: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Fredoka (SIL OFL), bundled: the same rounded letters on every platform, and stable screenshots */
+  --display: "Fredoka", ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif;
+  --text: "Fredoka", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --gap: max(10px, env(safe-area-inset-left));
   color-scheme: dark;
 }
@@ -90,7 +91,7 @@ button:focus-visible,
   color: var(--ink);
   font-family: var(--display);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   box-shadow: 0 5px 0 var(--ink);
   transition: transform 0.08s;
 }
@@ -115,7 +116,7 @@ button:focus-visible,
   color: var(--ink);
   font-family: var(--display);
   font-size: 26px;
-  font-weight: 900;
+  font-weight: 700;
   box-shadow: 0 4px 0 var(--ink);
 }
 
@@ -255,7 +256,7 @@ button:focus-visible,
 
 .new-thing figcaption {
   font-family: var(--display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
 }
 
@@ -270,7 +271,7 @@ button:focus-visible,
 
 .recruit p {
   font-family: var(--display);
-  font-weight: 800;
+  font-weight: 700;
 }
 
 /* ---------------------------------------------------------------- title and map */
@@ -293,7 +294,7 @@ button:focus-visible,
   margin: 0;
   font-family: var(--display);
   font-size: clamp(44px, 9vw, 96px);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1;
   color: var(--paper);
   -webkit-text-stroke: 3px var(--ink);
@@ -409,7 +410,7 @@ button:focus-visible,
 .upgrade-name {
   font-family: var(--display);
   font-size: 19px;
-  font-weight: 800;
+  font-weight: 700;
   text-align: center;
   min-height: 2.4em;
   display: grid;
@@ -464,7 +465,7 @@ button:focus-visible,
   gap: 8px;
   font-family: var(--display);
   font-size: 26px !important;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .acorns-won .icon {
@@ -598,7 +599,7 @@ button:focus-visible,
 .level-node .level-id {
   font-family: var(--display);
   font-size: clamp(26px, 3.4vw, 34px);
-  font-weight: 900;
+  font-weight: 700;
 }
 
 /* ---------------------------------------------------------------- level HUD */
@@ -622,7 +623,7 @@ button:focus-visible,
   color: var(--ink);
   font-family: var(--display);
   font-size: 28px;
-  font-weight: 900;
+  font-weight: 700;
   box-shadow: 0 4px 0 var(--ink);
 }
 
@@ -729,7 +730,7 @@ button:focus-visible,
   gap: 4px;
   font-family: var(--display);
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .unit-card .cost .icon {
@@ -782,7 +783,7 @@ button:focus-visible,
   background: rgba(255, 246, 230, 0.75);
   color: var(--ink);
   font-size: 26px;
-  font-weight: 900;
+  font-weight: 700;
   box-shadow: 0 4px 0 var(--ink);
 }
 
@@ -831,7 +832,7 @@ button:focus-visible,
   color: var(--ink);
   font-family: var(--display);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   white-space: nowrap;
 }
 
@@ -953,7 +954,7 @@ button:focus-visible,
     text-align: center;
     font-family: var(--display);
     font-size: 26px;
-    font-weight: 800;
+    font-weight: 700;
   }
   .tipping-jimothy {
     width: 120px;

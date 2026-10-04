@@ -3,6 +3,9 @@ import { defineConfig, devices } from "@playwright/test";
 // Browser tests (plan §11.4) run against the production build.
 export default defineConfig({
   testDir: "tests/e2e",
+  // Screenshot baselines are made on CI runners (see visual.spec.ts); skip them elsewhere.
+  testIgnore: process.env.VISUAL ? [] : ["**/visual.spec.ts"],
+  snapshotPathTemplate: "{testDir}/__screenshots__/{projectName}/{arg}{ext}",
   timeout: 60_000,
   fullyParallel: true,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",

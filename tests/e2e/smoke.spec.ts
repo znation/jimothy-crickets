@@ -25,7 +25,8 @@ test("a player can win 1-1 from the title screen by holding the cricket card", a
   const card = page.locator('[data-unit="cricket"]');
   await card.hover();
   await page.mouse.down();
-  await expect(page.getByRole("dialog")).toContainText("The pile is ours!", { timeout: 30_000 });
+  // generous: WebKit and Firefox run slower than Chromium when the suite runs in parallel
+  await expect(page.getByRole("dialog")).toContainText("The pile is ours!", { timeout: 50_000 });
   await page.mouse.up();
   const sent = (await jc(page, "window.__jc.recorded.length")) as number;
   expect(sent).toBeGreaterThan(10);
@@ -56,7 +57,8 @@ test("title, map and a level load without page errors", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test("the installed game plays offline", async ({ page, context }) => {
+test("the installed game plays offline", async ({ page, context, browserName }) => {
+  test.skip(browserName === "webkit", "Playwright's WebKit build never activates service workers");
   await page.goto("/");
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
