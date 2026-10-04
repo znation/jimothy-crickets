@@ -8,7 +8,7 @@ import { closestS } from "../sim/lane.ts";
 import { UNIT_IDS, type DefenseId, type UnitId } from "../sim/types.ts";
 import { h, svg } from "./dom.ts";
 import { acornIcon, cogIcon, handIcon, moonIcon, pauseIcon, pileIcon, snackIcon } from "./icons.ts";
-import { portrait } from "./portrait.ts";
+import { hasPainted, paintedIcon, portrait } from "./portrait.ts";
 import { t } from "./strings.ts";
 
 export interface Screen {
@@ -135,7 +135,7 @@ function topBar(app: App, back: () => void, opts: { shop?: boolean } = { shop: t
     h(
       "div.hud-right",
       null,
-      h("div.pill.acorns", { "aria-label": `${app.save.data.acorns} ${t("hud.acorns")}` }, svg(acornIcon), h("span.value", null, String(app.save.data.acorns))),
+      h("div.pill.acorns", { "aria-label": `${app.save.data.acorns} ${t("hud.acorns")}` }, paintedIcon("acorn", acornIcon), h("span.value", null, String(app.save.data.acorns))),
       opts.shop ? h("button.big.shop-btn", { onclick: () => app.show(new ShopScreen(app)) }, t("shop.button")) : null,
       h("button.icon-btn", { onclick: () => openSettings(app), "aria-label": t("settings.title") }, svg(cogIcon)),
     ),
@@ -186,12 +186,12 @@ export class ShopScreen implements Screen {
               }
             },
           },
-          cost === undefined ? t("shop.max") : h("span.price", null, svg(acornIcon), String(cost)),
+          cost === undefined ? t("shop.max") : h("span.price", null, paintedIcon("acorn", acornIcon), String(cost)),
         );
         return h(
           "div.upgrade",
           { "data-upgrade": u.id },
-          u.unit ? portrait(u.unit, 84, 60) : h("div.econ", null, svg(snackIcon)),
+          u.unit ? portrait(u.unit, 84, 60) : h("div.econ", null, paintedIcon("snack", snackIcon)),
           h("div.upgrade-name", null, t(`upgrade.${u.id}`)),
           h("div.pips", { "aria-label": `${tier} of ${u.costs.length}` }, ...u.costs.map((_, i) => h(`span.pip${i < tier ? ".on" : ""}`))),
           buy,
@@ -342,7 +342,7 @@ export class LevelScreen implements Screen {
         "button.unit-card",
         { "aria-label": `${t(`unit.${u}`)}, ${def.cost} snacks`, "data-unit": u },
         portrait(u, 84, 60),
-        h("span.cost", null, svg(snackIcon), String(def.cost)),
+        h("span.cost", null, paintedIcon("snack", snackIcon), String(def.cost)),
         h("span.key", null, String(i + 1)),
       );
       card.addEventListener("pointerdown", (e) => {
@@ -371,8 +371,8 @@ export class LevelScreen implements Screen {
       h(
         "div.hud-top",
         null,
-        h("div.pill.snacks", { "aria-label": t("hud.snacks") }, svg(snackIcon), this.snacksEl),
-        h("div.pill.pile", null, svg(pileIcon), h("div.bar", null, this.pileFill)),
+        h("div.pill.snacks", { "aria-label": t("hud.snacks") }, paintedIcon("snack", snackIcon), this.snacksEl),
+        h("div.pill.pile", null, paintedIcon(hasPainted(`pile-${session.level.area}`) ? `pile-${session.level.area}` : "pile", pileIcon), h("div.bar", null, this.pileFill)),
         h(
           "div.hud-right",
           null,
@@ -657,7 +657,7 @@ export class LevelScreen implements Screen {
         null,
         h("h2", null, t("results.title")),
         moons(earned, "moons large"),
-        acorns > 0 ? h("p.acorns-won", null, svg(acornIcon), t("results.acorns", { n: acorns })) : null,
+        acorns > 0 ? h("p.acorns-won", null, paintedIcon("acorn", acornIcon), t("results.acorns", { n: acorns })) : null,
         recruit
           ? h("div.recruit", null, portrait(recruit, 112, 80), h("p", null, t("results.recruit", { unit: t(`unit.${recruit}`) })))
           : null,

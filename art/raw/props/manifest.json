@@ -1,0 +1,34 @@
+{
+  "snack": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one object sticker, whole object with white space around it, plain white background, no scenery, a single round golden chocolate chip cookie",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 22200,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "acorn-cup": {
+    "kind": "object",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one object sticker, whole object with white space around it, plain white background, no scenery, a single cartoon acorn, a smooth brown oak nut sitting in its bumpy little cup, autumn",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 20700,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  }
+}

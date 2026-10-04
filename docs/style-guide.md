@@ -31,6 +31,16 @@ Areas 2–4 (`art/raw/areas/picks.json`):
 | Background (strip mall) | 10800 at 0.75 | lit storefronts over a lined parking lot |
 | Background (alley) | `bg-alley-lot-75` 13900 | red-brick terraces with warm windows over an open lot |
 
+Props (`art/raw/props/picks.json`):
+
+| Sprite | Pick | Why |
+|---|---|---|
+| Snack (cookie) | 22200, cropped | a single round chocolate-chip cookie; the crop drops a dip bowl beside it |
+| Acorn | `acorn-cup` 20700, cropped | the only real capped acorn in 26 renders, sitting in a corner of a teacup scene |
+
+Still drawn in code, on purpose: the staging-area cardboard mat (14 renders gave open boxes of
+toys, a shed, a truck and a book), lanes, range rings, effects, moons and UI buttons.
+
 Every area now has a painted background; the procedural scenery shows only beyond the bleed on
 extreme ultrawides.
 
@@ -103,6 +113,9 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
 - **Avoid perspective nouns in background prompts.** "Back alley" pulled even img2img toward a
   vanishing-point street with paths; "a flat open asphalt lot behind brick apartment buildings"
   kept the layout.
+- **Small props drift into scenes.** "Acorn … cap" drew mushrooms, "oak … seed" drew trees, "cup"
+  drew teacups. When a good object turns up inside a scene, crop it: `art/raw/<set>/crops.json`
+  records the box, and `matte.py` crops before matting.
 - **Fences:** ask for a solid gate. Picket fences lose their rails in matting.
 - **Sprinklers** always come out as garden scenes; the best candidates read as small fountains.
 

@@ -1136,6 +1136,11 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
     at 0.72 with a fur-only prompt. Inpainting a "rump" from scratch drew tails again. A second
     touch-up (`jimothy-nub.json`) added back the fairly tiny nub he really has, in a mask too small
     for a full tail.
+  - **Painted UI icons** (props set): the snack cookie and the acorn replace their SVGs in the HUD,
+    unit cards, shop and results, and the HUD's pile icon is the current area's painted pile. The
+    portrait-phone card shows painted Jimothy. Moons, buttons and effects stay in code (§8.3: code
+    for anything that has to scale or carry gameplay information), as does the staging mat, which
+    SDXL wouldn't draw as a flat box.
   - **App icons and splash screens** now use the painted sprites (`tools/make_icons.ts` reads the
     atlases; the vector drawing is the fallback).
   - **Frame times are unchanged** (the atlas is one `drawImage` per sprite). The atlas is 200 KB.

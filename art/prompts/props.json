@@ -1,0 +1,54 @@
+{
+  "comment": "Small painted props: the staging-area cardboard box under Jimothy, and the snack (cookie) and acorn currency icons used across the HUD, cards, shop and results.",
+  "style": "children's picture book illustration, soft watercolour fills, bold dark ink outlines",
+  "default_framing": "v2",
+  "framings": {
+    "v2": {
+      "prefix": {
+        "sprite": "one cute character sticker, whole body with white space around it, plain white background",
+        "object": "one object sticker, whole object with white space around it, plain white background, no scenery"
+      },
+      "suffix": {
+        "sprite": "side view facing right",
+        "object": "",
+        "background": "wide landscape, no characters, no animals, no people"
+      }
+    }
+  },
+  "assets": [
+    {
+      "name": "box",
+      "seed": 20600,
+      "kind": "object",
+      "prompt": "a single flat sheet of brown corrugated cardboard lying on the ground, seen from the side",
+      "seeds": 4
+    },
+    {
+      "name": "snack",
+      "seed": 20200,
+      "kind": "object",
+      "prompt": "a single round golden chocolate chip cookie"
+    },
+    {
+      "name": "acorn",
+      "seed": 20400,
+      "kind": "object",
+      "prompt": "a single small brown oak acorn nut, oak tree seed",
+      "seeds": 6
+    },
+    {
+      "name": "acorn-cup",
+      "seed": 20700,
+      "kind": "object",
+      "seeds": 4,
+      "prompt": "a single cartoon acorn, a smooth brown oak nut sitting in its bumpy little cup, autumn"
+    },
+    {
+      "name": "acorn-pair",
+      "seed": 20800,
+      "kind": "object",
+      "seeds": 4,
+      "prompt": "one plump cartoon acorn with a scaly cupule and a tiny stem, autumn harvest icon"
+    }
+  ]
+}

@@ -964,6 +964,13 @@ button:focus-visible,
     background: radial-gradient(ellipse 30% 14% at 68% 38%, #1f1d24 98%, transparent) , #8a8d96;
     animation: tip 2s ease-in-out infinite;
   }
+  .tipping-jimothy.painted {
+    width: 130px;
+    height: 110px;
+    border: none;
+    border-radius: 0;
+    background: none;
+  }
 }
 
 @keyframes tip {

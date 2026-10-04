@@ -75,13 +75,26 @@ def matte(model, img):
     return out
 
 
+def crop(img, box):
+    """Crop to x0,y0,x1,y1 (when the model drew props touching the subject), on a white margin."""
+    from PIL import Image
+    if not box:
+        return img
+    x0, y0, x1, y1 = (int(v) for v in box.split(","))
+    part = img.convert("RGB").crop((x0, y0, x1, y1))
+    out = Image.new("RGB", (part.width + 48, part.height + 48), "white")
+    out.paste(part, (24, 24))
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("set")
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--force", action="store_true", help="overwrite curated files (loses touch-ups)")
     ap.add_argument("--threads", type=int, default=8)
-    ap.add_argument("--src", nargs="*", help="matte these files instead; NAME=PATH sets the output name")
+    ap.add_argument("--src", nargs="*",
+                    help="matte these files instead; NAME=PATH sets the output name, PATH@x0,y0,x1,y1 crops first")
     args = ap.parse_args()
 
     from PIL import Image
@@ -92,13 +105,17 @@ def main():
         model = load_model(args.threads)
         for spec in args.src:
             name, _, path = spec.rpartition("=")
+            path, _, box = path.partition("@")
             dst = out_dir / f"{name or '_test-' + Path(path).stem}.png"
-            matte(model, Image.open(path)).save(dst)
+            matte(model, crop(Image.open(path), box)).save(dst)
             print(dst.relative_to(generate.ROOT))
         return
 
     raw = generate.RAW / args.set
     manifest = json.loads((raw / "manifest.json").read_text())
+    # Optional per-asset crops ("x0,y0,x1,y1"), for picks whose subject touches other props.
+    crops_file = raw / "crops.json"
+    crops = json.loads(crops_file.read_text()) if crops_file.exists() else {}
     model = None
     for name, info in manifest.items():
         if args.only and name not in args.only:
@@ -111,7 +128,7 @@ def main():
             shutil.copy(raw / f"{name}.png", dst)
         else:
             model = model or load_model(args.threads)
-            matte(model, Image.open(raw / f"{name}.png")).save(dst)
+            matte(model, crop(Image.open(raw / f"{name}.png"), crops.get(name, ""))).save(dst)
         print(f"wrote {dst.relative_to(generate.ROOT)}")
 
 

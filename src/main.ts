@@ -7,7 +7,7 @@ import { registerServiceWorker, webPlatform } from "./platform/web.ts";
 import type { Platform } from "./platform/types.ts";
 import { loadAtlases } from "./render/atlas.ts";
 import { SaveStore } from "./save.ts";
-import { setPortraitAtlas } from "./ui/portrait.ts";
+import { hasPainted, portrait, setPortraitAtlas } from "./ui/portrait.ts";
 import "./ui/style.css";
 
 function pickPlatform(): Platform {
@@ -55,9 +55,15 @@ async function main() {
   // ?atlas=<set> tries another atlas; ?atlas=none forces the vector art.
   // Shared characters first, then per-area piles and backgrounds.
   const atlasSet = new URLSearchParams(location.search).get("atlas");
-  const atlas = atlasSet === "none" ? null : await loadAtlases(atlasSet ? atlasSet.split(",") : ["area1", "areas"]);
+  const atlas = atlasSet === "none" ? null : await loadAtlases(atlasSet ? atlasSet.split(",") : ["area1", "areas", "props"]);
   app.scene.setAtlas(atlas);
   setPortraitAtlas(atlas);
+  // The portrait-phone "turn sideways" card shows the painted Jimothy tipping over.
+  const tipping = document.querySelector(".tipping-jimothy");
+  if (tipping && hasPainted("jimothy")) {
+    tipping.classList.add("painted");
+    tipping.replaceChildren(portrait("jimothy", 130, 110));
+  }
   app.start();
 }
 
