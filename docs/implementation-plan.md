@@ -1133,7 +1133,11 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
       Every area now has a painted background.
   - **Jimothy without the tail:** the pick is now an inpainted touch-up
     (`tools/asset_gen/inpaint.py`). Paint the body over the tail in flat fur grey, then re-texture
-    at 0.72 with a fur-only prompt. Inpainting a "rump" from scratch drew tails again.
+    at 0.72 with a fur-only prompt. Inpainting a "rump" from scratch drew tails again. A second
+    touch-up (`jimothy-nub.json`) added back the fairly tiny nub he really has, in a mask too small
+    for a full tail.
+  - **App icons and splash screens** now use the painted sprites (`tools/make_icons.ts` reads the
+    atlases; the vector drawing is the fallback).
   - **Frame times are unchanged** (the atlas is one `drawImage` per sprite). The atlas is 200 KB.
 
 ### M6 — Campaign wrapper and saves (README step 5); mobile beta

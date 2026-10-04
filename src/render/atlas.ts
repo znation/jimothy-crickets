@@ -18,8 +18,8 @@ export interface Atlas {
 }
 
 /** Load several atlases and merge them; later sets override earlier frames of the same name. */
-export async function loadAtlases(sets: string[]): Promise<Atlas | null> {
-  const loaded = (await Promise.all(sets.map(loadAtlas))).filter((a): a is Atlas => a !== null);
+export async function loadAtlases(sets: string[], base = "./atlas/"): Promise<Atlas | null> {
+  const loaded = (await Promise.all(sets.map((s) => loadAtlas(s, base)))).filter((a): a is Atlas => a !== null);
   if (!loaded.length) return null;
   return {
     frames: Object.assign({}, ...loaded.map((a) => a.frames)),
@@ -27,14 +27,14 @@ export async function loadAtlases(sets: string[]): Promise<Atlas | null> {
   };
 }
 
-export async function loadAtlas(set: string): Promise<Atlas | null> {
+export async function loadAtlas(set: string, base = "./atlas/"): Promise<Atlas | null> {
   try {
-    const res = await fetch(`./atlas/${set}.json`);
+    const res = await fetch(`${base}${set}.json`);
     if (!res.ok) return null;
     const meta = (await res.json()) as { image: string; frames: Record<string, Omit<Frame, "image">>; backgrounds: string[] };
     const [image, ...bgs] = await Promise.all([
-      loadImage(`./atlas/${meta.image}`),
-      ...meta.backgrounds.map((b) => loadImage(`./atlas/${set}-${b}.webp`)),
+      loadImage(`${base}${meta.image}`),
+      ...meta.backgrounds.map((b) => loadImage(`${base}${set}-${b}.webp`)),
     ]);
     return {
       frames: Object.fromEntries(Object.entries(meta.frames).map(([k, f]) => [k, { ...f, image: image! }])),

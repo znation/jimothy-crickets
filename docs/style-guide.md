@@ -6,7 +6,7 @@ ships them as working art:
 
 | Sprite | Pick | Why |
 |---|---|---|
-| Jimothy | `jimothy-notail` 24 (a touch-up of `jimothy-photo` 9050) | 9050 was the roundest of 28 renders, but a ringed tail peeked out behind his hind leg and the frame cropped his rump. Inpainting removed the tail, completed the rump and cleared the grass |
+| Jimothy | `jimothy-nub` 31 (touch-ups of `jimothy-photo` 9050) | 9050 was the roundest of 28 renders, but a ringed tail peeked out behind his hind leg and the frame cropped his rump. `jimothy-notail` (24) removed the tail, completed the rump and cleared the grass; `jimothy-nub` (31) gave him back the fairly tiny fluffy nub he really has |
 | Cricket | 8100 | round green ball, dot eyes, smile; small wings |
 | Possum | 8200 | the roundest, softest face |
 | Squirrel | 9300 | side view, facing right, whole tail in frame |
@@ -54,7 +54,7 @@ picture-book palette; not pixel art, not flat vector.
 
 | Who | Must read as | Never |
 |---|---|---|
-| **Jimothy** | a very round grey-and-black ball, bandit mask, no neck, tiny stub of a tail, short stubby legs | a long ringed raccoon tail; brown fur; a neck; menacing |
+| **Jimothy** | a very round grey-and-black ball, bandit mask, no neck, a fairly tiny fluffy nub of a tail, short stubby legs | a long ringed raccoon tail; brown fur; a neck; menacing |
 | **Crickets** | happy, round, bright green, dot eyes, small closed-mouth smiles, floppy antennae | spiky, toothy, realistic insect legs, orange or striped |
 | Possum | round pale-grey cushion with a pink nose | rat-like or toothy |
 | Squirrel | orange, with a big fluffy tail (its silhouette) | |
@@ -87,6 +87,9 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
   Instead paint the missing body in flat fur grey first (continue his body's ellipse), then
   re-texture it at strength ~0.72 with a prompt that names only fur. The recipe is
   `art/prompts/touchups/jimothy-notail.json` (`tools/asset_gen/inpaint.py`).
+- **His nub** is added the same way (`jimothy-nub.json`): a small flat grey ellipse on the back of
+  his rump, about two-thirds up, re-textured at 0.62 inside a mask barely bigger than the nub, so
+  it can't grow into a full tail.
 - **Crickets:** keep the concept wording ("sweet round cartoon cricket, soft rounded bright green
   body, little black dot eyes, gentle closed-mouth smile, floppy curved antennae, short stubby
   rounded legs, cuddly"). Wings still appear; small rounded ones are acceptable.

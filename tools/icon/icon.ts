@@ -1,7 +1,12 @@
 // Draws Jimothy art for app icons and splash screens; tools/make_icons.ts screenshots it.
 // ?w=&h=&mode=icon|maskable|foreground|splash
 
+import { drawFrame, loadAtlases } from "../../src/render/atlas.ts";
 import { drawCricket, drawJimothy } from "../../src/render/sprites.ts";
+
+// The painted sprites from the game's atlases (served from public/ by the dev server); the
+// vector drawings are the fallback if no atlas has been built.
+const atlas = await loadAtlases(["area1", "areas"], "/atlas/");
 
 const params = new URLSearchParams(location.search);
 const w = Number(params.get("w") ?? params.get("size") ?? 512);
@@ -28,6 +33,22 @@ function scene(cx: number, cy: number, s: number, withGround = true) {
     ctx.ellipse(cx + 20 * s, cy + 50 * s, 120 * s, 22 * s, 0, 0, Math.PI * 2);
     ctx.fill();
   }
+  const jim = atlas?.frames.jimothy;
+  const cricket = atlas?.frames.cricket;
+  if (jim && cricket) {
+    // painted sprites stand on their bottom-centre anchor: feet on the ground ellipse
+    ctx.save();
+    ctx.translate(cx - 14 * s, cy + 50 * s);
+    ctx.scale(s, s);
+    drawFrame(ctx, jim, 1, 1, 0.9);
+    ctx.restore();
+    ctx.save();
+    ctx.translate(cx + 78 * s, cy + 54 * s);
+    ctx.scale(s, s);
+    drawFrame(ctx, cricket, 1, 1, 0.75);
+    ctx.restore();
+    return;
+  }
   ctx.save();
   ctx.translate(cx - 8 * s, cy - 10 * s);
   ctx.scale(s, s);
@@ -52,12 +73,11 @@ if (mode === "splash") {
   const k = w / 512;
   ctx.scale(k, k);
   if (mode === "icon") {
-    ctx.save();
+    // everything stays inside the rounded square, ground included
     ctx.beginPath();
     ctx.roundRect(16, 16, 480, 480, 110);
     ctx.clip();
     sky(0, 0, 512, 512);
-    ctx.restore();
   } else if (mode === "maskable") sky(0, 0, 512, 512);
   if (mode !== "foreground") {
     ctx.fillStyle = "#ffe08a";
@@ -66,7 +86,8 @@ if (mode === "splash") {
     ctx.fill();
   }
   // Maskable and adaptive icons keep the subject inside the central safe zone.
-  const s = mode === "icon" ? 2.6 : mode === "maskable" ? 2.0 : 1.55;
-  scene(256, 286, s, mode !== "foreground");
+  const painted = !!atlas?.frames.jimothy;
+  const s = painted ? (mode === "icon" ? 2.05 : mode === "maskable" ? 1.75 : 1.4) : mode === "icon" ? 2.6 : mode === "maskable" ? 2.0 : 1.55;
+  scene(painted ? 236 : 256, 286, s, mode !== "foreground");
 }
 document.title = "ready";

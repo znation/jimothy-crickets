@@ -1,0 +1,20 @@
+{
+  "comment": "Give the tailless Jimothy (jimothy-notail) the fairly tiny nub tail he really has: a short fluffy stub at the back of his round rump, with a darker tip. Painted in flat colour first and re-textured inside a small mask, so it can't grow into a long tail.",
+  "src": "art/raw/area1/jimothy-notail.png",
+  "out": "art/raw/area1/_candidates/jimothy-nub",
+  "scale": 0.94,
+  "offset": [30, 16],
+  "seeds": [31, 32, 33, 34, 35, 36],
+  "prefill": [
+    { "fill": "#9b958b", "within": [["ellipse", 14, 232, 78, 290]] },
+    { "fill": "#4a4744", "within": [["ellipse", 14, 242, 34, 282]] }
+  ],
+  "passes": [
+    {
+      "prompt": "a tiny short fluffy grey fur tail stub with a dark tip, plain white background",
+      "mask": [["ellipse", 2, 216, 94, 304]],
+      "blur": 6,
+      "strength": 0.62
+    }
+  ]
+}
