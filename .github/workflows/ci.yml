@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      # Only the game's own images (public/); the concept art (~130 MB of LFS) isn't needed.
-      - run: git lfs pull --include="public/**"
+      # Only the game's images and the screenshot baselines; the concept art (~130 MB of LFS) isn't needed.
+      - run: git lfs pull --include="public/**,tests/e2e/__screenshots__/**"
       - uses: actions/setup-node@v7
         with:
           node-version: 24
