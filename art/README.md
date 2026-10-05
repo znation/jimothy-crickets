@@ -57,6 +57,12 @@ About 22 s per 512² render and 3–5 s per matte on this iMac.
 - IP-Adapter (h94): Apache 2.0.
 - BiRefNet-lite (ZhengPeng7/BiRefNet_lite): MIT, checked 2026-10-03.
 
+## Store art
+
+`node tools/make_store_art.ts` renders the feature graphic, capsules, covers and per-device
+screenshots into `store/` (LFS) from the atlases and the game's still mode; `--only <text>`
+renders the matching files. `docs/store-listing.md` lists them.
+
 ## Audio
 
 `audio/src/` holds the CC0 recordings as downloaded; `audio/LICENSES.md` lists each one's source,
