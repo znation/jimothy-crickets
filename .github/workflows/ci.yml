@@ -19,6 +19,9 @@ jobs:
       - run: npm run typecheck
       - run: npm run validate
       - run: npm test
+      # Warns (doesn't fail) when art/store/ was rendered from older art, UI or levels.
+      - name: Store art freshness
+        run: node tools/store_art_stamp.ts --check
       - name: Headless report (every level's reference must win)
         run: npm run sim -- --all --report > /dev/null
       - name: Difficulty curve

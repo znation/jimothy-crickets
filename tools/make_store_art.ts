@@ -3,12 +3,14 @@
 // - capsules and feature graphics: a story scene from the painted sprites with the title logo
 //   (tools/store/), PNG
 // - screenshots: still frames of the game (?still) at each store's device sizes, JPEG
-// Everything goes to art/store/ (Git LFS). Needs the atlases (art/README.md).
+// Everything goes to art/store/ (Git LFS). Needs the atlases (art/README.md). A full render also
+// records its inputs in art/store/inputs.json; CI warns when they've changed since.
 
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { chromium, type Page } from "@playwright/test";
 import { createServer } from "vite";
+import { writeStamp } from "./store_art_stamp.ts";
 
 type Art = { file: string; w: number; h: number; story: string; logo: "top" | "left" | "center" | "none"; transparent?: boolean };
 
@@ -86,6 +88,9 @@ for (const d of devices) {
   await ctx.close();
 }
 console.log(`rendered ${n} images into art/store/`);
+// record what this render was drawn from, so CI can tell when it's stale (only for a full render)
+if (only) console.log("partial render (--only): art/store/inputs.json not updated");
+else writeStamp();
 await browser.close();
 await server.close();
 
