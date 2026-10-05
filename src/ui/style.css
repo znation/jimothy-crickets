@@ -376,6 +376,17 @@ button:focus-visible,
   text-shadow: 0 4px 0 var(--ink);
 }
 
+.shop-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 36px;
+}
+
+.shop-head .screen-title {
+  margin: 0;
+}
+
 .shop-list {
   display: flex;
   flex-wrap: wrap;
@@ -873,6 +884,16 @@ button:focus-visible,
     margin-top: 0;
     font-size: 26px;
   }
+  .shop-head {
+    margin-top: 0;
+  }
+  .shop-head .portrait {
+    width: 56px !important;
+    height: 42px !important;
+  }
+  .pause-card > .portrait:first-child {
+    display: none;
+  }
   .shop {
     justify-content: flex-start;
     padding-top: 12px;
@@ -916,8 +937,8 @@ button:focus-visible,
   .card h2 {
     font-size: 26px;
   }
-  /* a new friend's portrait takes the room Jimothy's would */
-  .results:has(.recruit) > .portrait:first-child {
+  /* no room for Jimothy on the results card: he's celebrating behind it anyway */
+  .results > .portrait:first-child {
     display: none;
   }
   .settings .col {

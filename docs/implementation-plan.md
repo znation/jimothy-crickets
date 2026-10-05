@@ -1147,10 +1147,11 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
     atlases; the vector drawing is the fallback).
   - **Frame times are unchanged** (the atlas is one `drawImage` per sprite). The atlas is 200 KB.
   - **Jimothy's poses**, also touch-ups: wave (title, intros, the start of each night), happy
-    (deliveries, wins with the cookie held up, the results card) and sleepy (the nap, with z's in
-    code, and the night card). *Changed from §8.3:* three poses, not six. "Point" is the wave,
-    "celebrate" is the happy pose plus the cookie, and "think" failed (the paw kept melting into
-    his chest fur).
+    (deliveries, wins with the cookie held up, the results card), sleepy (the nap, with z's in
+    code, and the night card) and think (paw at his chin, eyes up: the pause card and the shop).
+    *Changed from §8.3:* four poses, not six. "Point" is the wave and "celebrate" is the happy
+    pose plus the cookie. The thinking paw is pasted from the wave pose and blended, since
+    inpainted paws melted into his chest fur.
   - **Story cards** are composed in code from the painted sprites (`src/render/story.ts`), not
     generated: the area's background, its pile, Jimothy and the troupe that has joined by then.
     *Changed from §8.3:* they open each area's first level and follow the first win of 4-5 (the
@@ -1219,7 +1220,10 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
     - Kenney UI clicks, light switch, scratch, pluck, broom swish, pile thud and pizzicato
       jingles for winning, the sun coming up and a new friend
     - one music loop per area from OpenGameArt, loudness-normalized, decoded whole and looped
-      gaplessly
+      gaplessly. The manifest records each loop's exact length: a decoder that ignores the MP4
+      edit list (it leaves the AAC encoder's 1024-sample delay in) would otherwise put a 23 ms
+      hiccup at every repeat, so the game starts the loop after it (`loopPoints`, unit-tested
+      with sample counts measured in Chromium).
     - *Changed from §9:* the animals' voices, the sprinkler and the dog stay **synthesized**
       (`src/platform/audio.ts`), as does a fallback for any file that hasn't loaded.
     - The service worker caches audio as it's fetched rather than precaching both formats.

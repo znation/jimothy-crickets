@@ -536,5 +536,178 @@
       "seed": 42
     },
     "model": "stabilityai/sdxl-turbo (inpainting)"
+  },
+  "jimothy-think-paw": {
+    "kind": "sprite",
+    "touchup": {
+      "recipe": "art/prompts/touchups/jimothy-think-paw.json",
+      "comment": "A paw raised to his chin, thinking. Inpainting a paw there melted it into the chest fur at every strength, so this pastes the painted paw from jimothy-wave under his chin over a darker arm, then only blends the seams.",
+      "src": "art/raw/area1/jimothy-nub.png",
+      "scale": 1,
+      "offset": [
+        0,
+        0
+      ],
+      "seeds": [
+        41,
+        42,
+        43,
+        44
+      ],
+      "out": "art/raw/area1/_candidates/jimothy-think-paw",
+      "prefill": [
+        {
+          "fill": "#55504b",
+          "within": [
+            [
+              "ellipse",
+              376,
+              346,
+              432,
+              436
+            ]
+          ]
+        }
+      ],
+      "paste": [
+        {
+          "src": "art/raw/area1/jimothy-wave.png",
+          "box": [
+            440,
+            176,
+            508,
+            258
+          ],
+          "at": [
+            390,
+            346
+          ],
+          "rotate": 25,
+          "feather": 3
+        }
+      ],
+      "passes": [
+        {
+          "prompt": "a small black raccoon paw raised to its chin, thinking, dark grey furry arm",
+          "mask": [
+            [
+              "ellipse",
+              350,
+              296,
+              444,
+              440
+            ]
+          ],
+          "blur": 8,
+          "strength": 0.3
+        }
+      ],
+      "seed": 41
+    },
+    "model": "stabilityai/sdxl-turbo (inpainting)"
+  },
+  "jimothy-think": {
+    "kind": "sprite",
+    "touchup": {
+      "recipe": "art/prompts/touchups/jimothy-think.json",
+      "comment": "Thinking: the paw at his chin (jimothy-think-paw) plus eyes looking up, painted as white eyes with the pupils near the top and re-textured inside small masks.",
+      "src": "art/raw/area1/jimothy-think-paw.png",
+      "scale": 1,
+      "offset": [
+        0,
+        0
+      ],
+      "seeds": [
+        41,
+        42,
+        43,
+        44
+      ],
+      "out": "art/raw/area1/_candidates/jimothy-think",
+      "prefill": [
+        {
+          "fill": "#f4efe6",
+          "within": [
+            [
+              "ellipse",
+              314,
+              228,
+              346,
+              260
+            ],
+            [
+              "ellipse",
+              398,
+              228,
+              430,
+              260
+            ]
+          ]
+        },
+        {
+          "fill": "#141214",
+          "within": [
+            [
+              "ellipse",
+              321,
+              226,
+              341,
+              246
+            ],
+            [
+              "ellipse",
+              405,
+              226,
+              425,
+              246
+            ]
+          ]
+        },
+        {
+          "fill": "#ffffff",
+          "within": [
+            [
+              "ellipse",
+              326,
+              230,
+              332,
+              236
+            ],
+            [
+              "ellipse",
+              410,
+              230,
+              416,
+              236
+            ]
+          ]
+        }
+      ],
+      "passes": [
+        {
+          "prompt": "big round cartoon eyes looking up, thoughtful, black bandit mask fur",
+          "mask": [
+            [
+              "ellipse",
+              304,
+              218,
+              356,
+              268
+            ],
+            [
+              "ellipse",
+              388,
+              218,
+              440,
+              268
+            ]
+          ],
+          "blur": 4,
+          "strength": 0.4
+        }
+      ],
+      "seed": 42
+    },
+    "model": "stabilityai/sdxl-turbo (inpainting)"
   }
 }

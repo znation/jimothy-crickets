@@ -1,0 +1,98 @@
+{
+  "comment": "Thinking: the paw at his chin (jimothy-think-paw) plus eyes looking up, painted as white eyes with the pupils near the top and re-textured inside small masks.",
+  "src": "art/raw/area1/jimothy-think-paw.png",
+  "scale": 1,
+  "offset": [
+    0,
+    0
+  ],
+  "seeds": [
+    41,
+    42,
+    43,
+    44
+  ],
+  "out": "art/raw/area1/_candidates/jimothy-think",
+  "prefill": [
+    {
+      "fill": "#f4efe6",
+      "within": [
+        [
+          "ellipse",
+          314,
+          228,
+          346,
+          260
+        ],
+        [
+          "ellipse",
+          398,
+          228,
+          430,
+          260
+        ]
+      ]
+    },
+    {
+      "fill": "#141214",
+      "within": [
+        [
+          "ellipse",
+          321,
+          226,
+          341,
+          246
+        ],
+        [
+          "ellipse",
+          405,
+          226,
+          425,
+          246
+        ]
+      ]
+    },
+    {
+      "fill": "#ffffff",
+      "within": [
+        [
+          "ellipse",
+          326,
+          230,
+          332,
+          236
+        ],
+        [
+          "ellipse",
+          410,
+          230,
+          416,
+          236
+        ]
+      ]
+    }
+  ],
+  "passes": [
+    {
+      "prompt": "big round cartoon eyes looking up, thoughtful, black bandit mask fur",
+      "mask": [
+        [
+          "ellipse",
+          304,
+          218,
+          356,
+          268
+        ],
+        [
+          "ellipse",
+          388,
+          218,
+          440,
+          268
+        ]
+      ],
+      "blur": 4,
+      "strength": 0.4
+    }
+  ]
+}

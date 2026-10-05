@@ -12,9 +12,14 @@ The recipe file:
     { "src": "art/raw/area1/jimothy-photo.png", "out": "art/raw/area1/_candidates/jimothy-notail",
       "scale": 0.85, "offset": [77, 60], "seeds": [1, 2, 3],
       "prefill": [ { "fill": "#8a8a8a", "within": [["ellipse", ...]], "clip": [["rect", ...]] } ],
+      "paste": [ { "src": "art/raw/area1/jimothy-wave.png", "box": [x0, y0, x1, y1],
+                   "at": [cx, cy], "rotate": -20, "feather": 4 } ],
       "passes": [ { "prompt": "...", "mask": [["ellipse", x0, y0, x1, y1], ["rect", ...]],
                     "strength": 1.0, "blur": 12 } ] }
 Mask shapes are in canvas pixels. Candidates go to <out>/<seed>-<recipe hash>.png.
+"paste" copies an elliptical cut-out (the box's inscribed ellipse, feathered) of another render,
+rotated and centered on "at": a part that already came out well, like a painted paw, where
+inpainting one from scratch keeps melting it back into the fur.
 """
 import hashlib
 import json
@@ -47,6 +52,17 @@ def canvas(recipe):
         if "clip" in pf:
             region = ImageChops.multiply(region, mask(pf["clip"], 0))
         out.paste(Image.new("RGB", (SIZE, SIZE), pf["fill"]), (0, 0), region)
+    from PIL import ImageDraw, ImageFilter
+    for p in recipe.get("paste", []):
+        part = Image.open(generate.ROOT / p["src"]).convert("RGB").crop(p["box"])
+        cut = Image.new("L", part.size, 0)
+        f = p.get("feather", 4)
+        ImageDraw.Draw(cut).ellipse([f, f, part.width - 1 - f, part.height - 1 - f], fill=255)
+        cut = cut.filter(ImageFilter.GaussianBlur(f))
+        part = part.rotate(p.get("rotate", 0), Image.BICUBIC, expand=True)
+        cut = cut.rotate(p.get("rotate", 0), Image.BICUBIC, expand=True)
+        cx, cy = p["at"]
+        out.paste(part, (round(cx - part.width / 2), round(cy - part.height / 2)), cut)
     return out
 
 

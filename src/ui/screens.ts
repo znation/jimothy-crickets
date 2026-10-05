@@ -157,7 +157,7 @@ export class ShopScreen implements Screen {
       "div.screen.shop",
       null,
       topBar(app, () => app.showMap(), { shop: false }),
-      h("h2.screen-title", null, t("shop.title")),
+      h("div.shop-head", null, portrait("jimothy-think", 96, 72), h("h2.screen-title", null, t("shop.title"))),
       this.list,
     );
     this.render();
@@ -646,8 +646,9 @@ export class LevelScreen implements Screen {
     this.openOverlay(
       "pause",
       h(
-        "div.card",
+        "div.card.pause-card",
         null,
+        portrait("jimothy-think", 120, 90),
         h("h2", null, t("pause.title")),
         resume,
         h("button.big", { onclick: () => this.app.playLevel(this.session.level.id, { skipIntro: true }) }, t("pause.restart")),
@@ -676,7 +677,7 @@ export class LevelScreen implements Screen {
     const id = this.session.level.id;
     const earned = st.outcome!.moons;
     // the finale's story card plays before the results, the first time the last level is won
-    const finale = id === levelOrder.at(-1) && !this.app.save.data.levels[id]?.cleared && !this.session.replaying;
+    const finale = id === levelOrder.at(-1) && !this.app.save.data.levels[id]?.cleared;
     const { recruit, acorns } = this.app.save.recordWin(id, earned);
     void this.app.save.store();
     const nextId = levelOrder[levelOrder.indexOf(id) + 1];

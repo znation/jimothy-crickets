@@ -33,6 +33,18 @@ test("a player can win 1-1 from the title screen by holding the cricket card", a
   expect(sent).toBeGreaterThan(10);
 });
 
+test("the first win of the last level shows the finale, then the results", async ({ page }) => {
+  test.setTimeout(120_000); // two runs of the longest level
+  await page.goto("/?level=4-5&replay=reference&speed=16");
+  await expect(page.getByRole("dialog")).toContainText("The biggest feast in Seattle!", { timeout: 50_000 });
+  await page.getByRole("button", { name: "Yay!" }).click();
+  await expect(page.getByRole("dialog")).toContainText("The pile is ours!");
+
+  // only the first time
+  await page.goto("/?level=4-5&replay=reference&speed=16");
+  await expect(page.getByRole("dialog")).toContainText("The pile is ours!", { timeout: 50_000 });
+});
+
 test("pausing freezes the night and 'call it a night' ends softly", async ({ page }) => {
   await page.goto("/?level=1-2&skipIntro=1");
   await page.getByRole("button", { name: "Pause" }).click();

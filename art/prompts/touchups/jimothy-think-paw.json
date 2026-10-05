@@ -1,0 +1,63 @@
+{
+  "comment": "A paw raised to his chin, thinking. Inpainting a paw there melted it into the chest fur at every strength, so this pastes the painted paw from jimothy-wave under his chin over a darker arm, then only blends the seams.",
+  "src": "art/raw/area1/jimothy-nub.png",
+  "scale": 1,
+  "offset": [
+    0,
+    0
+  ],
+  "seeds": [
+    41,
+    42,
+    43,
+    44
+  ],
+  "out": "art/raw/area1/_candidates/jimothy-think-paw",
+  "prefill": [
+    {
+      "fill": "#55504b",
+      "within": [
+        [
+          "ellipse",
+          376,
+          346,
+          432,
+          436
+        ]
+      ]
+    }
+  ],
+  "paste": [
+    {
+      "src": "art/raw/area1/jimothy-wave.png",
+      "box": [
+        440,
+        176,
+        508,
+        258
+      ],
+      "at": [
+        390,
+        346
+      ],
+      "rotate": 25,
+      "feather": 3
+    }
+  ],
+  "passes": [
+    {
+      "prompt": "a small black raccoon paw raised to its chin, thinking, dark grey furry arm",
+      "mask": [
+        [
+          "ellipse",
+          350,
+          296,
+          444,
+          440
+        ]
+      ],
+      "blur": 8,
+      "strength": 0.3
+    }
+  ]
+}

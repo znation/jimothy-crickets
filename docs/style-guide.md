@@ -24,6 +24,7 @@ Jimothy's poses, all touch-ups of `jimothy-nub` (recipes in `art/prompts/touchup
 | `jimothy-wave` | 42 | the title, level intros, and the first two seconds of every night |
 | `jimothy-happy` | 41 | the happy hop after each delivery, a win (with the cookie held up, drawn in code), the results card |
 | `jimothy-sleepy` | 44 | the nap when the sun comes up (with z's drawn in code), the night card |
+| `jimothy-think` | 42 (on `jimothy-think-paw` 41) | paw at his chin, eyes up: the pause card and the acorn shop |
 
 Areas 2–4 (`art/raw/areas/picks.json`):
 
@@ -119,7 +120,10 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
   - Mouth: paint a flat open mouth (dark red, pink tongue), re-texture at 0.5.
   - A raised paw: paint a grey arm and a black paw where they go, re-texture at 0.6 in a mask
     that covers both.
-  - A paw on the chin ("thinking") failed on every seed: the paw melts back into his chest fur.
+  - A paw on the chin can't be inpainted: at any strength from 0.42 to 0.6 the paw melts back into
+    his chest fur. Instead, paste the painted paw from `jimothy-wave` there (the recipe's `paste`
+    step, rotated 25°) over a darker arm, and blend at 0.3. Eyes looking up (white eyes, pupils
+    near the top, re-textured at 0.4) went on top as a second touch-up.
 - **Crickets:** keep the concept wording ("sweet round cartoon cricket, soft rounded bright green
   body, little black dot eyes, gentle closed-mouth smile, floppy curved antennae, short stubby
   rounded legs, cuddly"). Wings still appear; small rounded ones are acceptable.
@@ -141,6 +145,6 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
 
 ## Animation
 
-One painted pose per sprite (Jimothy has three more), animated in code (`src/render/scene.ts`): hops (crickets), waddles
+One painted pose per sprite (Jimothy has four more), animated in code (`src/render/scene.ts`): hops (crickets), waddles
 (possum), bounding (squirrel), bobbing flight (crow), scurrying (rat), squash and stretch, a
 belly-up flop for playing dead, a hop-off for "shooed", the pile shrinking toward its base.

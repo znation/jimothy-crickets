@@ -41,7 +41,8 @@ Sets: `area1` holds the shared characters and defenses; `areas` holds each area'
 
 **Touch-ups** repaint part of a pick: `tools/asset_gen/inpaint.py <recipe>` (recipes in
 `art/prompts/touchups/`) places the pick on a canvas, optionally paints over regions in flat
-colour, and inpaints masked regions. Pick a result by its candidate file name in `picks.json`
+colour, optionally pastes a part cut from another render (a paw that already came out well), and
+inpaints masked regions. Pick a result by its candidate file name in `picks.json`
 (e.g. `"jimothy-notail": "24-f59944ee"`); `--assemble` copies it and records the recipe.
 
 **Backgrounds and the staging mat** are img2img, not text-to-image: `node tools/render_scenery.ts` paints each area's
