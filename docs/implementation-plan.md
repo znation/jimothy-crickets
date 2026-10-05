@@ -1203,13 +1203,16 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
 - Juice: squash and stretch, startle marks, pile-crunch shake, celebration.
 - A full playtest pass and a balance pass.
 - **Exit:** the §11.6 real-device checklist passes. No deny-listed words appear in the strings.
-- **Progress:** built, except sourced audio, the playtest and the device checklist.
-  - *Changed from §9:* every sound is **synthesized** with Web Audio (`src/platform/audio.ts`):
-    - per-unit send chirps and defense sounds
-    - shoo boing, pile crunch, chew, fanfare, yawn, UI taps
-    - a small procedural loop per area
-    - It needs no files and has no licenses, and each sound has a named slot that a recorded or
-      CC0 sound can fill later.
+- **Progress:** built, except the playtest and the device checklist.
+  - Sound: CC0 recordings (`art/audio/LICENSES.md`), built by `tools/build_audio.py` into Ogg
+    and AAC files with hashed names in `public/audio/`:
+    - Kenney UI clicks, light switch, scratch, pluck, broom swish, pile thud and pizzicato
+      jingles for winning, the sun coming up and a new friend
+    - one music loop per area from OpenGameArt, loudness-normalized, decoded whole and looped
+      gaplessly
+    - *Changed from §9:* the animals' voices, the sprinkler and the dog stay **synthesized**
+      (`src/platform/audio.ts`), as does a fallback for any file that hasn't loaded.
+    - The service worker caches audio as it's fetched rather than precaching both formats.
   - Haptics on Capacitor; less motion, bigger text, 1× / 2× / ¾× speed.
   - Juice: startle marks, pile shake, hop-offs, confetti on a win. The deny-list test covers all
     strings.

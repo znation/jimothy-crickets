@@ -1,0 +1,21 @@
+{
+  "sfx": {
+    "broom-swish": "audio/broom-swish.1e7eec42",
+    "chew-scratch": "audio/chew-scratch.725ef33f",
+    "jingle-night": "audio/jingle-night.4d5a715f",
+    "jingle-recruit": "audio/jingle-recruit.ebedf05b",
+    "jingle-win": "audio/jingle-win.ab49ad53",
+    "light-switch": "audio/light-switch.dd346436",
+    "pile-thud": "audio/pile-thud.955bb5a7",
+    "shoo-pluck": "audio/shoo-pluck.3ee38a4c",
+    "ui-click": "audio/ui-click.8a8237b8",
+    "ui-confirm": "audio/ui-confirm.b5ad1062"
+  },
+  "music": {
+    "feel-good-island": "audio/music-feel-good-island.15ced39f",
+    "happy-clappy": "audio/music-happy-clappy.7b134dd1",
+    "honey-bear": "audio/music-honey-bear.0ddb437d",
+    "just-saying-tho": "audio/music-just-saying-tho.1a56f0d4",
+    "swinging-sweet": "audio/music-swinging-sweet.3744a2e1"
+  }
+}

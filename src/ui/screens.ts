@@ -41,7 +41,7 @@ export class TitleScreen implements Screen {
       h(
         "div.title-card",
         null,
-        portrait("jimothy", 200, 150),
+        portrait("jimothy-wave", 200, 150),
         h("h1", null, "Jimothy ", h("span", null, "Crickets")),
         h("p.tagline", null, t("title.tagline")),
         this.play,
@@ -557,7 +557,7 @@ export class LevelScreen implements Screen {
       h(
         "div.card.intro",
         null,
-        portrait("jimothy", 160, 120),
+        portrait("jimothy-wave", 160, 120),
         h("p.say", null, t(this.session.level.intro!.textKey)),
         news.length
           ? h(
@@ -655,6 +655,7 @@ export class LevelScreen implements Screen {
       h(
         "div.card.results",
         null,
+        portrait("jimothy-happy", 120, 90),
         h("h2", null, t("results.title")),
         moons(earned, "moons large"),
         acorns > 0 ? h("p.acorns-won", null, paintedIcon("acorn", acornIcon), t("results.acorns", { n: acorns })) : null,
@@ -665,6 +666,8 @@ export class LevelScreen implements Screen {
       ),
       next ?? again,
     );
+    // a little fanfare for the new friend, once the win jingle has played
+    if (recruit) setTimeout(() => this.app.audio.play("recruit"), 900);
   }
 
   private showNightEnded() {
@@ -674,6 +677,7 @@ export class LevelScreen implements Screen {
       h(
         "div.card.night-card",
         null,
+        portrait("jimothy-sleepy", 120, 90),
         h("h2", null, t("night.title")),
         h("p", null, t("night.body")),
         again,

@@ -57,8 +57,8 @@ Designed for Families for v1.
 > **Pre-generated content.** Character and object sprites were generated with an image model
 > (SDXL-Turbo, used under its non-commercial license), then selected, cut out and outlined with
 > our build tools. Concept art was generated the same way. The game's code, levels and
-> synthesized sounds were written with an AI coding assistant. No AI generates content while the
-> game runs.
+> synthesized animal sounds were written with an AI coding assistant; the other sounds and the
+> music are CC0 recordings by human authors. No AI generates content while the game runs.
 
 Keep it accurate as art changes: if sprites are later redrawn by hand, say so.
 
