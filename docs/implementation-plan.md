@@ -1146,6 +1146,16 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
   - **App icons and splash screens** now use the painted sprites (`tools/make_icons.ts` reads the
     atlases; the vector drawing is the fallback).
   - **Frame times are unchanged** (the atlas is one `drawImage` per sprite). The atlas is 200 KB.
+  - **Jimothy's poses**, also touch-ups: wave (title, intros, the start of each night), happy
+    (deliveries, wins with the cookie held up, the results card) and sleepy (the nap, with z's in
+    code, and the night card). *Changed from §8.3:* three poses, not six. "Point" is the wave,
+    "celebrate" is the happy pose plus the cookie, and "think" failed (the paw kept melting into
+    his chest fur).
+  - **Story cards** are composed in code from the painted sprites (`src/render/story.ts`), not
+    generated: the area's background, its pile, Jimothy and the troupe that has joined by then.
+    *Changed from §8.3:* they open each area's first level and follow the first win of 4-5 (the
+    finale), and the title keeps its live attract-mode scene; the "title" composition is the key
+    art for the store.
 
 ### M6 — Campaign wrapper and saves (README step 5); mobile beta
 
@@ -1203,13 +1213,16 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
 - Juice: squash and stretch, startle marks, pile-crunch shake, celebration.
 - A full playtest pass and a balance pass.
 - **Exit:** the §11.6 real-device checklist passes. No deny-listed words appear in the strings.
-- **Progress:** built, except sourced audio, the playtest and the device checklist.
-  - *Changed from §9:* every sound is **synthesized** with Web Audio (`src/platform/audio.ts`):
-    - per-unit send chirps and defense sounds
-    - shoo boing, pile crunch, chew, fanfare, yawn, UI taps
-    - a small procedural loop per area
-    - It needs no files and has no licenses, and each sound has a named slot that a recorded or
-      CC0 sound can fill later.
+- **Progress:** built, except the playtest and the device checklist.
+  - Sound: CC0 recordings (`art/audio/LICENSES.md`), built by `tools/build_audio.py` into Ogg
+    and AAC files with hashed names in `public/audio/`:
+    - Kenney UI clicks, light switch, scratch, pluck, broom swish, pile thud and pizzicato
+      jingles for winning, the sun coming up and a new friend
+    - one music loop per area from OpenGameArt, loudness-normalized, decoded whole and looped
+      gaplessly
+    - *Changed from §9:* the animals' voices, the sprinkler and the dog stay **synthesized**
+      (`src/platform/audio.ts`), as does a fallback for any file that hasn't loaded.
+    - The service worker caches audio as it's fetched rather than precaching both formats.
   - Haptics on Capacitor; less motion, bigger text, 1× / 2× / ¾× speed.
   - Juice: startle marks, pile shake, hop-offs, confetti on a win. The deny-list test covers all
     strings.
@@ -1217,6 +1230,12 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
 ### M9 — Launch
 
 - Store listings, screenshots and capsule art; privacy policy; ratings; AI disclosure.
+- **Progress:** store art is rendered by `node tools/make_store_art.ts` into `art/store/`:
+  - the Play feature graphic, the Steam capsules (header, small, main, vertical, library capsule,
+    header, hero and logo) and an itch.io cover, from the story compositions and the title logo
+  - five screenshots for each device class (Play phone and 7"/10" tablets, App Store 6.9" iPhone
+    and 13" iPad, desktop, Steam Deck): still frames from the busiest moments of the reference
+    replays, and the map
 - Web (Pages + itch.io) → Android → iOS → desktop/Steam, in that order, each a separate go/no-go.
 - **Exit:** live on each channel.
 

@@ -3,6 +3,9 @@
   "outline": { "width": 2.5, "colour": "#2a2233" },
   "sprites": {
     "jimothy": { "height": 150 },
+    "jimothy-happy": { "height": 150 },
+    "jimothy-sleepy": { "height": 150 },
+    "jimothy-wave": { "height": 150 },
     "cricket": { "height": 62 },
     "possum": { "height": 72 },
     "squirrel": { "height": 80 },

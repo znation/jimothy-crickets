@@ -19,6 +19,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit firefox
+      # Start clean: the committed baselines are LFS pointers here (not pulled), which Playwright
+      # can't decode, and every one is regenerated anyway.
+      - run: rm -rf tests/e2e/__screenshots__
       - run: npx playwright test visual --update-snapshots
         env:
           CI: "1"

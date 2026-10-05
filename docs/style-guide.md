@@ -17,6 +17,14 @@ ships them as working art:
 | Motion light | 11000 (framing v1) | isolated lamp on a bracket |
 | Pile (alley) | 11100 | an overflowing can with bags and boxes |
 
+Jimothy's poses, all touch-ups of `jimothy-nub` (recipes in `art/prompts/touchups/`):
+
+| Pose | Pick | Used for |
+|---|---|---|
+| `jimothy-wave` | 42 | the title, level intros, and the first two seconds of every night |
+| `jimothy-happy` | 41 | the happy hop after each delivery, a win (with the cookie held up, drawn in code), the results card |
+| `jimothy-sleepy` | 44 | the nap when the sun comes up (with z's drawn in code), the night card |
+
 Areas 2–4 (`art/raw/areas/picks.json`):
 
 | Sprite | Pick | Why |
@@ -38,6 +46,11 @@ Props (`art/raw/props/picks.json`):
 | Snack (cookie) | 22200, cropped | a single round chocolate-chip cookie; the crop drops a dip bowl beside it |
 | Acorn | `acorn-cup` 20700, cropped | the only real capped acorn in 26 renders, sitting in a corner of a teacup scene |
 | Staging mat | `mat-60` 21000 | img2img at 0.6 over the game's own drawing of the mat: flat cardboard with a fold line and packing tape. Text-to-image gave open boxes of toys, a shed, a truck and a book; at 0.75 it turns into a 3D box |
+
+**Story cards** (`src/render/story.ts`) are compositions, not renders: an area's background with
+its pile on the right, Jimothy (waving, or happy for the finale) on the left, and the troupe that
+has joined by then between them. Tall boxes stack them instead: the pile behind, Jimothy in the
+middle, the troupe in a row in front. The same code draws the store art's key art.
 
 Still drawn in code, on purpose: lanes, range rings, effects, moons and UI buttons.
 
@@ -100,6 +113,13 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
 - **His nub** is added the same way (`jimothy-nub.json`): a small flat grey ellipse on the back of
   his rump, about two-thirds up, re-textured at 0.62 inside a mask barely bigger than the nub, so
   it can't grow into a full tail.
+- **Poses and expressions** are touch-ups too, not new renders. Generating poses with the photo as
+  an IP-Adapter anchor ignored the pose words, regrew the long tail and lost his face. Instead:
+  - Eyes: paint the old eyes over in the mask's black, add pale lid crescents, re-texture at 0.45.
+  - Mouth: paint a flat open mouth (dark red, pink tongue), re-texture at 0.5.
+  - A raised paw: paint a grey arm and a black paw where they go, re-texture at 0.6 in a mask
+    that covers both.
+  - A paw on the chin ("thinking") failed on every seed: the paw melts back into his chest fur.
 - **Crickets:** keep the concept wording ("sweet round cartoon cricket, soft rounded bright green
   body, little black dot eyes, gentle closed-mouth smile, floppy curved antennae, short stubby
   rounded legs, cuddly"). Wings still appear; small rounded ones are acceptable.
@@ -121,6 +141,6 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
 
 ## Animation
 
-One painted pose per sprite, animated in code (`src/render/scene.ts`): hops (crickets), waddles
+One painted pose per sprite (Jimothy has three more), animated in code (`src/render/scene.ts`): hops (crickets), waddles
 (possum), bounding (squirrel), bobbing flight (crow), scurrying (rat), squash and stretch, a
 belly-up flop for playing dead, a hop-off for "shooed", the pile shrinking toward its base.

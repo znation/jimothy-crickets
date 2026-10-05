@@ -33,6 +33,9 @@ test("level, phone", async ({ page }) =>
 test("level, ultrawide", async ({ page }) =>
   shot(page, "/?level=3-4&replay=reference&still=1800", "level-3-4-ultrawide", { width: 2560, height: 1080 }));
 
+test("story card, phone", async ({ page }) =>
+  shot(page, "/?level=2-1&still=0", "story-backyards-phone", { width: 667, height: 375 }));
+
 test("map and shop", async ({ page }) => {
   await page.addInitScript((save) => localStorage.setItem("jimothy-crickets.save", JSON.stringify(save)), SAVE);
   await page.setViewportSize(DESKTOP);

@@ -185,7 +185,8 @@ milestone section tracks progress. The whole campaign is playable in the browser
   moons, the soft "night ends" card, recruits, acorns, the upgrade shop, saves with an
   export/import code, settings, a tutorial, and first-time pictures of new defenses and friends.
 - **Every input:** touch, mouse, keyboard (1–5, Q/W/E, arrows, Esc) and gamepad (Steam Deck).
-- **Sound:** synthesized effects and a small music loop per area; no audio files yet.
+- **Sound:** CC0 effects and a music loop per area (`art/audio/LICENSES.md`); the animals'
+  voices are synthesized.
 - **Offline:** installable as a PWA; a service worker precaches the game.
 - **Native shells:** a Tauri desktop app (built here: a 1.6 MB Linux `.deb`) and Capacitor Android
   and iOS projects. A GitHub workflow builds all of them; Android and iOS can't be built on this

@@ -30,7 +30,7 @@ export class App {
   private debug: DebugOverlay | null = null;
   private frameSamples: number[] = [];
   /** ?still=<tick> (debug, screenshots): draw that sim tick once, frozen. */
-  private readonly stillTick: number | null;
+  readonly stillTick: number | null;
 
   readonly platform: Platform;
   readonly save: SaveStore;

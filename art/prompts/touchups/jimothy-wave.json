@@ -1,0 +1,20 @@
+{
+  "comment": "One front paw raised beside his face, for waving (title, intros) and pointing the way.",
+  "src": "art/raw/area1/jimothy-nub.png",
+  "scale": 1,
+  "offset": [0, 0],
+  "seeds": [41, 42, 43, 44],
+  "out": "art/raw/area1/_candidates/jimothy-wave",
+  "prefill": [
+    { "fill": "#8f8a82", "within": [["ellipse", 436, 236, 492, 352]] },
+    { "fill": "#2f2c2a", "within": [["ellipse", 438, 186, 502, 252]] }
+  ],
+  "passes": [
+    {
+      "prompt": "a raised furry grey arm with a small black paw waving hello",
+      "mask": [["rect", 420, 172, 512, 360]],
+      "blur": 8,
+      "strength": 0.6
+    }
+  ]
+}

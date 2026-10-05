@@ -56,3 +56,21 @@ About 22 s per 512² render and 3–5 s per matte on this iMac.
   the outputs. See plan §8.5.
 - IP-Adapter (h94): Apache 2.0.
 - BiRefNet-lite (ZhengPeng7/BiRefNet_lite): MIT, checked 2026-10-03.
+
+## Store art
+
+`node tools/make_store_art.ts` renders the feature graphic, capsules, covers and per-device
+screenshots into `store/` (LFS) from the atlases and the game's still mode; `--only <text>`
+renders the matching files. `docs/store-listing.md` lists them.
+
+## Audio
+
+`audio/src/` holds the CC0 recordings as downloaded; `audio/LICENSES.md` lists each one's source,
+author and use. `tools/build_audio.py` peak-normalizes the effects, loudness-normalizes the music,
+encodes both Ogg Vorbis and AAC into `public/audio/` under content-hashed names, and writes
+`src/data/audio.json`. It needs ffmpeg with libvorbis (the system one, or imageio-ffmpeg's in the
+overlay):
+
+```bash
+PYTHONPATH=~/.cache/jimothy-sdxl-pylibs ~/venv/bin/python tools/build_audio.py
+```

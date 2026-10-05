@@ -19,6 +19,7 @@ test("a player can win 1-1 from the title screen by holding the cricket card", a
   await page.goto("/?speed=8");
   await page.getByRole("button", { name: "Play" }).click();
   await page.locator('[data-level="1-1"]').click();
+  await page.getByRole("button", { name: "Onward!" }).click(); // the alley's story card
   await page.getByRole("button", { name: "Let's go!" }).click();
   await expect(page.getByText("Tap the crickets to send them!")).toBeVisible();
 
@@ -68,7 +69,8 @@ test("the installed game plays offline", async ({ page, context, browserName }) 
   await page.reload();
   await page.getByRole("button", { name: "Play" }).click();
   await page.locator('[data-level="1-1"]').click();
-  await expect(page.getByRole("button", { name: "Let's go!" })).toBeVisible();
+  // the alley's story card: painted art and all came from the cache
+  await expect(page.getByRole("button", { name: "Onward!" })).toBeVisible();
   await context.setOffline(false);
 });
 

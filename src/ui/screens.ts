@@ -8,7 +8,8 @@ import { closestS } from "../sim/lane.ts";
 import { UNIT_IDS, type DefenseId, type UnitId } from "../sim/types.ts";
 import { h, svg } from "./dom.ts";
 import { acornIcon, cogIcon, handIcon, moonIcon, pauseIcon, pileIcon, snackIcon } from "./icons.ts";
-import { hasPainted, paintedIcon, portrait } from "./portrait.ts";
+import { canDrawStory, drawStory, storyForArea, type StoryId } from "../render/story.ts";
+import { hasPainted, paintedAtlas, paintedIcon, portrait } from "./portrait.ts";
 import { t } from "./strings.ts";
 
 export interface Screen {
@@ -41,7 +42,7 @@ export class TitleScreen implements Screen {
       h(
         "div.title-card",
         null,
-        portrait("jimothy", 200, 150),
+        portrait("jimothy-wave", 200, 150),
         h("h1", null, "Jimothy ", h("span", null, "Crickets")),
         h("p.tagline", null, t("title.tagline")),
         this.play,
@@ -400,7 +401,13 @@ export class LevelScreen implements Screen {
       this.chooseLane(0);
     }
     if (session.replaying) this.el.classList.add("replaying");
-    if (!opts.skipIntro && session.level.intro) this.showIntro();
+    // An area's story card opens its first level, the first time through.
+    const area = campaign.areas.find((a) => a.levels[0] === session.level.id);
+    const story = area && !app.save.data.levels[session.level.id]?.cleared ? storyForArea(area.id) : null;
+    const intro = () => (session.level.intro ? this.showIntro() : this.closeIntro());
+    if (opts.skipIntro || session.replaying) this.maybeTutorial();
+    else if (story) this.showStory(story, intro);
+    else if (session.level.intro) this.showIntro();
     else this.maybeTutorial();
   }
 
@@ -548,6 +555,31 @@ export class LevelScreen implements Screen {
     this.overlay = null;
   }
 
+  /** A full-screen story scene (src/render/story.ts) with a caption; skipped without painted art. */
+  private showStory(id: StoryId, then: () => void) {
+    const atlas = paintedAtlas();
+    if (!canDrawStory(atlas, id)) return then();
+    const canvas = h("canvas.story-art", { "aria-hidden": "true" }) as HTMLCanvasElement;
+    const go = h("button.big.primary", { onclick: () => then() }, t(id === "finale" ? "story.finale.go" : "story.next"));
+    const caption = h("div.card.story-caption", null, h("h2", null, t(id === "finale" ? "story.finale.title" : `area.${id}`)), h("p.say", null, t(`story.${id}`)), go);
+    this.openOverlay("story", h("div.story", null, canvas, caption), go);
+    const ctx = canvas.getContext("2d")!;
+    const start = performance.now();
+    const draw = () => {
+      if (!canvas.isConnected) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.round(canvas.clientWidth * dpr);
+      const h = Math.round(canvas.clientHeight * dpr);
+      if (canvas.width !== w || canvas.height !== h) [canvas.width, canvas.height] = [w, h];
+      // keep the troupe clear of the caption
+      const top = (caption.offsetTop + caption.offsetHeight + 8) / canvas.clientHeight;
+      const still = this.app.scene.reducedMotion || this.app.stillTick !== null;
+      drawStory(ctx, w, h, atlas, id, { t: still ? 0 : (performance.now() - start) / 1000, top });
+      if (!still) requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  }
+
   private showIntro() {
     const go = h("button.big.primary", { onclick: () => this.closeIntro() }, t("intro.go"));
     // Plan §10.2: the first time a defense or friend appears, show its picture.
@@ -557,7 +589,7 @@ export class LevelScreen implements Screen {
       h(
         "div.card.intro",
         null,
-        portrait("jimothy", 160, 120),
+        portrait("jimothy-wave", 160, 120),
         h("p.say", null, t(this.session.level.intro!.textKey)),
         news.length
           ? h(
@@ -643,6 +675,8 @@ export class LevelScreen implements Screen {
     const st = this.session.st;
     const id = this.session.level.id;
     const earned = st.outcome!.moons;
+    // the finale's story card plays before the results, the first time the last level is won
+    const finale = id === levelOrder.at(-1) && !this.app.save.data.levels[id]?.cleared && !this.session.replaying;
     const { recruit, acorns } = this.app.save.recordWin(id, earned);
     void this.app.save.store();
     const nextId = levelOrder[levelOrder.indexOf(id) + 1];
@@ -650,21 +684,28 @@ export class LevelScreen implements Screen {
       ? h("button.big.primary", { onclick: () => this.app.playLevel(nextId) }, t("results.next"))
       : null;
     const again = h("button.big", { onclick: () => this.app.playLevel(id, { skipIntro: true }) }, t("results.again"));
-    this.openOverlay(
-      "results",
-      h(
-        "div.card.results",
-        null,
-        h("h2", null, t("results.title")),
-        moons(earned, "moons large"),
-        acorns > 0 ? h("p.acorns-won", null, paintedIcon("acorn", acornIcon), t("results.acorns", { n: acorns })) : null,
-        recruit
-          ? h("div.recruit", null, portrait(recruit, 112, 80), h("p", null, t("results.recruit", { unit: t(`unit.${recruit}`) })))
-          : null,
-        h("div.row", null, next, again, h("button.big", { onclick: () => this.app.showMap() }, t("results.map"))),
-      ),
-      next ?? again,
-    );
+    const results = () => {
+      this.openOverlay(
+        "results",
+        h(
+          "div.card.results",
+          null,
+          portrait("jimothy-happy", 120, 90),
+          h("h2", null, t("results.title")),
+          moons(earned, "moons large"),
+          acorns > 0 ? h("p.acorns-won", null, paintedIcon("acorn", acornIcon), t("results.acorns", { n: acorns })) : null,
+          recruit
+            ? h("div.recruit", null, portrait(recruit, 112, 80), h("p", null, t("results.recruit", { unit: t(`unit.${recruit}`) })))
+            : null,
+          h("div.row", null, next, again, h("button.big", { onclick: () => this.app.showMap() }, t("results.map"))),
+        ),
+        next ?? again,
+      );
+      // a little fanfare for the new friend, once the win jingle has played
+      if (recruit) setTimeout(() => this.app.audio.play("recruit"), 900);
+    };
+    if (finale) this.showStory("finale", results);
+    else results();
   }
 
   private showNightEnded() {
@@ -674,6 +715,7 @@ export class LevelScreen implements Screen {
       h(
         "div.card.night-card",
         null,
+        portrait("jimothy-sleepy", 120, 90),
         h("h2", null, t("night.title")),
         h("p", null, t("night.body")),
         again,

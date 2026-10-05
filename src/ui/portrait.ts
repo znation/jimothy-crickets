@@ -24,6 +24,11 @@ export function setPortraitAtlas(a: Atlas | null) {
 // World-unit height each subject is framed to.
 const FRAME: Record<string, number> = { jimothy: 150, broomNeighbor: 190, fence: 100, sprinkler: 60, motionLight: 50, yardDog: 70 };
 
+/** The loaded atlases, if any. */
+export function paintedAtlas(): Atlas | null {
+  return atlas;
+}
+
 /** Whether the loaded atlases have a painted sprite with this name. */
 export function hasPainted(name: string): boolean {
   return !!atlas?.frames[name];
@@ -51,6 +56,8 @@ export function portrait(id: UnitId | DefenseId | "jimothy" | (string & {}), css
   c.style.height = `${cssH}px`;
   c.className = "portrait";
   const ctx = c.getContext("2d")!;
+  // Jimothy's painted poses ("jimothy-wave" etc.) fall back to his everyday portrait.
+  if (id.startsWith("jimothy-") && !atlas?.frames[id]) id = "jimothy";
   const art = atlas?.frames[id];
   if (art) {
     // fit the sprite (with its outline) inside the box, standing on the bottom edge

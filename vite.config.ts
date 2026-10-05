@@ -5,7 +5,10 @@ import { defineConfig, type Plugin } from "vite";
 
 const pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
 
-/** Emit sw.js with a precache list of every built and public file. */
+/**
+ * Emit sw.js with a precache list of every built and public file except audio, which comes in two
+ * formats of which each browser wants one: the worker caches those as they're fetched.
+ */
 function serviceWorker(): Plugin {
   return {
     name: "jimothy-service-worker",
@@ -14,13 +17,14 @@ function serviceWorker(): Plugin {
       const publicDir = "public";
       const walk = (dir: string): string[] =>
         readdirSync(dir).flatMap((f) => (statSync(join(dir, f)).isDirectory() ? walk(join(dir, f)) : [join(dir, f)]));
-      const files = ["./", ...Object.keys(bundle), ...walk(publicDir).map((f) => relative(publicDir, f))].filter(
-        (f) => !f.endsWith(".map"),
-      );
+      const pub = walk(publicDir).map((f) => relative(publicDir, f).split("\\").join("/"));
+      const media = pub.filter((f) => f.startsWith("audio/"));
+      const files = ["./", ...Object.keys(bundle), ...pub.filter((f) => !media.includes(f))].filter((f) => !f.endsWith(".map"));
       const version = createHash("sha1").update(files.join("\n")).digest("hex").slice(0, 10);
       const source = readFileSync("src/platform/sw.js", "utf8")
         .replace('"__VERSION__"', JSON.stringify(version))
-        .replace("__PRECACHE__", JSON.stringify(files));
+        .replace("__PRECACHE__", JSON.stringify(files))
+        .replace("__MEDIA__", JSON.stringify(media));
       this.emitFile({ type: "asset", fileName: "sw.js", source });
     },
   };

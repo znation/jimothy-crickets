@@ -1,18 +1,58 @@
-// Sound (plan §3.6, §9). Everything is synthesized with the Web Audio API: no audio files, no
-// licenses to track, a few KB of code. These are placeholders in the right places and at the right
-// moments; recorded or CC0 sounds can replace any of them later behind the same names.
+// Sound (plan §3.6, §9). CC0 recordings where good ones exist (art/audio/LICENSES.md, built by
+// tools/build_audio.py into public/audio/), synthesized with the Web Audio API for the rest: the
+// animals' voices, which no CC0 pack has in this cute register, and as the fallback for any sound
+// whose file hasn't loaded (or failed to, offline before it was ever cached).
 //
 // One shared AudioContext, created on the first user gesture (autoplay rules everywhere, iOS
 // especially). Suspended whenever the game is paused or hidden.
 
 import type { SimEvent } from "../sim/types.ts";
+import manifest from "../data/audio.json";
 
 export type Sfx =
   | "cricket" | "possum" | "squirrel" | "crow" | "rat"
   | "sprinkler" | "broomNeighbor" | "yardDog" | "motionLight" | "chew"
-  | "shoo" | "pile" | "win" | "yawn" | "tap" | "buy";
+  | "shoo" | "pile" | "win" | "yawn" | "tap" | "buy" | "recruit";
 
 export type Theme = "menu" | "alley" | "backyards" | "culdesac" | "stripmall";
+
+type SampleName = keyof typeof manifest.sfx;
+type TrackName = keyof typeof manifest.music;
+
+/** Recorded sounds and their levels (the files are all peak-normalized to -3 dBFS). */
+const SAMPLES: Partial<Record<Sfx, [SampleName, number]>> = {
+  tap: ["ui-click", 0.35],
+  buy: ["ui-confirm", 0.5],
+  motionLight: ["light-switch", 0.45],
+  chew: ["chew-scratch", 0.35],
+  shoo: ["shoo-pluck", 0.4],
+  broomNeighbor: ["broom-swish", 0.5],
+  pile: ["pile-thud", 0.55],
+  win: ["jingle-win", 0.6],
+  yawn: ["jingle-night", 0.55],
+  recruit: ["jingle-recruit", 0.6],
+};
+
+/** One loop per area (all loudness-normalized to -20 LUFS). */
+const TRACKS: Record<Theme, TrackName> = {
+  menu: "honey-bear",
+  alley: "happy-clappy",
+  backyards: "feel-good-island",
+  culdesac: "swinging-sweet",
+  stripmall: "just-saying-tho",
+};
+
+/** Ogg Vorbis where it decodes, else AAC (Safari before 18.4). */
+function audioExt(): string {
+  const probe = document.createElement("audio");
+  return probe.canPlayType('audio/ogg; codecs="vorbis"') ? "ogg" : "m4a";
+}
+
+async function loadBuffer(ctx: AudioContext, base: string): Promise<AudioBuffer> {
+  const res = await fetch(`./${base}.${audioExt()}`);
+  if (!res.ok) throw new Error(`${base}: ${res.status}`);
+  return ctx.decodeAudioData(await res.arrayBuffer());
+}
 
 const MIN_GAP: Partial<Record<Sfx, number>> = { cricket: 0.07, shoo: 0.06, pile: 0.08, sprinkler: 0.3 };
 const MAX_VOICES = 14;
@@ -24,7 +64,8 @@ export class GameAudio {
   private noise: AudioBuffer | null = null;
   private lastPlayed = new Map<Sfx, number>();
   private voices = 0;
-  private music: Music | null = null;
+  private music: Music | SampleMusic | null = null;
+  private samples = new Map<Sfx, AudioBuffer>();
   private wantTheme: Theme | null = null;
   private volumes = { music: 0.7, sfx: 1 };
   private paused = false;
@@ -40,7 +81,7 @@ export class GameAudio {
 
   setVolumes(music: number, sfx: number) {
     this.volumes = { music, sfx };
-    if (this.musicGain) this.musicGain.gain.value = music * 0.35;
+    if (this.musicGain) this.musicGain.gain.value = music * 0.5;
     if (this.sfxGain) this.sfxGain.gain.value = sfx * 0.6;
   }
 
@@ -57,7 +98,12 @@ export class GameAudio {
     if (!this.ctx) return; // starts once the first gesture creates the context
     if (this.music?.theme === theme) return;
     this.music?.stop();
-    this.music = new Music(this.ctx, this.musicGain!, theme);
+    const music = new SampleMusic(this.ctx, this.musicGain!, theme);
+    this.music = music;
+    // the synthesized loop stands in if the recording can't be fetched or decoded
+    music.ready.catch(() => {
+      if (this.music === music && this.ctx) this.music = new Music(this.ctx, this.musicGain!, theme);
+    });
   }
 
   /** Map sim events to sounds. */
@@ -83,6 +129,16 @@ export class GameAudio {
       this.voices++;
       setTimeout(() => this.voices--, dur * 1000 + 50);
     };
+    const sample = this.samples.get(name);
+    if (sample) {
+      const src = this.ctx.createBufferSource();
+      src.buffer = sample;
+      const g = this.ctx.createGain();
+      g.gain.value = SAMPLES[name]![1];
+      src.connect(g).connect(out);
+      src.start(now);
+      return voice(sample.duration);
+    }
     const c = this.ctx;
     switch (name) {
       case "cricket": // two quick chirps
@@ -135,6 +191,7 @@ export class GameAudio {
       case "tap":
         tone(c, out, { type: "sine", f0: 900, f1: 700, at: now, dur: 0.05, vol: 0.12 });
         return voice(0.05);
+      case "recruit":
       case "buy":
         [784, 1175].forEach((f, i) => tone(c, out, { type: "triangle", f0: f, f1: f, at: now + i * 0.08, dur: 0.14, vol: 0.25 }));
         return voice(0.3);
@@ -161,6 +218,13 @@ export class GameAudio {
     for (let i = 0; i < len; i++) data[i] = ((seed = (seed * 16807) % 2147483647) / 2147483647) * 2 - 1;
     if (this.paused) void this.ctx.suspend();
     if (this.wantTheme) this.theme(this.wantTheme);
+    const ctx = this.ctx;
+    for (const [sfx, [file]] of Object.entries(SAMPLES) as [Sfx, [SampleName, number]][]) {
+      loadBuffer(ctx, manifest.sfx[file]).then(
+        (b) => this.samples.set(sfx, b),
+        () => {}, // keep the synthesized version
+      );
+    }
   }
 
   private hiss(out: AudioNode, at: number, dur: number, freq: number, vol: number, sweepTo?: number) {
@@ -222,6 +286,49 @@ function tone(c: AudioContext, out: AudioNode, o: ToneOpts) {
 }
 
 // ---------------------------------------------------------------- music
+
+/**
+ * A recorded loop, fetched and decoded whole so it loops without a gap (a media element's loop
+ * clicks) and so the service worker can cache it (media elements make range requests). Decoded
+ * PCM is large, ~10 MB per 30 s, so only the playing track is kept.
+ */
+class SampleMusic {
+  readonly theme: Theme;
+  readonly ready: Promise<void>;
+  private src: AudioBufferSourceNode | null = null;
+  private fade: GainNode;
+  private stopped = false;
+
+  constructor(ctx: AudioContext, out: GainNode, theme: Theme) {
+    this.theme = theme;
+    this.fade = ctx.createGain();
+    this.fade.connect(out);
+    this.ready = loadBuffer(ctx, manifest.music[TRACKS[theme]]).then((buffer) => {
+      if (this.stopped) return;
+      this.src = ctx.createBufferSource();
+      this.src.buffer = buffer;
+      this.src.loop = true;
+      this.src.connect(this.fade);
+      const now = ctx.currentTime;
+      this.fade.gain.setValueAtTime(0.0001, now);
+      this.fade.gain.exponentialRampToValueAtTime(1, now + 0.8);
+      this.src.start(now);
+    });
+  }
+
+  stop() {
+    this.stopped = true;
+    const ctx = this.fade.context;
+    const now = ctx.currentTime;
+    this.fade.gain.cancelScheduledValues(now);
+    this.fade.gain.setValueAtTime(this.fade.gain.value, now);
+    this.fade.gain.linearRampToValueAtTime(0, now + 0.4);
+    this.src?.stop(now + 0.45);
+    setTimeout(() => this.fade.disconnect(), 600);
+  }
+}
+
+// The synthesized fallback.
 
 // Picture-book loops: a plucked "ukulele" on chord tones, a soft bass, a glockenspiel melody that
 // wanders over the chord. One progression and tempo per area. Scheduled a little ahead of time.

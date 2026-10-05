@@ -57,13 +57,21 @@ Designed for Families for v1.
 > **Pre-generated content.** Character and object sprites were generated with an image model
 > (SDXL-Turbo, used under its non-commercial license), then selected, cut out and outlined with
 > our build tools. Concept art was generated the same way. The game's code, levels and
-> synthesized sounds were written with an AI coding assistant. No AI generates content while the
-> game runs.
+> synthesized animal sounds were written with an AI coding assistant; the other sounds and the
+> music are CC0 recordings by human authors. No AI generates content while the game runs.
 
 Keep it accurate as art changes: if sprites are later redrawn by hand, say so.
 
-## Store art still needed (plan §8.3)
+## Store art (plan §8.3)
 
-App icon 1024² (rendered: `tools/make_icons.ts`), Play feature graphic 1024 × 500, Steam
-capsules (several sizes), and screenshots per device class: phone, 7" and 10" tablet, desktop,
-Steam Deck. Gameplay screenshots can come from the Playwright fit test's attachments.
+All rendered from the game, so they stay current with the art:
+
+- App icons: `node tools/make_icons.ts` (`public/icons/`, and the native shells' icons).
+- Everything else: `node tools/make_store_art.ts` into `art/store/`:
+  - `play/feature-graphic-1024x500.png`
+  - `steam/`: header, small, main, vertical and library capsules, library header, hero (no logo:
+    Steam overlays the logo) and the transparent library logo
+  - `itch/cover-630x500.png`
+  - `screenshots/<device>/`: alley, back yards, cul-de-sac, strip mall and the map, for Play
+    phone (1920 × 1080), 7" (1920 × 1200) and 10" (2560 × 1600) tablets, iPhone 6.9"
+    (2868 × 1320), iPad 13" (2752 × 2064), desktop (1920 × 1080) and Steam Deck (1280 × 800)

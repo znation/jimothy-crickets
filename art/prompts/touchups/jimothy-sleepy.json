@@ -1,0 +1,20 @@
+{
+  "comment": "Closed, sleepy eyes for the nap and night-end poses: each eye painted over with a soft lid line, re-textured inside small masks.",
+  "src": "art/raw/area1/jimothy-nub.png",
+  "scale": 1,
+  "offset": [0, 0],
+  "seeds": [41, 42, 43, 44],
+  "out": "art/raw/area1/_candidates/jimothy-sleepy",
+  "prefill": [
+    { "fill": "#1f1d22", "within": [["ellipse", 308, 224, 352, 264], ["ellipse", 392, 224, 436, 264]] },
+    { "fill": "#cfc9bf", "within": [["ellipse", 312, 243, 348, 252], ["ellipse", 396, 243, 432, 252]] }
+  ],
+  "passes": [
+    {
+      "prompt": "peacefully closed sleepy eyes, curved eyelids, black bandit mask fur",
+      "mask": [["ellipse", 300, 216, 360, 272], ["ellipse", 384, 216, 444, 272]],
+      "blur": 5,
+      "strength": 0.45
+    }
+  ]
+}
