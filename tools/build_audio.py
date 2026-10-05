@@ -9,7 +9,8 @@ them forever, and src/data/audio.json maps each sound's name to its hashed base 
 - Sound effects (everything not named music-*): mono, peak-normalized to -3 dBFS, so the game sets
   their relative levels in code.
 - Music: stereo, two-pass loudness-normalized to -20 LUFS (true peak -2 dB), so areas don't jump
-  in volume when the theme changes.
+  in volume when the theme changes. The manifest records each loop's exact length, so the game
+  can trim the AAC encoder delay if a browser's decoder leaves it in (a gap at every loop).
 
 Needs ffmpeg with libvorbis: the system one, or imageio-ffmpeg's static build:
     PYTHONPATH=~/.cache/jimothy-sdxl-pylibs ~/venv/bin/python tools/build_audio.py
@@ -58,6 +59,13 @@ def sfx_filter(src):
     return f"volume={-3 - peak:.2f}dB"
 
 
+def ogg_seconds(path):
+    """Exact length of an Ogg Vorbis file: the last page's granule position is its sample count."""
+    data = path.read_bytes()
+    i = data.rindex(b"OggS")
+    return int.from_bytes(data[i + 6:i + 14], "little") / 44100
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for old in OUT.iterdir():
@@ -79,7 +87,10 @@ def main():
             base = f"{name}.{digest}"
             shutil.copy(ogg, OUT / f"{base}.ogg")
             shutil.copy(m4a, OUT / f"{base}.m4a")
-        manifest["music" if music else "sfx"][name.removeprefix("music-")] = f"audio/{base}"
+        if music:
+            manifest["music"][name.removeprefix("music-")] = {"file": f"audio/{base}", "seconds": ogg_seconds(OUT / f"{base}.ogg")}
+        else:
+            manifest["sfx"][name] = f"audio/{base}"
         sizes = [(OUT / f"{base}.{x}").stat().st_size // 1024 for x in ("ogg", "m4a")]
         print(f"{name:28} ogg {sizes[0]:4} KB  m4a {sizes[1]:4} KB  {af[:40]}")
     MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n")

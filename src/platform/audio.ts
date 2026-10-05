@@ -54,6 +54,21 @@ async function loadBuffer(ctx: AudioContext, base: string): Promise<AudioBuffer>
   return ctx.decodeAudioData(await res.arrayBuffer());
 }
 
+/** The AAC encoder's delay (ffmpeg's encoder primes 1024 samples at 44.1 kHz). */
+const AAC_PRIMING = 1024 / 44100;
+
+/**
+ * Where a decoded loop really starts and ends. Decoders that honor the MP4 edit list return
+ * exactly the loop; one that ignores it returns the encoder's priming silence first, which would
+ * play as a hiccup at every repeat, so skip it. [0, 0] means the whole buffer.
+ */
+export function loopPoints(decodedSeconds: number, loopSeconds: number): [number, number] {
+  const extra = decodedSeconds - loopSeconds;
+  if (extra < AAC_PRIMING / 2) return [0, 0];
+  const start = Math.min(extra, AAC_PRIMING);
+  return [start, start + loopSeconds];
+}
+
 const MIN_GAP: Partial<Record<Sfx, number>> = { cricket: 0.07, shoo: 0.06, pile: 0.08, sprinkler: 0.3 };
 const MAX_VOICES = 14;
 
@@ -303,16 +318,20 @@ class SampleMusic {
     this.theme = theme;
     this.fade = ctx.createGain();
     this.fade.connect(out);
-    this.ready = loadBuffer(ctx, manifest.music[TRACKS[theme]]).then((buffer) => {
+    const track = manifest.music[TRACKS[theme]];
+    this.ready = loadBuffer(ctx, track.file).then((buffer) => {
       if (this.stopped) return;
       this.src = ctx.createBufferSource();
       this.src.buffer = buffer;
       this.src.loop = true;
+      const [start, end] = loopPoints(buffer.duration, track.seconds);
+      this.src.loopStart = start;
+      this.src.loopEnd = end;
       this.src.connect(this.fade);
       const now = ctx.currentTime;
       this.fade.gain.setValueAtTime(0.0001, now);
       this.fade.gain.exponentialRampToValueAtTime(1, now + 0.8);
-      this.src.start(now);
+      this.src.start(now, start);
     });
   }
 

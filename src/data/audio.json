@@ -12,10 +12,25 @@
     "ui-confirm": "audio/ui-confirm.b5ad1062"
   },
   "music": {
-    "feel-good-island": "audio/music-feel-good-island.15ced39f",
-    "happy-clappy": "audio/music-happy-clappy.7b134dd1",
-    "honey-bear": "audio/music-honey-bear.0ddb437d",
-    "just-saying-tho": "audio/music-just-saying-tho.1a56f0d4",
-    "swinging-sweet": "audio/music-swinging-sweet.3744a2e1"
+    "feel-good-island": {
+      "file": "audio/music-feel-good-island.15ced39f",
+      "seconds": 51.69090702947846
+    },
+    "happy-clappy": {
+      "file": "audio/music-happy-clappy.7b134dd1",
+      "seconds": 17.44063492063492
+    },
+    "honey-bear": {
+      "file": "audio/music-honey-bear.0ddb437d",
+      "seconds": 79.93904761904761
+    },
+    "just-saying-tho": {
+      "file": "audio/music-just-saying-tho.1a56f0d4",
+      "seconds": 24.052086167800454
+    },
+    "swinging-sweet": {
+      "file": "audio/music-swinging-sweet.3744a2e1",
+      "seconds": 25.0
+    }
   }
 }
