@@ -62,7 +62,9 @@ About 22 s per 512² render and 3–5 s per matte on this iMac.
 
 `node tools/make_store_art.ts` renders the feature graphic, capsules, covers and per-device
 screenshots into `store/` (LFS) from the atlases and the game's still mode; `--only <text>`
-renders the matching files. `docs/store-listing.md` lists them.
+renders the matching files. `docs/store-listing.md` lists them. A full render records what it
+was drawn from in `store/inputs.json`, and CI warns when any of that has changed since
+(`tools/store_art_stamp.ts`).
 
 ## Audio
 

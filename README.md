@@ -146,9 +146,9 @@ a children's book about a raccoon, animated lightly. Not retro pixel art, not co
   Northwest: damp, mossy, evergreen, overcast.
 - UI matches: rounded, friendly, large touch-friendly targets, minimal text.
 
-Concept art lives in [`concept-art/`](concept-art/) (SDXL-Turbo; see its README). The game currently
-draws placeholder characters with canvas paths; final assets and a style guide come with milestone M5
-of the [implementation plan](docs/implementation-plan.md).
+Concept art lives in [`concept-art/`](concept-art/) (SDXL-Turbo; see its README). The game's art is
+painted the same way and cut out into sprite atlases: see [`art/README.md`](art/README.md) for the
+pipeline and [`docs/style-guide.md`](docs/style-guide.md) for the look and the (provisional) picks.
 
 ---
 
@@ -176,7 +176,8 @@ Design constraints that follow from this:
 ## Current status
 
 Being built. [`docs/implementation-plan.md`](docs/implementation-plan.md) is the build plan, and its
-milestone section tracks progress. The whole campaign is playable in the browser:
+milestone section tracks progress. The whole campaign is playable in the browser, live at
+<https://znation.github.io/jimothy-crickets/>:
 
 - **20 levels in 4 areas** (alley, back yards, cul-de-sac, strip mall), one to three lanes, all five
   friends and all five defenses. Every level has a stored winning solution that CI replays, and a
@@ -187,11 +188,17 @@ milestone section tracks progress. The whole campaign is playable in the browser
 - **Every input:** touch, mouse, keyboard (1–5, Q/W/E, arrows, Esc) and gamepad (Steam Deck).
 - **Sound:** CC0 effects and a music loop per area (`art/audio/LICENSES.md`); the animals'
   voices are synthesized.
-- **Offline:** installable as a PWA; a service worker precaches the game.
+- **Offline:** installable as a PWA; a service worker precaches the game and caches each sound
+  the first time it plays.
 - **Native shells:** a Tauri desktop app (built here: a 1.6 MB Linux `.deb`) and Capacitor Android
   and iOS projects. A GitHub workflow builds all of them; Android and iOS can't be built on this
   machine.
-- **Placeholder art**, drawn in code. Real art is milestone M5 and needs Zach to pick the style.
+- **Painted art** for every character, defense, pile, background and icon, with four extra poses
+  for Jimothy and story cards for each area and the finale. The picks are provisional until Zach
+  approves them.
+- **Store art** (feature graphic, capsules, screenshots per device) rendered from the game into
+  `art/store/`.
+- **Still to do:** the playtest, real-device checks, art approval, store accounts and launch.
 
 Where the open questions below needed an answer to build anything, the build uses the plan's
 proposed answers (§6 of the plan) as working defaults. They stay open until Zach confirms them.
@@ -210,6 +217,7 @@ node tools/lanes.ts 3-4                         # which defenses cover which lan
 npm run test:e2e                                # Playwright browser tests
 npm run build                                   # static site in dist/
 node tools/make_icons.ts                        # re-render app icons and splash screens
+node tools/make_store_art.ts                    # re-render the store art in art/store/
 ```
 
 Debug URL parameters: `?level=1-3` jumps into a level, `&replay=reference` plays its stored

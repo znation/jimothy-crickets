@@ -1,10 +1,14 @@
 # Jimothy Crickets — Implementation Plan
 
-Status: **in progress.** The whole campaign is playable on the web with placeholder art: M1, M3
-and M7 are built, and M2, M4, M6 and M8 are built except for the parts that need real devices,
-store accounts or a playtest. M5 (real art) hasn't started; it needs Zach to pick the style. See
-[§13](#13-milestones) for what's done and what's left in each milestone. The §6 proposals are used
-as working defaults until Zach confirms or changes them.
+Status: **in progress.** The whole campaign is playable on the web, with painted art, CC0 sound
+and music, story cards, and store art rendered from the game. M1 and M3 are done. Everything else
+is built; what's left needs people, devices or accounts:
+- Zach approves the art (the picks are provisional) and answers §14.
+- The playtest and the §11.6 real-device checklist.
+- Store accounts, the Play closed test and TestFlight, then the launches (M9).
+
+See [§13](#13-milestones) for each milestone. The §6 proposals are used as working defaults until
+Zach confirms or changes them.
 
 This plan turns the design brief in [`README.md`](../README.md) into a build order. It covers how
 the game ships to every platform we can reasonably reach (browser, phones, tablets and desktop)
@@ -149,8 +153,9 @@ These constraints shape the engine from day one. Retrofitting them later is expe
 - **Bleed:** level backgrounds are painted larger than 16:9 (to 2400 × 1350 logical) so wider and
   taller screens show more scenery, never black bars. *Correction found while building:* 2400 wide
   only reaches about 2.2:1 at full height. A 2560 × 1080 ultrawide shows about 2560 logical units
-  across, so painted backgrounds need about **2600 × 1350**. The placeholder backgrounds are
-  procedural and simply paint whatever is visible. This covers:
+  across, so painted backgrounds need about **2600 × 1350**. The painted backgrounds are
+  2400 × 1350; beyond them, on extreme ultrawides, the procedural scenery they were painted over
+  shows instead. This covers:
   - 21:9 ultrawide monitors
   - 19.5:9 phones
   - 16:10 laptops and the Steam Deck
@@ -908,6 +913,8 @@ shooed. Agents use this to check balance changes without a browser.
   persisted.
 - **Device emulation matrix:** iPhone SE, Pixel 7, iPad, 1080p desktop, 1280 × 800 (Deck). Each
   run takes screenshots of map, HUD and results, compared against baselines with a tolerance.
+  *As built:* the fit tests cover all five sizes; the screenshot comparisons cover the title,
+  levels at desktop, phone and ultrawide sizes, a story card, the map and the shop (see M1).
 - Run on Chromium, WebKit and Firefox. WebKit stands in for iOS Safari and the Tauri macOS/Linux
   webviews.
 
@@ -1022,11 +1029,15 @@ still open; the build uses the plan's defaults until then.
 - `pages` workflow deploys an empty scene to GitHub Pages.
 - **Exit:** a coloured test scene renders correctly at all five §10.3 sizes in Playwright; CI is
   green; the Pages URL is live.
-- **Progress: built**, except that the workflows haven't run on GitHub yet: the branch isn't
-  pushed, and Pages needs Settings → Pages → Source set to "GitHub Actions". Playwright checks all
-  five sizes on a real level (core fits, DPR cap, every button on screen and ≥ 44 px, no scroll) and
-  the portrait "turn sideways" card. Not built: screenshot baselines (fonts differ between this
-  machine and CI runners, so they'd need generating on CI).
+- **Progress: done.** CI and Pages run on every push to `main`; the game is live at
+  <https://znation.github.io/jimothy-crickets/>. Playwright checks all five sizes on a real level
+  (core fits, DPR cap, every button on screen and ≥ 44 px, no scroll) and the portrait "turn
+  sideways" card, on Chromium, WebKit and Firefox.
+  - **Screenshot comparisons** (`tests/e2e/visual.spec.ts`): the title, three levels at desktop,
+    phone and ultrawide sizes, a story card, the map and the shop, in `?still` mode (one
+    deterministic frame). Fonts and anti-aliasing differ between this machine and CI's runners,
+    so baselines are made on CI: run the `update-screenshots` workflow, download its artifact into
+    `tests/e2e/__screenshots__/`, and commit.
 
 ### M2 — First playable lane plus platform smoke builds (README step 2)
 
@@ -1042,7 +1053,9 @@ still open; the build uses the plan's defaults until then.
   - **Capacitor:** `platforms/capacitor` has Android and iOS projects, landscape-locked, with
     icons and splash screens rendered from the game's sprite code. This machine has no Java,
     Android SDK or Xcode, so the `platforms` GitHub workflow builds the debug APK, an iOS
-    simulator build and Tauri bundles for Linux, Windows and macOS. It hasn't run yet.
+    simulator build and Tauri bundles for Linux, Windows and macOS. It runs on version tags or by
+    hand. Its one run so far (2026-10-03) built all five, but that predates the painted art and
+    audio, so run it again before testing on devices.
   - **Frame times** on the stress level (`?stress`: about 60–120 units on three lanes), 1280 ×
     720, this iMac, software rendering:
 
@@ -1094,8 +1107,10 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
 - Produce area 1's assets: cricket, possum, squirrel, sprinkler, broom neighbor, area-1 pile
   stages, alley background, Jimothy commander poses, core UI icons.
 - **Exit:** area 1 runs with real art at all §10.3 sizes. Zach approves the look.
-- **Progress:** the pipeline is built and area 1's characters ship with **provisional** picks.
-  Zach still needs to choose the anchors (the style guide lists Claude's picks and why).
+- **Progress:** built. Every sprite, background, prop and icon in the game is painted, with
+  **provisional** picks: Zach still needs to approve them (the style guide lists Claude's picks
+  and why). The notes below run in the order the work happened, so early ones are superseded by
+  later ones.
   - **Pipeline** (`art/README.md`):
     - `tools/asset_gen/generate.py`: prompt sets as data, candidates with prompt hashes and
       sidecars, contact sheets, named framings so earlier picks stay reproducible
@@ -1112,12 +1127,10 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
       tails themselves. The rear photo at 0.42 plus 12 seeds gave one clean pick. Expect Krita
       touch-ups for his model sheet.
     - **Wide 1024 × 576 renders are clean**, but SDXL-Turbo kept drawing street-level perspective
-      even when asked for a high angle. That doesn't fit a flat lane layout. **Backgrounds stay
-      procedural for now.** A painted version needs another approach: e.g. a skyline strip for
-      the top band plus a ground texture, or img2img over the procedural layout.
-  - **Shipped from the model:** Jimothy, all five friends, the broom neighbor, the yard dog, the
-    motion light, the pile. **Still drawn in code:** the sprinkler (it always came out as a garden
-    scene), the fence (matting lost its rails), and backgrounds.
+      even when asked for a high angle. That doesn't fit a flat lane layout. *Later solved by
+      img2img over the procedural scenery (below).*
+  - **First set shipped from the model:** Jimothy, all five friends, the broom neighbor, the yard
+    dog, the motion light, the pile. The sprinkler, fence and backgrounds followed with areas 2–4.
   - **Areas 2–4** (second set, `art/prompts/areas.json`, 2026-10-04):
     - **Piles:** one per area.
     - **Fence and sprinkler:** generated after all. The fence is asked for as a solid gate; the
@@ -1191,7 +1204,7 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
   early.
 - **Exit:** all 20 levels are winnable headlessly with no upgrades; a full playthrough is done on
   web, one phone and the Deck (or a 1280 × 800 gamepad session).
-- **Progress:** built, except the art and the real-device playthroughs.
+- **Progress:** built, except the real-device playthroughs. Areas 2–4's art is in (M5).
   - **Levels:** 20 levels; each one's reference wins with no upgrades and ≥ 40 % of the night
     left. `npm run sim -- --all --curve` runs in CI and fails if a level is easier than the one
     before it (tolerance 0.08 of the night).
@@ -1234,12 +1247,18 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
 ### M9 — Launch
 
 - Store listings, screenshots and capsule art; privacy policy; ratings; AI disclosure.
-- **Progress:** store art is rendered by `node tools/make_store_art.ts` into `art/store/`:
+- **Progress:** the listing copy, privacy policy and AI disclosure are drafted
+  (`docs/store-listing.md`, `public/privacy.html`). Store art is rendered by
+  `node tools/make_store_art.ts` into `art/store/`:
   - the Play feature graphic, the Steam capsules (header, small, main, vertical, library capsule,
     header, hero and logo) and an itch.io cover, from the story compositions and the title logo
   - five screenshots for each device class (Play phone and 7"/10" tablets, App Store 6.9" iPhone
     and 13" iPad, desktop, Steam Deck): still frames from the busiest moments of the reference
     replays, and the map
+  - A full render records the content hash of everything it's drawn from in
+    `art/store/inputs.json`. CI warns (without failing) when any of those inputs has changed
+    since, and lists which, so the store art gets re-rendered before a listing is updated.
+  - Not done: store accounts, the rating questionnaires, submissions.
 - Web (Pages + itch.io) → Android → iOS → desktop/Steam, in that order, each a separate go/no-go.
 - **Exit:** live on each channel.
 
