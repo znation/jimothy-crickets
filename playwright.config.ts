@@ -8,6 +8,9 @@ export default defineConfig({
   snapshotPathTemplate: "{testDir}/__screenshots__/{projectName}/{arg}{ext}",
   timeout: 60_000,
   fullyParallel: true,
+  // Playwright's WebKit build occasionally fails a navigation with "internal error"; one retry on
+  // CI keeps that from failing a run, and the report still flags the test as flaky.
+  retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
   use: { baseURL: "http://127.0.0.1:4173", trace: "retain-on-failure" },
   webServer: {

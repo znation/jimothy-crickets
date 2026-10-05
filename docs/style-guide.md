@@ -47,6 +47,11 @@ Props (`art/raw/props/picks.json`):
 | Acorn | `acorn-cup` 20700, cropped | the only real capped acorn in 26 renders, sitting in a corner of a teacup scene |
 | Staging mat | `mat-60` 21000 | img2img at 0.6 over the game's own drawing of the mat: flat cardboard with a fold line and packing tape. Text-to-image gave open boxes of toys, a shed, a truck and a book; at 0.75 it turns into a 3D box |
 
+**Story cards** (`src/render/story.ts`) are compositions, not renders: an area's background with
+its pile on the right, Jimothy (waving, or happy for the finale) on the left, and the troupe that
+has joined by then between them. Tall boxes stack them instead: the pile behind, Jimothy in the
+middle, the troupe in a row in front. The same code draws the store art's key art.
+
 Still drawn in code, on purpose: lanes, range rings, effects, moons and UI buttons.
 
 Every area now has a painted background; the procedural scenery shows only beyond the bleed on
