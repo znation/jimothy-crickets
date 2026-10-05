@@ -1,0 +1,21 @@
+{
+  "comment": "A big open happy smile for the cheer and celebrate poses.",
+  "src": "art/raw/area1/jimothy-nub.png",
+  "scale": 1,
+  "offset": [0, 0],
+  "seeds": [41, 42, 43, 44],
+  "out": "art/raw/area1/_candidates/jimothy-happy",
+  "prefill": [
+    { "fill": "#e9e3da", "within": [["ellipse", 340, 282, 408, 324]] },
+    { "fill": "#7a2f3c", "within": [["ellipse", 356, 294, 392, 318]] },
+    { "fill": "#d9707f", "within": [["ellipse", 364, 306, 386, 318]] }
+  ],
+  "passes": [
+    {
+      "prompt": "a big happy open-mouth smile, cute muzzle, white fur",
+      "mask": [["ellipse", 334, 276, 414, 330]],
+      "blur": 5,
+      "strength": 0.5
+    }
+  ]
+}

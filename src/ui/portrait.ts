@@ -51,6 +51,8 @@ export function portrait(id: UnitId | DefenseId | "jimothy" | (string & {}), css
   c.style.height = `${cssH}px`;
   c.className = "portrait";
   const ctx = c.getContext("2d")!;
+  // Jimothy's painted poses ("jimothy-wave" etc.) fall back to his everyday portrait.
+  if (id.startsWith("jimothy-") && !atlas?.frames[id]) id = "jimothy";
   const art = atlas?.frames[id];
   if (art) {
     // fit the sprite (with its outline) inside the box, standing on the bottom edge

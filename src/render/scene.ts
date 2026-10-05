@@ -217,14 +217,33 @@ export class SceneRenderer {
     this.cheer = Math.max(0, this.cheer - dt);
     ctx.save();
     const mood = st.outcome?.kind === "nightEnded" ? "sleepy" : this.cheer > 0 || st.outcome?.kind === "won" ? "cheer" : "idle";
-    const jim = this.atlas?.frames.jimothy;
-    if (jim) {
+    const frames = this.atlas?.frames;
+    const jim = frames?.jimothy;
+    if (frames && jim) {
+      // Painted poses (plan §8.4's commander moods): a wave hello as the night starts, a happy
+      // hop for every delivery, a cookie held up high on a win, and a nap when the sun comes up.
+      const won = st.outcome?.kind === "won";
+      const pose =
+        mood === "sleepy" ? frames["jimothy-sleepy"]
+        : mood === "cheer" ? frames["jimothy-happy"]
+        : st.tick < 2 * TICK_RATE ? frames["jimothy-wave"]
+        : undefined;
       ctx.translate(JIMOTHY_X, stagingY(st) + 22);
-      const hop = mood === "cheer" ? -Math.abs(Math.sin(t * 9)) * 22 : 0;
+      const hop = mood === "cheer" && !this.reducedMotion ? -Math.abs(Math.sin(t * 9)) * 22 : 0;
       const breathe = 1 + Math.sin(t * (mood === "sleepy" ? 1.2 : 2.4)) * 0.025;
       ctx.translate(0, hop);
       if (mood === "sleepy") ctx.rotate(-0.12);
-      drawFrame(ctx, jim, 1 / breathe, breathe);
+      drawFrame(ctx, pose ?? jim, 1 / breathe, breathe);
+      const snack = frames.snack;
+      if (won && snack) {
+        // celebrate: the prize cookie bobbing over his head
+        ctx.save();
+        ctx.translate(14, -frameHeight(jim) - 18 + Math.sin(t * 5) * 6);
+        ctx.rotate(Math.sin(t * 3) * 0.15);
+        drawFrame(ctx, snack, 1.3, 1.3);
+        ctx.restore();
+      }
+      if (mood === "sleepy") this.drawZzz(t, 46, -frameHeight(jim) + 10);
     } else {
       ctx.translate(JIMOTHY_X, stagingY(st) - 40);
       drawJimothy(ctx, t, mood);
@@ -393,6 +412,27 @@ export class SceneRenderer {
     ctx.lineJoin = "round";
     ctx.strokeStyle = `rgba(255, 236, 150, ${0.18 + Math.sin(t * 4) * 0.06})`;
     ctx.stroke();
+    ctx.restore();
+  }
+
+  /** Three z's drifting up and fading from (x, y), for a napping Jimothy. */
+  private drawZzz(t: number, x: number, y: number) {
+    const ctx = this.view.ctx;
+    ctx.save();
+    ctx.rotate(0.12); // undo the nap tilt so the letters stay upright
+    ctx.fillStyle = "#fff6e6";
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 5;
+    ctx.lineJoin = "round";
+    for (let i = 0; i < 3; i++) {
+      const k = this.reducedMotion ? i / 3 : (t * 0.5 + i / 3) % 1;
+      ctx.globalAlpha = Math.min(1, (1 - k) * 2.5);
+      ctx.font = FONT_BOLD(32 + k * 24);
+      const zx = x + k * 60;
+      const zy = y - k * 90;
+      ctx.strokeText("z", zx, zy);
+      ctx.fillText("z", zx, zy);
+    }
     ctx.restore();
   }
 
