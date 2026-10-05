@@ -440,6 +440,9 @@ export class SceneRenderer {
     const { ctx } = this.view;
     for (const e of this.effects) {
       e.age += dt;
+      // A long frame (a slow device, 8× speed) can carry an effect past its end; drawing it then
+      // would give the dust a negative arc radius, which throws and stops the frame loop.
+      if (e.age >= e.life) continue;
       const k = e.age / e.life;
       ctx.save();
       ctx.globalAlpha = Math.max(0, 1 - k);
