@@ -1212,6 +1212,10 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
     - The squirrel is now a flanker (2 hp, 1 pile damage), not a damage dealer.
     - The crow deals 2.
     - The broom neighbor swats crows too, so air units have a counter.
+    - The crow costs 40 snacks and waits 3 s between sends. At 30 and 2 s, sending nothing
+      but crows won every level from 2-4 on, nearly always with 3 moons. Now crows alone get 1–2
+      moons except on 2-4 and 3-1, the levels built around them. `npm run tune` shows each level's
+      best strategy; areas 3 and 4 mostly need a rat-led mix.
     - Every lane faces something, usually something different (`node tools/lanes.ts`).
     - The best strategy found varies by level: possum pushes, bunched crickets, crows over
       fences, rat-led mixes.
@@ -1220,6 +1224,10 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
     - Arrow keys and gamepads move focus between controls on screen; A sends (holding A
       streams), B goes back, Start pauses. A browser test drives a mocked gamepad.
     - Intro cards picture each defense or friend the first time it appears (§10.2).
+    - The state that decides a send is drawn on the field. An orange dial over a defense or
+      fence shows how far the rats have chewed it. A yellow dial over the motion light counts
+      down until it can flash again, which is the window to slip a wave past it. A ring closes
+      under whoever a yard dog or broom is winding up on; a squirrel can outrun it.
 
 ### M8 — Audio, polish, accessibility (README step 7)
 

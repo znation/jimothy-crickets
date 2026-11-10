@@ -14,6 +14,7 @@ import {
   bot,
   referenceInputs,
   runAttempt,
+  strategySpace,
   toReference,
   type AttemptResult,
   type BotOptions,
@@ -121,16 +122,11 @@ function attempt(level: LevelDef, opts: Omit<Parameters<typeof runAttempt>[2], "
 
 /** Try a spread of bot strategies and keep the fastest win. */
 function searchReference(level: LevelDef): AttemptResult | null {
-  const units = unitsAvailableAt(level.id);
-  const mixes: BotOptions["weights"][] = [undefined];
-  for (const u of units) mixes.push({ [u]: 1 });
-  for (const u of units) for (const v of units) if (u < v) mixes.push({ [u]: 2, [v]: 1 }, { [u]: 1, [v]: 2 });
   let best: AttemptResult | null = null;
-  for (const weights of mixes)
-    for (const burst of [0, 40, 80, 120, 160]) {
-      const r = attempt(level, { seed, policy: bot({ weights, burst }) });
-      if (r.outcome.kind === "won" && (!best || r.seconds < best.seconds)) best = r;
-    }
+  for (const opts of strategySpace(unitsAvailableAt(level.id))) {
+    const r = attempt(level, { seed, policy: bot(opts) });
+    if (r.outcome.kind === "won" && (!best || r.seconds < best.seconds)) best = r;
+  }
   return best;
 }
 

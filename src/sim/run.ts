@@ -67,6 +67,18 @@ export interface BotOptions {
 }
 
 /**
+ * The bot strategies the reference search and the balance table try: an even mix, each unit on
+ * its own, and every pair at 2:1 and 4:1 (a possum with a crowd of crickets behind it, say), each
+ * sent as soon as possible or saved up into bursts.
+ */
+export function strategySpace(units: readonly UnitId[]): BotOptions[] {
+  const mixes: BotOptions["weights"][] = [undefined, ...units.map((u) => ({ [u]: 1 }))];
+  for (const u of units)
+    for (const v of units) if (u < v) mixes.push({ [u]: 2, [v]: 1 }, { [u]: 1, [v]: 2 }, { [u]: 4, [v]: 1 }, { [u]: 1, [v]: 4 });
+  return mixes.flatMap((weights) => [0, 40, 80, 120, 160].map((burst) => ({ weights, burst })));
+}
+
+/**
  * A cheap greedy player: spends snacks across unit types in proportion to `weights`, always down
  * the least-defended lane for that unit. Used for difficulty scores and to seed reference solutions.
  */

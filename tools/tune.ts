@@ -2,7 +2,7 @@
 // `node tools/tune.ts` — a developer aid; `npm run sim -- --all --report` is the CI check.
 
 import { content, levels, unitsAvailableAt } from "../src/data/content.ts";
-import { bot, runAttempt, type AttemptResult, type BotOptions } from "../src/sim/run.ts";
+import { bot, runAttempt, strategySpace, type AttemptResult, type BotOptions } from "../src/sim/run.ts";
 
 const row = (r: AttemptResult) =>
   r.outcome.kind === "won"
@@ -15,15 +15,12 @@ for (const level of levels) {
   const plain = run({});
   let best = plain;
   let bestName = "plain";
-  const mixes: BotOptions["weights"][] = [undefined, ...available.map((u) => ({ [u]: 1 }))];
-  for (const u of available) for (const v of available) if (u < v) mixes.push({ [u]: 2, [v]: 1 }, { [u]: 1, [v]: 2 });
-  for (const weights of mixes)
-    for (const burst of [0, 40, 80, 120, 160]) {
-      const r = run({ weights, burst });
-      const better =
-        (r.outcome.kind === "won" && (best.outcome.kind !== "won" || r.seconds < best.seconds)) ||
-        (r.outcome.kind !== "won" && best.outcome.kind !== "won" && r.pileTrace.at(-1)! < best.pileTrace.at(-1)!);
-      if (better) [best, bestName] = [r, `${JSON.stringify(weights ?? "equal")} burst ${burst}`];
-    }
+  for (const opts of strategySpace(available)) {
+    const r = run(opts);
+    const better =
+      (r.outcome.kind === "won" && (best.outcome.kind !== "won" || r.seconds < best.seconds)) ||
+      (r.outcome.kind !== "won" && best.outcome.kind !== "won" && r.pileTrace.at(-1)! < best.pileTrace.at(-1)!);
+    if (better) [best, bestName] = [r, `${JSON.stringify(opts.weights ?? "equal")} burst ${opts.burst}`];
+  }
   console.log(`${level.id}  plain: ${row(plain).padEnd(26)} best: ${row(best).padEnd(26)} ${bestName}`);
 }

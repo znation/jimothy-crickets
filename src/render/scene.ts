@@ -157,6 +157,8 @@ export class SceneRenderer {
       ctx.restore();
     }
 
+    this.drawGauges(st, alpha);
+
     // pile
     this.pileShake = Math.max(0, this.pileShake - dt);
     ctx.save();
@@ -169,6 +171,8 @@ export class SceneRenderer {
       if (stage > 0) drawFrame(ctx, pileArt, 1, 1, 0.3 + (0.7 * stage) / 5);
     } else drawPile(ctx, stage, this.pileShake);
     ctx.restore();
+
+    this.drawWindupTargets(st, alpha, t);
 
     // units, back to front
     const order = st.units.map((u) => {
@@ -352,6 +356,78 @@ export class SceneRenderer {
     const [dx, dy] = directionAt(l, s);
     const off = jitter * LANE_WIDTH * 0.28;
     return [x - dy * off, y + dx * off - (air ? FLY_HEIGHT : 0)];
+  }
+
+  /**
+   * Small round dials over defenses, so the state that decides a send is on screen: how far the
+   * rats have chewed through something, and how long until the motion light can flash again.
+   */
+  private drawGauges(st: SimState, alpha: number) {
+    for (const d of st.defenses) {
+      if (d.disabled) continue;
+      const full = d.def.effect.blocks?.hp ?? d.def.chewHp ?? 0;
+      if (full > 0 && d.chewLeft < full) this.drawDial(d, 1 - d.chewLeft / full, "#ff8f5a");
+      else if (d.def.id === "motionLight" && d.cooldown > 0 && d.def.effect.rate) {
+        const total = Math.round(TICK_RATE / d.def.effect.rate);
+        this.drawDial(d, 1 - Math.max(0, d.cooldown - alpha) / total, "#ffe08a");
+      }
+    }
+  }
+
+  private drawDial(d: SimState["defenses"][number], k: number, colour: string) {
+    const { ctx } = this.view;
+    const art = this.atlas?.frames[d.def.id];
+    const top = art ? frameHeight(art) / 2 : 60;
+    const x = d.pos[0];
+    const y = d.pos[1] - top - 38;
+    const r = 24;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = "#fff6e6";
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.arc(x, y, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, Math.max(0, k)));
+    ctx.closePath();
+    ctx.fillStyle = colour;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = INK;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  /**
+   * A ring that closes around whoever a yard dog or broom is about to reach, over its windup. It
+   * shows who the defense picked, and lets a quick squirrel be seen slipping out before it lands.
+   */
+  private drawWindupTargets(st: SimState, alpha: number, t: number) {
+    const { ctx } = this.view;
+    for (const d of st.defenses) {
+      if (d.windupTicks <= 0 || !d.def.effect.windup) continue;
+      const u = st.units.find((v) => v.uid === d.windupTarget);
+      if (!u) continue;
+      const total = Math.round(d.def.effect.windup * TICK_RATE);
+      const k = 1 - Math.max(0, d.windupTicks - alpha) / total;
+      const [x, y] = this.unitPos(st, u.lane, u.prevS + (u.s - u.prevS) * alpha, u.jitter, false);
+      const pulse = this.reducedMotion ? 1 : 1 + Math.sin(t * 20) * 0.06;
+      ctx.save();
+      ctx.translate(x, y + 8);
+      ctx.scale(pulse, pulse * 0.4);
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.arc(0, 0, 46, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * k);
+      ctx.lineWidth = 16;
+      ctx.strokeStyle = INK;
+      ctx.stroke();
+      ctx.lineWidth = 9;
+      ctx.strokeStyle = "#ff8f5a";
+      ctx.stroke();
+      ctx.restore();
+    }
   }
 
   private mark: HTMLCanvasElement | null = null;
