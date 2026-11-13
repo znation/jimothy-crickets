@@ -7,11 +7,11 @@ ships them as working art:
 | Sprite | Pick | Why |
 |---|---|---|
 | Jimothy | `jimothy-nub` 31 (touch-ups of `jimothy-photo` 9050) | 9050 was the roundest of 28 renders, but a ringed tail peeked out behind his hind leg and the frame cropped his rump. `jimothy-notail` (24) removed the tail, completed the rump and cleared the grass; `jimothy-nub` (31) gave him back the fairly tiny fluffy nub he really has |
-| Cricket | 8100 | round green ball, dot eyes, smile; small wings |
-| Possum | 8200 | the roundest, softest face |
+| Cricket | `cricket-round` 36000 (was `cricket` 8100) | a clear little bug: big shiny eyes, a smile and a rosy cheek, pink wings, facing right. 8100's leaf-shaped wings read as ears in-game, so the crickets looked like goblins. The matte's hole in the upper wing is filled by hand |
+| Possum | `possum-side` 36000 (was `possum` 8200) | pale, fluffy and white-faced, on all fours, facing right. 8200 faced the camera and looked just like the rat. A plant, a radish and a patch of ground from its scene are erased by hand |
 | Squirrel | 9300 | side view, facing right, whole tail in frame |
-| Crow | 7400 (framing v1) | pass 2 turned the crow into a robin |
-| Rat | 9500 | round, pink ears and tail, facing right |
+| Crow | `crow-black` 37000 (was `crow` 7400) | very round, one big eye, a yellow beak; mirrored to face right (`flip`). SDXL-Turbo's watercolour style turns "black" into grey (and "orange beak" into a robin's breast), so the feathers are darkened to a blue-black in the curated file and a soft blush is added under the eye. 7400 was a realistic crow |
+| Rat | `rat-side` 37000 (was `rat` 9500) | brown, side-on, the whole tail in frame. Brown against the possum's white keeps the two apart at a glance |
 | Broom neighbor | 7700 | bewildered, comic, broom and bucket |
 | Yard dog | 9800 | a sitting puppy: the goofiest and least threatening |
 | Motion light | 11000 (framing v1) | isolated lamp on a bracket |
@@ -30,14 +30,14 @@ Areas 2–4 (`art/raw/areas/picks.json`):
 
 | Sprite | Pick | Why |
 |---|---|---|
-| Pile (back yards) | 10100 | an overflowing green wheelie bin |
+| Pile (back yards) | 10100 | an overflowing green wheelie bin. The lawn patch and concrete blocks the matte kept (a pale box in-game) are erased by hand |
 | Pile (cul-de-sac) | 12200 | a blue recycling bin spilling boxes |
 | Pile (strip mall) | 11300 | an open green dumpster |
 | Fence | 11400 | a solid gate with its post: cuts out cleanly, unlike picket fences |
 | Sprinkler | 12500 | reads as a little garden fountain, the best of twelve; the code adds the spray |
 | Background (back yards) | 9600 at 0.75 | lit houses behind a picket fence, stars |
 | Background (cul-de-sac) | 10700 at 0.75 | houses around the turning circle, which sits under the pile |
-| Background (strip mall) | 10800 at 0.75 | lit storefronts over a lined parking lot |
+| Background (strip mall) | 10800 at 0.75 | lit storefronts over a lined parking lot; the shop signs' garbled model lettering is painted out by hand in the curated file, leaving plain lit sign panels |
 | Background (alley) | `bg-alley-lot-75` 13900 | red-brick terraces with warm windows over an open lot |
 
 Props (`art/raw/props/picks.json`):
@@ -66,8 +66,11 @@ picture-book palette; not pixel art, not flat vector.
 - **Fills:** soft watercolour washes with a little paper texture (from the concept set's
   watercolour column).
 - **Outlines:** one uniform dark warm-grey ink line (`#2a2233`) around every sprite, added by
-  `tools/build_atlas.ts` at 2.5 world units. The image model's own linework is thin and uneven;
-  the shared outline is what makes sprites from different generations read as one family.
+  `tools/build_atlas.ts` at 4 world units (2.5 until 2026-11; at phone size that was under a
+  pixel and sprites went soft). The image model's own linework is thin and uneven; the shared
+  outline is what makes sprites from different generations read as one family.
+- **Shadows:** every animal, defense, Jimothy and the pile sits on a soft oval contact shadow
+  (`rgba(20, 14, 34, 0.32)`), drawn in code, so nothing floats on the path.
 - **Characters** are high-contrast and saturated enough to pop; **backgrounds** are softer and
   darker (night), so the troupe always reads against them.
 - **Palette:** night blues (`#1a2147` → `#4b4f86`), damp asphalt greys, moss greens, warm window
@@ -148,3 +151,7 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
 One painted pose per sprite (Jimothy has four more), animated in code (`src/render/scene.ts`): hops (crickets), waddles
 (possum), bounding (squirrel), bobbing flight (crow), scurrying (rat), squash and stretch, a
 belly-up flop for playing dead, a hop-off for "shooed", the pile shrinking toward its base.
+
+Ambient touches, also in code: a few fireflies drifting and blinking over the field, a pink
+heart floating up off the pile with each delivery, and a soft vignette on the background layer.
+Reduced motion turns off the fireflies and hearts.

@@ -113,6 +113,31 @@
       "kind": "background",
       "size": [1024, 576],
       "prompt": "high angle view of an empty paved back alley at night, a long brick wall with warm lit windows along the top, open damp ground, moss, puddles"
+    },
+    {
+      "name": "possum-side",
+      "seed": 30000,
+      "prompt": "a cute chubby baby opossum walking, round fluffy pale grey body, bright white face, long pointy pink nose, big shiny black eyes, rosy cheeks, tiny black ears, pink tail"
+    },
+    {
+      "name": "rat-side",
+      "seed": 31000,
+      "prompt": "a cute chubby little brown rat walking, round soft body, big round pink ears, big shiny black eyes, rosy cheeks, tiny pink nose, thin pink tail"
+    },
+    {
+      "name": "crow-round",
+      "seed": 32000,
+      "prompt": "a cute round chubby baby crow flying, small wings spread, fluffy black feathers, huge friendly shiny eyes, rosy cheeks, tiny orange beak"
+    },
+    {
+      "name": "cricket-round",
+      "seed": 33000,
+      "prompt": "a sweet round cartoon cricket, round bright green body, big shiny black eyes, rosy cheeks, gentle smile, two long floppy antennae, short stubby legs"
+    },
+    {
+      "name": "crow-black",
+      "seed": 34000,
+      "prompt": "a cute round chubby baby crow flying, jet black fluffy feathers all over, black wings spread, big round friendly shiny eyes, small dark grey beak"
     }
   ]
 }

@@ -23,11 +23,12 @@ const LANE_WIDTH = 120;
 const FONT_BOLD = (px: number) => `700 ${px}px Fredoka, ui-rounded, system-ui, sans-serif`;
 const JIMOTHY_X = 130;
 const FLY_HEIGHT = 90;
+const SHADOW = "rgba(20, 14, 34, 0.32)";
 /** Units are drawn larger than life so they stay readable on phones (~0.35 CSS px per unit). */
 const UNIT_SCALE = 1.5;
 
 interface Effect {
-  kind: "hop" | "text" | "startle" | "dust" | "confetti";
+  kind: "hop" | "text" | "startle" | "dust" | "confetti" | "heart";
   x: number;
   y: number;
   age: number;
@@ -84,6 +85,11 @@ export class SceneRenderer {
         this.cheer = 0.8;
         if (e.haul) this.add({ kind: "text", x: px - 40, y: py - 170, life: 1, text: `+${e.haul}` });
         this.add({ kind: "dust", x: px - 60, y: py + 30, life: 0.5 });
+        // a little heart floats up off the pile: someone got a snack
+        if (!this.reducedMotion) {
+          const spread = ((e.uid * 37) % 100) / 100 - 0.5;
+          this.add({ kind: "heart", x: px - 70 + spread * 120, y: py - 120, life: 1.1, dir: spread });
+        }
       } else if (e.type === "unitHit") {
         const u = st.units.find((v) => v.uid === e.uid);
         if (u && !this.reducedMotion) {
@@ -127,6 +133,7 @@ export class SceneRenderer {
       if (d.disabled && !d.def.effect.blocks) ctx.globalAlpha = 0.45;
       const art = this.atlas?.frames[d.def.id];
       if (art) {
+        if (!d.def.effect.blocks && !(d.disabled && d.def.id === "fence")) this.groundShadow(0, frameHeight(art) / 2, art, 0.42);
         this.defenseOverlay(d, age);
         this.drawDefenseArt(d.def.id, art, age, t, d.disabled);
         ctx.restore();
@@ -168,7 +175,11 @@ export class SceneRenderer {
     if (pileArt) {
       // the painted pile shrinks toward its base as it's carried off
       ctx.translate(Math.sin(this.pileShake * 60) * this.pileShake * 10, 70);
-      if (stage > 0) drawFrame(ctx, pileArt, 1, 1, 0.3 + (0.7 * stage) / 5);
+      const size = 0.3 + (0.7 * stage) / 5;
+      if (stage > 0) {
+        this.groundShadow(0, 0, pileArt, 0.46 * size);
+        drawFrame(ctx, pileArt, 1, 1, size);
+      }
     } else drawPile(ctx, stage, this.pileShake);
     ctx.restore();
 
@@ -182,16 +193,25 @@ export class SceneRenderer {
       return { u, x, y, air };
     });
     order.sort((a, b) => a.y - b.y);
+    // soft contact shadows for everyone on the ground, in one fill (flyers get theirs below)
+    const shadows = new Path2D();
+    for (const { u, x, y, air } of order) {
+      if (air) continue;
+      const f = this.atlas?.frames[u.def.id];
+      const rx = f ? (f.w / f.scale) * 0.34 : 22 * UNIT_SCALE;
+      shadows.moveTo(x + rx, y + 18);
+      shadows.ellipse(x, y + 18, rx, rx * 0.28, 0, 0, Math.PI * 2);
+    }
+    ctx.fillStyle = SHADOW;
+    ctx.fill(shadows);
     const drops = new Path2D();
     for (const { u, x, y, air } of order) {
       ctx.save();
       if (air) {
-        ctx.globalAlpha = 0.25;
         ctx.beginPath();
         ctx.ellipse(x, y + 14, 18 * UNIT_SCALE, 6 * UNIT_SCALE, 0, 0, Math.PI * 2);
-        ctx.fillStyle = INK;
+        ctx.fillStyle = SHADOW;
         ctx.fill();
-        ctx.globalAlpha = 1;
       }
       ctx.translate(x, y - (air ? FLY_HEIGHT : 0));
       const moving = u.stunTicks === 0 && u.flopTicks === 0 && u.chewing < 0;
@@ -235,6 +255,7 @@ export class SceneRenderer {
       ctx.translate(JIMOTHY_X, stagingY(st) + 22);
       const hop = mood === "cheer" && !this.reducedMotion ? -Math.abs(Math.sin(t * 9)) * 22 : 0;
       const breathe = 1 + Math.sin(t * (mood === "sleepy" ? 1.2 : 2.4)) * 0.025;
+      this.groundShadow(0, 0, jim, 0.4 * (1 + hop / 110));
       ctx.translate(0, hop);
       if (mood === "sleepy") ctx.rotate(-0.12);
       drawFrame(ctx, pose ?? jim, 1 / breathe, breathe);
@@ -254,7 +275,32 @@ export class SceneRenderer {
     }
     ctx.restore();
 
+    this.drawFireflies(t);
     this.drawEffects(t, dt);
+  }
+
+  /**
+   * A few fireflies drifting over the yards: slow wander, a soft blink. Positions come from the
+   * clock alone, so a still frame always draws the same ones. None with reduced motion.
+   */
+  private drawFireflies(t: number) {
+    if (this.reducedMotion) return;
+    const { ctx } = this.view;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < 12; i++) {
+      const glow = Math.max(0, Math.sin(t * (0.9 + (i % 4) * 0.25) + i * 2.3));
+      if (glow < 0.05) continue;
+      const x = 80 + ((i * 523) % 1760) + Math.sin(t * 0.23 + i) * 70;
+      const y = 250 + ((i * 197) % 520) + Math.sin(t * 0.37 + i * 1.7) * 36;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 22);
+      g.addColorStop(0, `rgba(255, 246, 170, ${0.9 * glow})`);
+      g.addColorStop(0.25, `rgba(220, 255, 140, ${0.45 * glow})`);
+      g.addColorStop(1, "rgba(200, 255, 120, 0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(x - 22, y - 22, 44, 44);
+    }
+    ctx.restore();
   }
 
   /**
@@ -356,6 +402,16 @@ export class SceneRenderer {
     const [dx, dy] = directionAt(l, s);
     const off = jitter * LANE_WIDTH * 0.28;
     return [x - dy * off, y + dx * off - (air ? FLY_HEIGHT : 0)];
+  }
+
+  /** A soft oval shadow on the ground at (x, y), sized to a fraction `k` of the frame's width. */
+  private groundShadow(x: number, y: number, f: Frame, k: number) {
+    const { ctx } = this.view;
+    const rx = (f.w / f.scale) * k;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rx, rx * 0.24, 0, 0, Math.PI * 2);
+    ctx.fillStyle = SHADOW;
+    ctx.fill();
   }
 
   /**
@@ -540,6 +596,27 @@ export class SceneRenderer {
         ctx.strokeText(e.text!, e.x, e.y - k * 50);
         ctx.fillStyle = "#ffe08a";
         ctx.fillText(e.text!, e.x, e.y - k * 50);
+      } else if (e.kind === "heart") {
+        // pops in, floats up with a wobble, fades
+        const pop = k < 0.15 ? 0.6 + (k / 0.15) * 0.55 : 1.15 - Math.min(0.15, (k - 0.15) * 0.6);
+        ctx.translate(e.x + Math.sin(k * 9 + e.dir! * 6) * 10, e.y - k * 110);
+        ctx.rotate(e.dir! * 0.5);
+        ctx.scale(pop, pop);
+        ctx.beginPath();
+        ctx.moveTo(0, 14);
+        ctx.bezierCurveTo(-26, -4, -16, -24, 0, -12);
+        ctx.bezierCurveTo(16, -24, 26, -4, 0, 14);
+        ctx.closePath();
+        ctx.lineWidth = 6;
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = INK;
+        ctx.stroke();
+        ctx.fillStyle = "#ff7fae";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(-7, -10, 4, 2.5, -0.6, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+        ctx.fill();
       } else if (e.kind === "startle") {
         // drawn once and blitted: text rendering per mark is slow in WebKit during big swarms
         const mark = this.startleMark();
@@ -683,9 +760,9 @@ function paintBackground(
     }
     ctx.fillStyle = RANGE_COLOURS[d.def.id] ?? "rgba(255,255,255,0.08)";
     ctx.fill();
-    ctx.setLineDash([14, 12]);
+    ctx.setLineDash([10, 14]);
     ctx.lineWidth = 3;
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.22)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.14)";
     ctx.stroke();
     ctx.restore();
   }
@@ -725,6 +802,16 @@ function paintBackground(
   glow.addColorStop(1, "rgba(255, 220, 140, 0)");
   ctx.fillStyle = glow;
   ctx.fillRect(px - 360, py - 420, 720, 720);
+
+  // a soft storybook vignette, in screen space, so the eye settles on the middle of the page
+  const cw = v.canvas.width;
+  const ch = v.canvas.height;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const vig = ctx.createRadialGradient(cw / 2, ch * 0.55, Math.min(cw, ch) * 0.45, cw / 2, ch * 0.55, Math.hypot(cw, ch) * 0.62);
+  vig.addColorStop(0, "rgba(14, 10, 34, 0)");
+  vig.addColorStop(1, "rgba(14, 10, 34, 0.42)");
+  ctx.fillStyle = vig;
+  ctx.fillRect(0, 0, cw, ch);
 }
 
 const RANGE_COLOURS: Record<string, string> = {
