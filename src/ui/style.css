@@ -260,6 +260,29 @@ button:focus-visible,
   font-size: 16px;
 }
 
+.pair {
+  margin: 0;
+  padding: 8px 14px 8px;
+  border-radius: 18px;
+  background: var(--paper-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pair-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pair figcaption {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 17px;
+  text-align: center;
+}
+
 .recruit {
   display: flex;
   align-items: center;
@@ -643,6 +666,17 @@ button:focus-visible,
   height: 36px;
 }
 
+/* a delivered cookie lands on the snack counter */
+.pill.snacks.bump .icon {
+  animation: bump 0.25s ease-out;
+}
+
+@keyframes bump {
+  40% {
+    transform: scale(1.35) rotate(-10deg);
+  }
+}
+
 .snacks .value {
   min-width: 2.2em;
   font-variant-numeric: tabular-nums;
@@ -893,6 +927,18 @@ button:focus-visible,
   }
   .pause-card > .portrait:first-child {
     display: none;
+  }
+  .card.intro {
+    gap: 8px;
+    padding: 14px 24px 16px;
+  }
+  .card.intro > .portrait:first-child {
+    width: 88px !important;
+    height: 66px !important;
+  }
+  .card.intro .news .portrait {
+    width: 64px !important;
+    height: 48px !important;
   }
   .shop {
     justify-content: flex-start;

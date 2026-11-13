@@ -467,6 +467,16 @@ This section is a first-pass spec. All numbers are placeholders to be tuned in M
 | **Fence / gate** | Blocks the lane at an `s` until its hp is chewed to 0. Ground units queue behind it. | Rats chew it; crows fly over it |
 | **Neighbor with a broom** | Mid-range; pushes the target back by `px` | Possums (heavy, so reduced push back); a steady stream of units |
 
+- **Favourite friends (distractions).** Three defenses have a friend they can't resist
+  (`distractedBy` in `defenses.json`): the **yard dog chases a squirrel**, the **neighbor swats at
+  a crow** overhead, and the **motion light stares at a possum**. When that friend comes into
+  range, the defense stops firing at anyone, the friend included, for `secs` (3, 3 and 4). Each
+  friend distracts a given defense once, so keeping a defense busy means sending another. It is
+  the same three verbs (which unit, which lane, when): a squirrel sent just ahead of a cricket
+  wave walks the wave past the dog. On the field the dog bounds after its squirrel and trots
+  back, the neighbor swings at the sky with a "?!", the light's beam locks onto the possum, and a
+  pink heart dial over the defense counts down the distraction.
+
 ### 5.3 Units
 
 | Unit | Role | Signature trait |
@@ -858,6 +868,9 @@ Checked when the model was chosen:
   the sim **pauses until the player taps**. It is skipped automatically on replay.
 - Each new defense or unit gets a one-card picture intro the first time it appears, then never
   again.
+- The first level where a distractible defense and its friend are both in play (2-1 dog and
+  squirrel, 2-4 light and possum, 2-5 neighbor and crow) adds a "defense ♥ friend" picture to
+  the intro card.
 - Tooltips appear on long-press and hover.
 
 ### 10.3 Form-factor checks
@@ -1228,6 +1241,18 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
       fence shows how far the rats have chewed it. A yellow dial over the motion light counts
       down until it can flash again, which is the window to slip a wave past it. A ring closes
       under whoever a yard dog or broom is winding up on; a squirrel can outrun it.
+  - **Favourite friends (§5.2):** the dog chases squirrels, the neighbor swats at crows, the
+    light stares at possums. They give the squirrel a job and make mixed troupes pay. With them,
+    `npm run tune`'s plain bot (an even mix of everything) went from losing to winning on 2-2,
+    3-3 and 3-4, and got much closer on the rest. The fastest strategies barely moved, because
+    the snack economy, not the defenses, limits them; levels weren't toughened to force mixing.
+  - **Arrival chain:** friends reaching the pile within 1.5 s of each other build a chain
+    (`st.chain`, the `chain` on each `pileHit`). A "×N" bubble pops over the pile from 3, turns
+    pink at 10, and every tenth bursts garbage confetti. Each arrival plays the next note of a
+    major pentatonic scale, G4 climbing two octaves to G6 and then sparkling between the top two
+    notes, so a kid holding a card hears a tune and nothing sounds wrong. Each delivery's cookie
+    flies from the pile to the snack counter, which bumps when it lands. Reference replays reach
+    chains of 10–18.
 
 ### M8 — Audio, polish, accessibility (README step 7)
 

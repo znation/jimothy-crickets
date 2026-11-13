@@ -159,3 +159,11 @@ belly-up flop for playing dead, a hop-off for "shooed", the pile shrinking towar
 Ambient touches, also in code: a few fireflies drifting and blinking over the field, a pink
 heart floating up off the pile with each delivery, and a soft vignette on the background layer.
 Reduced motion turns off the fireflies and hearts.
+
+Rewards, in code too: each delivery's cookie (the `snack` sprite) arcs from the pile to the HUD's
+snack counter; an arrival chain shows as a "×N" bubble in paper and ink over the pile (orange
+text, pink from 10) and bursts garbage-coloured confetti every tenth. Distracted defenses: the
+dog bounds after its squirrel with hearts, the neighbor swings at the sky with a "?!", the
+light's beam narrows onto the possum; a pink dial with a paper heart counts the distraction down.
+Pink (`#ff7fae`) means love throughout. Reduced motion keeps the bubble and dials but drops the
+pops, the flying cookies, the bounding and the confetti.

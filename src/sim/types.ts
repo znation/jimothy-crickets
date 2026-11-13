@@ -53,6 +53,12 @@ export interface DefenseDef {
     blocks?: { hp: number }; // fence: ground units stop here until sappers chew hp to 0
   };
   chewHp?: number; // sappers can disable this defense by chewing this much
+  /**
+   * The one friend this defense can't resist (the dog chases squirrels, the neighbor swats at
+   * crows, the light stares at a possum). When that friend comes into range the defense stops
+   * firing at anyone for `secs`. Each friend distracts a given defense once.
+   */
+  distractedBy?: { unit: UnitId; secs: number };
   sprite: string;
 }
 
@@ -128,6 +134,9 @@ export interface DefenseState {
   chewLeft: number;
   disabled: boolean;
   lastFiredTick: number;
+  distractTicks: number; // > 0 while distracted
+  distractUid: number; // the friend it's distracted by, or -1
+  distractedByUids: number[]; // friends that have already distracted it (each only once)
 }
 
 export interface Outcome {
@@ -144,7 +153,9 @@ export type SimEvent =
   | { type: "unitHit"; uid: number; index: number }
   | { type: "unitPlayedDead"; uid: number }
   | { type: "unitShooed"; uid: number; unit: UnitId; lane: number; s: number }
-  | { type: "pileHit"; uid: number; unit: UnitId; damage: number; haul: number }
+  /** `chain` counts arrivals in quick succession (1 for the first, then 2, 3, ...). */
+  | { type: "pileHit"; uid: number; unit: UnitId; damage: number; haul: number; chain: number }
+  | { type: "defenseDistracted"; index: number; uid: number; unit: UnitId }
   | { type: "defenseChewed"; index: number }
   | { type: "levelWon"; moons: number }
   | { type: "nightEnded" };

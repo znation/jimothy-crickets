@@ -108,6 +108,10 @@ Sketch of defense types:
 - **Fence / gate** — a hard obstacle that must be chewed through or routed around.
 - **Neighbor with a broom** — mid-range, shoos units backward down the lane.
 
+Some defenses have a **favourite friend** they can't resist: the dog chases squirrels, the
+neighbor swats at crows, the motion light stares at possums. While it's busy, everyone else
+walks by. It gives each friend a clear job a four-year-old can read from the picture.
+
 ### Levels and difficulty
 
 - The campaign is a sequence of **authored levels**. Each level is a data file: lane layout, defense

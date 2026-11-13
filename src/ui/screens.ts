@@ -2,7 +2,7 @@
 // focus rings, keyboard access and readable text for free.
 
 import type { App } from "../app.ts";
-import { campaign, levelById, levelOrder, unitsAvailableAt, upgrades } from "../data/content.ts";
+import { campaign, levelById, levelOrder, newPairs, unitsAvailableAt, upgrades } from "../data/content.ts";
 import type { LevelSession } from "../play.ts";
 import { closestS } from "../sim/lane.ts";
 import { UNIT_IDS, type DefenseId, type UnitId } from "../sim/types.ts";
@@ -293,6 +293,7 @@ export class LevelScreen implements Screen {
   el: HTMLElement;
   private overlay: HTMLElement | null = null;
   private snacksEl: HTMLElement;
+  private snacksPill!: HTMLElement;
   private pileFill: HTMLElement;
   private nightMoon: SVGCircleElement;
   private cards = new Map<UnitId, HTMLButtonElement>();
@@ -322,6 +323,8 @@ export class LevelScreen implements Screen {
       for (const e of events) {
         if (e.type === "unitSent" && this.tutorialStep === 1) this.advanceTutorial();
         if (e.type === "levelWon" || e.type === "nightEnded") this.endTimer = 1.4;
+        // the cookie the scene flies over from the pile lands on the counter
+        if (e.type === "pileHit" && e.haul > 0 && !app.scene.reducedMotion) setTimeout(() => this.bumpSnacks(), 700);
       }
     });
 
@@ -372,7 +375,7 @@ export class LevelScreen implements Screen {
       h(
         "div.hud-top",
         null,
-        h("div.pill.snacks", { "aria-label": t("hud.snacks") }, paintedIcon("snack", snackIcon), this.snacksEl),
+        (this.snacksPill = h("div.pill.snacks", { "aria-label": t("hud.snacks") }, paintedIcon("snack", snackIcon), this.snacksEl)),
         h("div.pill.pile", null, paintedIcon(hasPainted(`pile-${session.level.area}`) ? `pile-${session.level.area}` : "pile", pileIcon), h("div.bar", null, this.pileFill)),
         h(
           "div.hud-right",
@@ -386,6 +389,12 @@ export class LevelScreen implements Screen {
     );
 
     this.app.view.canvas.onpointerdown = (e) => this.tapField(e);
+    app.scene.snackTarget = () => {
+      const icon = this.snacksPill.querySelector(".icon") ?? this.snacksPill;
+      if (!icon.isConnected) return null;
+      const r = icon.getBoundingClientRect();
+      return app.view.toWorld(r.left + r.width / 2, r.top + r.height / 2);
+    };
     if (st.lanes.length > 1) {
       // One big button per lane at its start, so choosing a lane never needs a precise tap.
       const keys = "QWE";
@@ -417,6 +426,14 @@ export class LevelScreen implements Screen {
 
   dispose() {
     this.app.view.canvas.onpointerdown = null;
+    this.app.scene.snackTarget = null;
+  }
+
+  private bumpSnacks() {
+    const pill = this.snacksPill;
+    pill.classList.remove("bump");
+    void pill.offsetWidth; // restart the animation
+    pill.classList.add("bump");
   }
 
   animating() {
@@ -584,6 +601,7 @@ export class LevelScreen implements Screen {
     const go = h("button.big.primary", { onclick: () => this.closeIntro() }, t("intro.go"));
     // Plan §10.2: the first time a defense or friend appears, show its picture.
     const news = firstAppearances(this.session.level.id);
+    const pairs = newPairs(this.session.level.id);
     this.openOverlay(
       "intro",
       h(
@@ -591,12 +609,21 @@ export class LevelScreen implements Screen {
         null,
         portrait("jimothy-wave", 160, 120),
         h("p.say", null, t(this.session.level.intro!.textKey)),
-        news.length
+        news.length || pairs.length
           ? h(
               "div.news",
               null,
               ...news.map((n) =>
                 h("figure.new-thing", null, portrait(n.id, 96, 72), h("figcaption", null, t(`${n.kind}.${n.id}`))),
+              ),
+              // and the first time a defense meets the friend it can't resist: "dog ♥ squirrel"
+              ...pairs.map((p) =>
+                h(
+                  "figure.pair",
+                  null,
+                  h("div.pair-row", null, portrait(p.defense, 96, 72), heartIcon(), portrait(p.unit, 96, 72)),
+                  h("figcaption", null, t(`pair.${p.defense}`)),
+                ),
               ),
             )
           : null,
@@ -725,6 +752,14 @@ export class LevelScreen implements Screen {
       again,
     );
   }
+}
+
+/** A small pink heart for the pairing pictures. */
+function heartIcon() {
+  return svg(
+    `<svg viewBox="0 0 52 44" width="40" height="34" aria-hidden="true"><path d="M26 40C4 24 6 4 26 14 46 4 48 24 26 40Z" fill="#ff7fae" stroke="#2a2233" stroke-width="5" stroke-linejoin="round"/></svg>`,
+    "pair-heart",
+  );
 }
 
 /** Defenses and friends that appear for the first time in this level, in campaign order. */

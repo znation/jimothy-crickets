@@ -87,3 +87,23 @@ export function unitsAvailableAt(levelId: string): UnitId[] {
 function byId<T extends { id: string }>(list: T[]): Record<string, T> {
   return Object.fromEntries(list.map((x) => [x.id, x]));
 }
+
+/**
+ * Defense-and-friend pairings (a defense's `distractedBy`) the player can use for the first time
+ * in this level: the defense is here and the friend can be sent, and no earlier level had both.
+ */
+export function newPairs(levelId: string): { defense: DefenseId; unit: UnitId }[] {
+  const met = (id: string) => {
+    const avail = unitsAvailableAt(id);
+    const out: string[] = [];
+    for (const d of levelById(id)?.defenses ?? []) {
+      const by = content.defenses[d.def].distractedBy;
+      if (by && avail.includes(by.unit) && !out.includes(d.def)) out.push(d.def);
+    }
+    return out;
+  };
+  const before = new Set(levelOrder.slice(0, levelOrder.indexOf(levelId)).flatMap(met));
+  return met(levelId)
+    .filter((d) => !before.has(d))
+    .map((d) => ({ defense: d as DefenseId, unit: content.defenses[d as DefenseId].distractedBy!.unit }));
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { content, levels, rawData, references, unitsAvailableAt } from "../src/data/content.ts";
+import { content, levels, newPairs, rawData, references, unitsAvailableAt } from "../src/data/content.ts";
 import strings from "../src/data/strings/en.json" with { type: "json" };
 import { validate } from "../src/data/validate.ts";
 import { referenceInputs, runAttempt } from "../src/sim/run.ts";
@@ -7,6 +7,11 @@ import { referenceInputs, runAttempt } from "../src/sim/run.ts";
 describe("data", () => {
   it("validates", () => {
     expect(validate(rawData)).toEqual([]);
+  });
+
+  it("introduces each defense's favourite friend once, when both are first in play", () => {
+    const shown = levels.flatMap((l) => newPairs(l.id).map((p) => `${l.id} ${p.defense}+${p.unit}`));
+    expect(shown).toEqual(["2-1 yardDog+squirrel", "2-4 motionLight+possum", "2-5 broomNeighbor+crow"]);
   });
 
   // Plan §11.3: every level's reference must win with no upgrades, using only the units the

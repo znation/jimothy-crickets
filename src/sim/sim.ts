@@ -21,6 +21,8 @@ export const DEFAULT_MAX_UNITS = 120;
 /** How far from a lane a defense can be and still get chewed by a sapper walking past. */
 export const CHEW_REACH = 200;
 const COVERAGE_STEP = 2; // px between samples when precomputing coverage intervals
+/** Arrivals at most this far apart extend the chain. */
+export const CHAIN_WINDOW_TICKS = Math.round(1.5 * TICK_RATE);
 
 export interface SimState {
   level: LevelDef;
@@ -37,7 +39,9 @@ export interface SimState {
   sendCooldown: Partial<Record<UnitId, number>>; // ticks until each unit type can be sent
   nextUid: number;
   outcome: Outcome | null;
-  stats: { sent: number; shooed: number; arrived: number };
+  stats: { sent: number; shooed: number; arrived: number; bestChain: number };
+  /** Friends arriving in quick succession: how many in a row, and when the last one did. */
+  chain: { count: number; lastTick: number };
 }
 
 export function createSim(
@@ -70,6 +74,9 @@ export function createSim(
       chewLeft: def.effect.blocks?.hp ?? def.chewHp ?? 0,
       disabled: false,
       lastFiredTick: -Infinity,
+      distractTicks: 0,
+      distractUid: -1,
+      distractedByUids: [],
     };
   });
   return {
@@ -87,7 +94,8 @@ export function createSim(
     sendCooldown: {},
     nextUid: 1,
     outcome: null,
-    stats: { sent: 0, shooed: 0, arrived: 0 },
+    stats: { sent: 0, shooed: 0, arrived: 0, bestChain: 0 },
+    chain: { count: 0, lastTick: -Infinity },
   };
 }
 
@@ -223,7 +231,11 @@ function arrive(st: SimState, events: SimEvent[]) {
     st.pileHp = Math.max(0, st.pileHp - u.def.pileDamage);
     st.snacks += u.def.haul;
     st.stats.arrived++;
-    events.push({ type: "pileHit", uid: u.uid, unit: u.def.id, damage: u.def.pileDamage, haul: u.def.haul });
+    const chain = st.chain;
+    chain.count = st.tick - chain.lastTick <= CHAIN_WINDOW_TICKS ? chain.count + 1 : 1;
+    chain.lastTick = st.tick;
+    st.stats.bestChain = Math.max(st.stats.bestChain, chain.count);
+    events.push({ type: "pileHit", uid: u.uid, unit: u.def.id, damage: u.def.pileDamage, haul: u.def.haul, chain: chain.count });
   }
 }
 
@@ -231,6 +243,7 @@ function fire(st: SimState, d: DefenseState, events: SimEvent[]) {
   const e = d.def.effect;
   if (d.disabled || e.blocks || !e.rate) return;
   if (d.cooldown > 0) d.cooldown--;
+  if (distracted(st, d, events)) return;
 
   if (d.windupTicks > 0) {
     if (--d.windupTicks > 0) return;
@@ -272,6 +285,28 @@ function fire(st: SimState, d: DefenseState, events: SimEvent[]) {
     events.push({ type: "defenseFired", index: d.index, targets: [best.uid] });
     hit(st, d, best, events);
   }
+}
+
+/** Whether the defense is busy with its favourite friend this tick (and so doesn't fire). */
+function distracted(st: SimState, d: DefenseState, events: SimEvent[]): boolean {
+  if (d.distractTicks > 0) {
+    if (--d.distractTicks === 0) d.distractUid = -1;
+    return true;
+  }
+  const by = d.def.distractedBy;
+  if (!by) return false;
+  for (const u of st.units) {
+    if (u.gone || u.def.id !== by.unit || d.distractedByUids.includes(u.uid) || !inRange(d, u)) continue;
+    d.distractTicks = Math.round(by.secs * TICK_RATE);
+    d.distractUid = u.uid;
+    d.distractedByUids.push(u.uid);
+    if (d.distractedByUids.length > 32) d.distractedByUids.shift(); // older friends are long gone
+    d.windupTicks = 0; // it forgets whoever it was about to swat
+    d.windupTarget = -1;
+    events.push({ type: "defenseDistracted", index: d.index, uid: u.uid, unit: u.def.id });
+    return true;
+  }
+  return false;
 }
 
 function hit(st: SimState, d: DefenseState, u: UnitState, events: SimEvent[]) {

@@ -12,7 +12,8 @@ import manifest from "../data/audio.json";
 export type Sfx =
   | "cricket" | "possum" | "squirrel" | "crow" | "rat"
   | "sprinkler" | "broomNeighbor" | "yardDog" | "motionLight" | "chew"
-  | "shoo" | "pile" | "win" | "yawn" | "tap" | "buy" | "recruit";
+  | "shoo" | "pile" | "win" | "yawn" | "tap" | "buy" | "recruit"
+  | "yip" | "huh";
 
 export type Theme = "menu" | "alley" | "backyards" | "culdesac" | "stripmall";
 
@@ -72,6 +73,23 @@ export function loopPoints(decodedSeconds: number, loopSeconds: number): [number
 const MIN_GAP: Partial<Record<Sfx, number>> = { cricket: 0.07, shoo: 0.06, pile: 0.08, sprinkler: 0.3 };
 const MAX_VOICES = 14;
 
+/** Major pentatonic steps: any run of them sounds fine, however fast a chain climbs. */
+const PENTATONIC = [0, 2, 4, 7, 9];
+const CHAIN_ROOT = 392; // G4
+const CHAIN_STEPS = 10; // two octaves: G4 up to G6
+
+/**
+ * The chime for the `chain`th friend in a row to reach the pile: none for the first, then a
+ * pentatonic scale climbing two octaves from G4, then a sparkle between the top two notes.
+ */
+export function chainNote(chain: number): number | null {
+  if (chain < 2) return null;
+  let step = chain - 2;
+  if (step > CHAIN_STEPS) step = CHAIN_STEPS - 1 + ((step - CHAIN_STEPS) % 2);
+  const semis = 12 * Math.floor(step / 5) + PENTATONIC[step % 5]!;
+  return CHAIN_ROOT * 2 ** (semis / 12);
+}
+
 export class GameAudio {
   private ctx: AudioContext | null = null;
   private sfxGain: GainNode | null = null;
@@ -127,11 +145,30 @@ export class GameAudio {
       if (e.type === "unitSent") this.play(e.unit);
       else if (e.type === "defenseFired") this.play(defenseIdAt(e.index) as Sfx);
       else if (e.type === "unitShooed") this.play("shoo");
-      else if (e.type === "pileHit") this.play("pile");
+      else if (e.type === "pileHit") {
+        this.play("pile");
+        this.chime(e.chain);
+      } else if (e.type === "defenseDistracted") {
+        const id = defenseIdAt(e.index);
+        if (id === "yardDog") this.play("yip");
+        else if (id === "broomNeighbor") this.play("huh");
+        else if (id === "motionLight") this.play("motionLight");
+      }
       else if (e.type === "defenseChewed") this.play("chew");
       else if (e.type === "levelWon") this.play("win");
       else if (e.type === "nightEnded") this.play("yawn");
     }
+  }
+
+  /** A bell note that climbs with each friend in a row reaching the pile. */
+  chime(chain: number) {
+    const f = chainNote(chain);
+    if (f === null || !this.ctx || this.paused || this.volumes.sfx === 0 || this.voices >= MAX_VOICES) return;
+    const now = this.ctx.currentTime;
+    this.voices++;
+    setTimeout(() => this.voices--, 450);
+    tone(this.ctx, this.sfxGain!, { type: "sine", f0: f, f1: f, at: now, dur: 0.4, vol: 0.16 });
+    tone(this.ctx, this.sfxGain!, { type: "triangle", f0: f * 2, f1: f * 2, at: now, dur: 0.18, vol: 0.05 });
   }
 
   play(name: Sfx) {
@@ -203,6 +240,13 @@ export class GameAudio {
       case "yawn":
         tone(c, out, { type: "sine", f0: 520, f1: 210, at: now, dur: 1.1, vol: 0.25, wobble: 4 });
         return voice(1.1);
+      case "yip": // two happy little barks, rising
+        for (const [t, f] of [[0, 520], [0.13, 640]] as const)
+          tone(c, out, { type: "triangle", f0: f, f1: f * 1.5, at: now + t, dur: 0.08, vol: 0.3 });
+        return voice(0.25);
+      case "huh": // a puzzled rising "hm?"
+        tone(c, out, { type: "triangle", f0: 180, f1: 300, at: now, dur: 0.32, vol: 0.3, wobble: 7, lowpass: 1200 });
+        return voice(0.32);
       case "tap":
         tone(c, out, { type: "sine", f0: 900, f1: 700, at: now, dur: 0.05, vol: 0.12 });
         return voice(0.05);

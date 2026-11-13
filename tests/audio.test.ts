@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import manifest from "../src/data/audio.json";
-import { loopPoints } from "../src/platform/audio.ts";
+import { chainNote, loopPoints } from "../src/platform/audio.ts";
 
 // Sample counts measured by decoding the built happy-clappy loop in Chromium at 44.1 kHz.
 const LOOP = manifest.music["happy-clappy"].seconds; // 769 132 samples
@@ -22,5 +22,17 @@ describe("music loop points", () => {
     const [start, end] = loopPoints((769_132 + 1024 + 900) / sr, LOOP);
     expect(start * sr).toBeCloseTo(1024, 3);
     expect(end * sr).toBeCloseTo(769_132 + 1024, 3);
+  });
+});
+
+describe("arrival chain chimes", () => {
+  it("climbs a pentatonic scale, then sparkles at the top", () => {
+    expect(chainNote(1)).toBeNull();
+    const notes = Array.from({ length: 20 }, (_, i) => chainNote(i + 2)!);
+    expect(notes[0]).toBeCloseTo(392, 6); // G4
+    expect(notes[5]).toBeCloseTo(784, 6); // an octave up after five steps
+    for (let i = 1; i <= 10; i++) expect(notes[i]!).toBeGreaterThan(notes[i - 1]!);
+    expect(new Set(notes.slice(10).map((f) => f.toFixed(2))).size).toBe(2);
+    expect(Math.max(...notes)).toBeLessThan(1600);
   });
 });

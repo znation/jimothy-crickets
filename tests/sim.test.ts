@@ -213,6 +213,67 @@ describe("defenses", () => {
   });
 });
 
+describe("distractions", () => {
+  // The test dog is easily distracted: any squirrel keeps it busy for 6 s.
+  const smitten: Content = {
+    ...content,
+    defenses: { ...content.defenses, yardDog: { ...content.defenses.yardDog, distractedBy: { unit: "squirrel", secs: 6 } } },
+  };
+  const dogLevel = () => level([{ def: "yardDog", pos: [500, 500] }], { pile: { pos: [1050, 500], hp: 10 } });
+  const run = (c: Content, sends: UnitId[]) => {
+    const st = createSim(dogLevel(), c, { seed: 7, available: ALL });
+    step(st, sends.map((unit) => ({ tick: 0, unit, lane: 0 })));
+    return { st, events: runFor(st, 12) };
+  };
+
+  it("a dog chasing its squirrel lets everyone else by", () => {
+    const { st, events } = run(smitten, ["squirrel", "cricket"]);
+    const distracted = events.filter((e) => e.type === "defenseDistracted");
+    expect(distracted).toEqual([{ type: "defenseDistracted", index: 0, uid: 1, unit: "squirrel" }]);
+    expect(events.some((e) => e.type === "unitHit" || e.type === "defenseFired")).toBe(false);
+    expect(st.stats.arrived).toBe(2);
+    // without its squirrel, the same dog catches the cricket
+    const plain = run(content, ["cricket"]);
+    expect(plain.events.some((e) => e.type === "unitHit")).toBe(true);
+  });
+
+  it("each friend distracts a defense once, and it gets back to work after", () => {
+    const st = createSim(dogLevel(), smitten, { seed: 7, available: ALL });
+    step(st, [{ tick: 0, unit: "squirrel", lane: 0 }]);
+    const events = runFor(st, 7); // the squirrel is long gone; the dog is free again
+    expect(st.defenses[0]!.distractTicks).toBe(0);
+    sendNow(st, "cricket");
+    events.push(...runFor(st, 6));
+    expect(events.filter((e) => e.type === "defenseDistracted")).toHaveLength(1);
+    expect(events.some((e) => e.type === "unitHit")).toBe(true);
+  });
+
+  it("a defense the friend can't reach isn't distracted", () => {
+    // the test dog only watches the ground; a crow overhead means nothing to it
+    const c: Content = { ...smitten, defenses: { ...smitten.defenses, yardDog: { ...smitten.defenses.yardDog, distractedBy: { unit: "crow", secs: 6 } } } };
+    const { events } = run(c, ["crow", "cricket"]);
+    expect(events.some((e) => e.type === "defenseDistracted")).toBe(false);
+  });
+});
+
+describe("arrival chain", () => {
+  it("counts friends reaching the pile in quick succession", () => {
+    const st = sim(level([], { pile: { pos: [1050, 500], hp: 50 } }));
+    const chains: number[] = [];
+    const send = (n: number, gapS: number) => {
+      for (let i = 0; i < n; i++) {
+        sendNow(st, "cricket");
+        for (const e of runFor(st, gapS)) if (e.type === "pileHit") chains.push(e.chain);
+      }
+    };
+    send(3, 0.5);
+    for (const e of runFor(st, 14)) if (e.type === "pileHit") chains.push(e.chain); // all in, then a long pause
+    send(1, 12);
+    expect(chains).toEqual([1, 2, 3, 1]);
+    expect(st.stats.bestChain).toBe(3);
+  });
+});
+
 describe("determinism", () => {
   it("replays an attempt exactly from its seed and inputs", () => {
     const l = level([{ def: "broomNeighbor", pos: [500, 500] }, { def: "sprinkler", pos: [700, 450] }], {

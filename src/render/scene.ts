@@ -2,8 +2,8 @@
 // the defenses, pile, units, Jimothy and short-lived effects. Reads sim state; never changes it.
 
 import { directionAt, pointAt } from "../sim/lane.ts";
-import { TICK_RATE, type SimState } from "../sim/sim.ts";
-import type { SimEvent, UnitId, Vec } from "../sim/types.ts";
+import { CHAIN_WINDOW_TICKS, TICK_RATE, type SimState } from "../sim/sim.ts";
+import type { DefenseState, SimEvent, UnitId, Vec } from "../sim/types.ts";
 import {
   drawBroomNeighbor,
   drawFence,
@@ -26,9 +26,12 @@ const FLY_HEIGHT = 90;
 const SHADOW = "rgba(20, 14, 34, 0.32)";
 /** Units are drawn larger than life so they stay readable on phones (~0.35 CSS px per unit). */
 const UNIT_SCALE = 1.5;
+const LOVE = "#ff7fae";
+/** How far a yard dog runs off its spot chasing a squirrel. */
+const CHASE_REACH = 170;
 
 interface Effect {
-  kind: "hop" | "text" | "startle" | "dust" | "confetti" | "heart";
+  kind: "hop" | "text" | "startle" | "dust" | "confetti" | "heart" | "snack";
   x: number;
   y: number;
   age: number;
@@ -49,6 +52,10 @@ export class SceneRenderer {
   private cheer = 0;
   private tmp: Vec = [0, 0];
   private sprites = new UnitSprites();
+  /** Per defense: where a chasing dog has run to (offset from its spot) and where a light points. */
+  private focus = new Map<number, { ox: number; oy: number; aim: number }>();
+  /** Where the HUD's snack counter is, in world units, so delivered cookies can fly to it. */
+  snackTarget: (() => Vec | null) | null = null;
   /** Painted sprites from tools/build_atlas.ts; null means the vector placeholders. */
   private atlas: Atlas | null = null;
 
@@ -71,6 +78,7 @@ export class SceneRenderer {
     this.effects = [];
     this.pileShake = 0;
     this.cheer = 0;
+    this.focus.clear();
   }
 
   /** Turn sim events into presentation effects. */
@@ -89,6 +97,18 @@ export class SceneRenderer {
         if (!this.reducedMotion) {
           const spread = ((e.uid * 37) % 100) / 100 - 0.5;
           this.add({ kind: "heart", x: px - 70 + spread * 120, y: py - 120, life: 1.1, dir: spread });
+          // and the snack itself flies off to the counter
+          for (let i = 0; i < (e.haul >= 5 ? 2 : e.haul > 0 ? 1 : 0); i++)
+            this.add({ kind: "snack", x: px - 40 + spread * 60, y: py - 140, life: 0.8, dir: spread }, -i * 0.12);
+        }
+        if (e.chain >= 10 && e.chain % 10 === 0 && !this.reducedMotion) {
+          // every tenth in a row: the pile bursts with bits of garbage
+          const colours = ["#c8a46b", "#9aa3ad", "#ffe08a", "#7fb069", "#e9d8b4", LOVE];
+          for (let i = 0; i < 30; i++) {
+            const a = -Math.PI / 2 + (i / 30 - 0.5) * 2.2;
+            const speed = 380 + ((i * 131 + e.chain * 7) % 360);
+            this.add({ kind: "confetti", x: px, y: py - 80, life: 1.2, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, colour: colours[i % colours.length]! });
+          }
         }
       } else if (e.type === "unitHit") {
         const u = st.units.find((v) => v.uid === e.uid);
@@ -105,6 +125,16 @@ export class SceneRenderer {
           const speed = 500 + ((i * 97) % 400);
           this.add({ kind: "confetti", x: px, y: py - 40, life: 1.6, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, colour: colours[i % colours.length]! });
         }
+      } else if (e.type === "defenseDistracted") {
+        const d = st.defenses[e.index]!;
+        const art = this.atlas?.frames[d.def.id];
+        const top = d.pos[1] - (art ? frameHeight(art) / 2 : 60);
+        if (d.def.id === "yardDog" && !this.reducedMotion) {
+          // the dog is smitten
+          for (const dir of [-0.4, 0.4]) this.add({ kind: "heart", x: d.pos[0] + dir * 60, y: top, life: 1.1, dir });
+        } else if (d.def.id === "broomNeighbor") {
+          this.add({ kind: "text", x: d.pos[0] + 50, y: top - 10, life: 1.2, text: "?!" });
+        }
       } else if (e.type === "defenseChewed") {
         const [x, y] = st.defenses[e.index]!.pos;
         this.add({ kind: "dust", x, y, life: 0.6 });
@@ -112,8 +142,45 @@ export class SceneRenderer {
     }
   }
 
-  private add(e: Omit<Effect, "age">) {
-    if (this.effects.length < 200) this.effects.push({ ...e, age: 0 });
+  /** A negative `age` delays the effect by that many seconds. */
+  private add(e: Omit<Effect, "age">, age = 0) {
+    if (this.effects.length < 200) this.effects.push({ ...e, age });
+  }
+
+  /**
+   * Presentation state for a defense with a favourite friend: a distracted dog runs toward its
+   * squirrel (and trots back after), a distracted light turns to stare at its possum.
+   */
+  private distraction(st: SimState, d: DefenseState, dt: number) {
+    const busy = d.distractTicks > 0 && !d.disabled;
+    let tx = 0;
+    let ty = 0;
+    let aim: number | null = null;
+    if (busy) {
+      const u = st.units.find((v) => v.uid === d.distractUid);
+      if (u) {
+        const [ux, uy] = this.unitPos(st, u.lane, u.s, u.jitter, u.def.tags.includes("air"));
+        tx = ux - d.pos[0];
+        ty = uy - d.pos[1];
+        aim = Math.atan2(ty, tx);
+        const len = Math.hypot(tx, ty);
+        if (len > CHASE_REACH) [tx, ty] = [(tx * CHASE_REACH) / len, (ty * CHASE_REACH) / len];
+      }
+    }
+    let f = this.focus.get(d.index);
+    if (!f) {
+      // first sight (or a still frame): start where it should be
+      f = { ox: tx, oy: ty, aim: aim ?? (d.facingDeg * Math.PI) / 180 };
+      this.focus.set(d.index, f);
+    }
+    if (busy && aim === null) [tx, ty] = [f.ox, f.oy]; // the friend got away: it stays put, puzzled
+    if (aim !== null) f.aim = aim;
+    if (d.def.id === "yardDog") {
+      const ease = Math.min(1, dt * (busy ? 6 : 3));
+      f.ox += (tx - f.ox) * ease;
+      f.oy += (ty - f.oy) * ease;
+    } else [f.ox, f.oy] = [0, 0];
+    return { f, busy };
   }
 
   /** Draw one frame. `alpha` interpolates between the last two sim ticks; `t` is wall time in s. */
@@ -132,10 +199,12 @@ export class SceneRenderer {
       ctx.translate(d.pos[0], d.pos[1]);
       if (d.disabled && !d.def.effect.blocks) ctx.globalAlpha = 0.45;
       const art = this.atlas?.frames[d.def.id];
+      const fx = d.def.distractedBy ? this.distraction(st, d, dt) : null;
+      if (fx) ctx.translate(fx.f.ox, fx.f.oy);
       if (art) {
         if (!d.def.effect.blocks && !(d.disabled && d.def.id === "fence")) this.groundShadow(0, frameHeight(art) / 2, art, 0.42);
-        this.defenseOverlay(d, age);
-        this.drawDefenseArt(d.def.id, art, age, t, d.disabled);
+        this.defenseOverlay(d, age, fx?.busy ? fx.f.aim : null);
+        this.drawDefenseArt(d.def.id, art, age, t, d.disabled, fx?.busy ?? false);
         ctx.restore();
         continue;
       }
@@ -184,6 +253,7 @@ export class SceneRenderer {
     ctx.restore();
 
     this.drawWindupTargets(st, alpha, t);
+    this.drawChain(st, alpha);
 
     // units, back to front
     const order = st.units.map((u) => {
@@ -280,6 +350,38 @@ export class SceneRenderer {
   }
 
   /**
+   * "×7": friends reaching the pile in quick succession, counted in a bubble over it. It pops a
+   * little bigger with each one and fades when the run of arrivals ends.
+   */
+  private drawChain(st: SimState, alpha: number) {
+    const { count, lastTick } = st.chain;
+    const since = (st.tick + alpha - lastTick) / TICK_RATE;
+    const window = CHAIN_WINDOW_TICKS / TICK_RATE;
+    if (count < 3 || since > window || st.outcome) return;
+    const { ctx } = this.view;
+    const [px, py] = st.level.pile.pos;
+    const pop = this.reducedMotion ? 1 : 1 + 0.4 * Math.max(0, 1 - since / 0.22);
+    const big = Math.min(1.5, 1 + (count - 3) * 0.025);
+    ctx.save();
+    ctx.globalAlpha = since > window - 0.35 ? Math.max(0, (window - since) / 0.35) : 1;
+    ctx.translate(px - 70, py - 300); // above the pile, clear of the "+2"s and hearts
+    ctx.scale(pop * big, pop * big);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 58, 40, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "#fff6e6";
+    ctx.fill();
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = INK;
+    ctx.stroke();
+    ctx.font = FONT_BOLD(42);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = count >= 10 ? "#e8508a" : "#ff8f5a";
+    ctx.fillText(`×${count}`, 0, 3);
+    ctx.restore();
+  }
+
+  /**
    * A few fireflies drifting over the yards: slow wander, a soft blink. Positions come from the
    * clock alone, so a still frame always draws the same ones. None with reduced motion.
    */
@@ -350,7 +452,7 @@ export class SceneRenderer {
     drawFrame(ctx, f, 1 / sy, sy);
   }
 
-  private drawDefenseArt(id: string, f: Frame, age: number, t: number, disabled: boolean) {
+  private drawDefenseArt(id: string, f: Frame, age: number, t: number, disabled: boolean, busy: boolean) {
     const ctx = this.view.ctx;
     const h = frameHeight(f);
     ctx.translate(0, h / 2); // centered on the defense's position
@@ -364,12 +466,25 @@ export class SceneRenderer {
         break;
       }
       case "broomNeighbor": {
+        if (busy) {
+          // swatting wildly at the crow overhead, and missing
+          ctx.rotate(this.reducedMotion ? -0.14 : -0.12 + Math.sin(t * 11) * 0.14);
+          drawFrame(ctx, f);
+          break;
+        }
         const swing = age < 0.5 ? Math.sin((age / 0.5) * Math.PI) : 0;
         ctx.rotate(-swing * 0.12);
         drawFrame(ctx, f);
         break;
       }
       case "yardDog": {
+        if (busy && !this.reducedMotion) {
+          // bounding after the squirrel
+          ctx.translate(0, -Math.abs(Math.sin(t * 12)) * 18);
+          ctx.rotate(Math.sin(t * 12) * 0.08);
+          drawFrame(ctx, f);
+          break;
+        }
         const lunge = age < 0.3 ? 1 - age / 0.3 : 0;
         const breathe = 1 + Math.sin(t * 2) * 0.02;
         ctx.translate(lunge * 16, 0);
@@ -389,8 +504,11 @@ export class SceneRenderer {
   }
 
   /** Effects that sit on top of a defense whatever its art (the motion light's beam). */
-  private defenseOverlay(d: SimState["defenses"][number], age: number) {
-    if (d.def.id === "motionLight" && age < 1.2 && !d.disabled) {
+  private defenseOverlay(d: SimState["defenses"][number], age: number, stareAt: number | null) {
+    if (d.def.id === "motionLight" && stareAt !== null) {
+      // a narrow spotlight fixed on the possum, which plays it up; everyone else sneaks by
+      this.drawCone((stareAt * 180) / Math.PI, d.def.shape.r, 26, 0.9);
+    } else if (d.def.id === "motionLight" && age < 1.2 && !d.disabled) {
       const shape = d.def.shape as { r: number; arcDeg?: number };
       this.drawCone(d.facingDeg, shape.r, shape.arcDeg ?? 60, 1 - age / 1.2);
     }
@@ -422,7 +540,13 @@ export class SceneRenderer {
     for (const d of st.defenses) {
       if (d.disabled) continue;
       const full = d.def.effect.blocks?.hp ?? d.def.chewHp ?? 0;
-      if (full > 0 && d.chewLeft < full) this.drawDial(d, 1 - d.chewLeft / full, "#ff8f5a");
+      const by = d.def.distractedBy;
+      if (by && d.distractTicks > 0) {
+        // a pink heart dial: how much longer it's busy with its favourite friend
+        const f = this.focus.get(d.index);
+        const k = Math.max(0, d.distractTicks - alpha) / Math.round(by.secs * TICK_RATE);
+        this.drawDial(d, k, LOVE, f?.ox ?? 0, f?.oy ?? 0, true);
+      } else if (full > 0 && d.chewLeft < full) this.drawDial(d, 1 - d.chewLeft / full, "#ff8f5a");
       else if (d.def.id === "motionLight" && d.cooldown > 0 && d.def.effect.rate) {
         const total = Math.round(TICK_RATE / d.def.effect.rate);
         this.drawDial(d, 1 - Math.max(0, d.cooldown - alpha) / total, "#ffe08a");
@@ -430,12 +554,12 @@ export class SceneRenderer {
     }
   }
 
-  private drawDial(d: SimState["defenses"][number], k: number, colour: string) {
+  private drawDial(d: SimState["defenses"][number], k: number, colour: string, ox = 0, oy = 0, heart = false) {
     const { ctx } = this.view;
     const art = this.atlas?.frames[d.def.id];
     const top = art ? frameHeight(art) / 2 : 60;
-    const x = d.pos[0];
-    const y = d.pos[1] - top - 38;
+    const x = d.pos[0] + ox;
+    const y = d.pos[1] + oy - top - 38;
     const r = 24;
     ctx.save();
     ctx.beginPath();
@@ -453,6 +577,15 @@ export class SceneRenderer {
     ctx.lineWidth = 5;
     ctx.strokeStyle = INK;
     ctx.stroke();
+    if (heart) {
+      ctx.translate(x, y + 1);
+      ctx.scale(0.55, 0.55);
+      heartPath(ctx);
+      ctx.lineWidth = 6;
+      ctx.stroke();
+      ctx.fillStyle = "#fff6e6";
+      ctx.fill();
+    }
     ctx.restore();
   }
 
@@ -570,8 +703,10 @@ export class SceneRenderer {
 
   private drawEffects(t: number, dt: number) {
     const { ctx } = this.view;
+    const target = this.effects.some((e) => e.kind === "snack") ? (this.snackTarget?.() ?? null) : null;
     for (const e of this.effects) {
       e.age += dt;
+      if (e.age < 0) continue; // not started yet
       // A long frame (a slow device, 8× speed) can carry an effect past its end; drawing it then
       // would give the dust a negative arc radius, which throws and stops the frame loop.
       if (e.age >= e.life) continue;
@@ -602,21 +737,41 @@ export class SceneRenderer {
         ctx.translate(e.x + Math.sin(k * 9 + e.dir! * 6) * 10, e.y - k * 110);
         ctx.rotate(e.dir! * 0.5);
         ctx.scale(pop, pop);
-        ctx.beginPath();
-        ctx.moveTo(0, 14);
-        ctx.bezierCurveTo(-26, -4, -16, -24, 0, -12);
-        ctx.bezierCurveTo(16, -24, 26, -4, 0, 14);
-        ctx.closePath();
+        heartPath(ctx);
         ctx.lineWidth = 6;
         ctx.lineJoin = "round";
         ctx.strokeStyle = INK;
         ctx.stroke();
-        ctx.fillStyle = "#ff7fae";
+        ctx.fillStyle = LOVE;
         ctx.fill();
         ctx.beginPath();
         ctx.ellipse(-7, -10, 4, 2.5, -0.6, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
         ctx.fill();
+      } else if (e.kind === "snack") {
+        // a cookie arcs from the pile up to the snack counter, spinning, and lands there
+        const to = target ?? [e.x - 300, e.y - 500];
+        const q = k * k * (3 - 2 * k);
+        const x = e.x + (to[0] - e.x) * q;
+        const y = e.y + (to[1] - e.y) * q - Math.sin(k * Math.PI) * 160;
+        ctx.globalAlpha = k > 0.85 ? (1 - k) / 0.15 : 1;
+        ctx.translate(x, y);
+        ctx.rotate(k * 7 + e.dir! * 3);
+        const s = 1 - 0.35 * k;
+        ctx.scale(s, s);
+        const art = this.atlas?.frames.snack;
+        if (art) {
+          ctx.translate(0, frameHeight(art) / 2);
+          drawFrame(ctx, art);
+        } else {
+          ctx.beginPath();
+          ctx.arc(0, 0, 20, 0, Math.PI * 2);
+          ctx.fillStyle = "#d9a35f";
+          ctx.fill();
+          ctx.lineWidth = 5;
+          ctx.strokeStyle = INK;
+          ctx.stroke();
+        }
       } else if (e.kind === "startle") {
         // drawn once and blitted: text rendering per mark is slow in WebKit during big swarms
         const mark = this.startleMark();
@@ -951,4 +1106,13 @@ export function paintScenery(ctx: CanvasRenderingContext2D, area: string, b: Box
       patches(40, ["rgba(92, 128, 84, 0.35)", "rgba(92, 128, 84, 0.35)", "rgba(110, 125, 170, 0.25)"]);
     }
   }
+}
+
+/** A plump heart, about 52 wide and 38 tall, centered on the origin. */
+function heartPath(ctx: CanvasRenderingContext2D) {
+  ctx.beginPath();
+  ctx.moveTo(0, 14);
+  ctx.bezierCurveTo(-26, -4, -16, -24, 0, -12);
+  ctx.bezierCurveTo(16, -24, 26, -4, 0, 14);
+  ctx.closePath();
 }

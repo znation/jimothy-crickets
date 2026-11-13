@@ -13,6 +13,7 @@
     "shape": { "kind": "cone", "r": 380, "arcDeg": 70 },
     "effect": { "all": true, "rate": 0.25, "stun": { "secs": 1.6 } },
     "chewHp": 5,
+    "distractedBy": { "unit": "possum", "secs": 4 },
     "sprite": "motionLight"
   },
   {
@@ -21,6 +22,7 @@
     "shape": { "kind": "radius", "r": 150 },
     "effect": { "damage": 6, "rate": 0.8, "windup": 0.35 },
     "chewHp": 8,
+    "distractedBy": { "unit": "squirrel", "secs": 3 },
     "sprite": "yardDog"
   },
   {
@@ -36,6 +38,7 @@
     "shape": { "kind": "radius", "r": 260 },
     "effect": { "damage": 1, "rate": 0.6, "windup": 0.3, "pushback": { "px": 160 } },
     "chewHp": 8,
+    "distractedBy": { "unit": "crow", "secs": 3 },
     "sprite": "broomNeighbor"
   }
 ]

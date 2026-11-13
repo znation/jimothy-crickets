@@ -56,6 +56,13 @@ export function validate(data: RawData): string[] {
     const e = d.effect ?? {};
     if (!e.blocks && !(e.rate > 0)) err(w, "effect.rate must be > 0 (or the defense must block)");
     if (e.slow && !(e.slow.factor > 0 && e.slow.factor <= 1)) err(w, "slow.factor must be in (0, 1]");
+    if (d.distractedBy) {
+      const by = (data.units as Record<string, any>[]).find((u) => u.id === d.distractedBy.unit);
+      if (!by) err(w, `distractedBy: unknown unit "${d.distractedBy.unit}"`);
+      else if (!by.tags?.some((t: string) => d.targets?.includes(t))) err(w, "distractedBy: the defense can't see that unit");
+      if (!(d.distractedBy.secs > 0)) err(w, "distractedBy.secs must be > 0");
+      if (!str[`pair.${d.id}`]) err(w, `no string "pair.${d.id}"`);
+    }
     if (!str[`defense.${d.id}`]) err(w, `no string "defense.${d.id}"`);
   }
 
