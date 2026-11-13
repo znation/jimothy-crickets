@@ -12,7 +12,7 @@ ships them as working art:
 | Squirrel | 9300 | side view, facing right, whole tail in frame |
 | Crow | `crow-black` 37000 (was `crow` 7400) | very round, one big eye, a yellow beak; mirrored to face right (`flip`). SDXL-Turbo's watercolour style turns "black" into grey (and "orange beak" into a robin's breast), so the feathers are darkened to a blue-black in the curated file and a soft blush is added under the eye. 7400 was a realistic crow |
 | Rat | `rat-side` 37000 (was `rat` 9500) | brown, side-on, the whole tail in frame. Brown against the possum's white keeps the two apart at a glance |
-| Broom neighbor | `neighbor-cardigan` 42000 (was 7700) | a short round grandpa: blue cap and cardigan, big white moustache, rosy cheeks, broom in hand. The frame clipped the bristles, so the curated file trims them to a ragged rounded end. 7700 was a realistic, scraggly old man |
+| Broom neighbor | `neighbor-cardigan` 42000 (was 7700) | a short round grandpa: blue cap and cardigan, big white moustache, rosy cheeks, broom in hand. The frame clipped the bristles, so the curated file trims them to a ragged rounded end. The render also drew a second, bent bristle stick out of his fist; `fix_neighbor_broom.py` moves the bristles to the top of the one straight handle, so he holds it bristles-up for swatting crows. 7700 was a realistic, scraggly old man |
 | Yard dog | `dog-round` 37000 (was 9800), cropped | a round chibi golden puppy sitting with its tail out, big shiny eyes, a red collar; the crop drops a sketchbook spiral at the left edge |
 | Motion light | 11000 (framing v1) | isolated lamp on a bracket |
 | Pile (alley) | 11100 | an overflowing can with bags and boxes |
