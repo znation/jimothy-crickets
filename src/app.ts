@@ -1,6 +1,7 @@
 // Wiring: the frame loop, the screen stack, lifecycle and debug hooks.
 
-import { levelById, levels, references, unitsAvailableAt } from "./data/content.ts";
+import { levelById, levelOrder, levels, references, unitsAvailableAt } from "./data/content.ts";
+import { dailyLevel, dateKey, planDaily } from "./daily.ts";
 import { LevelSession } from "./play.ts";
 import type { Platform } from "./platform/types.ts";
 import { SceneRenderer } from "./render/scene.ts";
@@ -12,7 +13,7 @@ import { UNIT_IDS, type LevelDef, type UnitId } from "./sim/types.ts";
 import { GameAudio } from "./platform/audio.ts";
 import { DebugOverlay } from "./ui/debug.ts";
 import { installNavigation } from "./ui/gamepad.ts";
-import { LevelScreen, MapScreen, TitleScreen, type Screen } from "./ui/screens.ts";
+import { LevelScreen, MapScreen, ScoutingScreen, TitleScreen, type Screen } from "./ui/screens.ts";
 
 const MAX_FRAME_GAP = 0.25; // s; a longer gap (tab switch, breakpoint) is not simulated
 const SLOW_FRAME = 1 / 52; // s; a median frame slower than this lowers the canvas resolution
@@ -78,6 +79,7 @@ export class App {
 
   start() {
     if (this.params.has("stress")) return this.stress();
+    if (this.params.has("daily")) return void this.playDaily({ skipIntro: this.params.has("skipIntro") });
     const levelId = this.params.get("level");
     const level = levelId ? levelById(levelId) : undefined;
     if (level) {
@@ -116,6 +118,41 @@ export class App {
     const speed = Number(this.params.get("speed"));
     session.speed = speed > 0 ? speed : this.save.data.settings.speed;
     this.show(new LevelScreen(this, session, { skipIntro: !!opts.skipIntro }));
+  }
+
+  /** The day's surprise yard (?daily=YYYY-MM-DD plays another day's). Planned once a day. */
+  async playDaily(opts: { skipIntro?: boolean } = {}) {
+    const key = this.params.get("daily") || dateKey();
+    const save = this.save.data;
+    let plan = save.dailyPlan;
+    if (!plan || plan.key !== key) {
+      const scouting = new ScoutingScreen();
+      this.show(scouting);
+      const cleared = this.params.get("unlock") === "all" ? levelOrder : levelOrder.filter((id) => save.levels[id]?.cleared);
+      const started = performance.now();
+      plan = await planDaily(key, cleared, () => new Promise((r) => setTimeout(r, 0)));
+      // let Jimothy's peek register, even on a fast machine
+      await new Promise((r) => setTimeout(r, Math.max(0, 700 - (performance.now() - started))));
+      save.dailyPlan = plan;
+      void this.save.store();
+      if (this.screen !== scouting) return; // the player went back while we were busy
+    }
+    const level = dailyLevel(plan);
+    // every friend you've recruited can come, not just the ones the remixed level was built for
+    const have = new Set([...level.unitsAvailable!, ...save.unlockedUnits]);
+    const session = new LevelSession(level, {
+      seed: (Math.random() * 2 ** 32) >>> 0,
+      available: UNIT_IDS.filter((u) => have.has(u)),
+      upgrades: save.upgrades,
+    });
+    const speed = Number(this.params.get("speed"));
+    session.speed = speed > 0 ? speed : save.settings.speed;
+    this.show(new LevelScreen(this, session, { skipIntro: !!opts.skipIntro, daily: plan }));
+  }
+
+  /** Whether the surprise yard is open: after the alley's last level. */
+  dailyUnlocked() {
+    return this.params.get("unlock") === "all" || !!this.save.data.levels["1-5"]?.cleared;
   }
 
   /** Everything the player has recruited, plus anything the level is designed around. */

@@ -20,6 +20,7 @@ export interface RawData {
   campaign: unknown;
   references: unknown;
   upgrades: unknown[];
+  treasures?: unknown;
 }
 
 export function validate(data: RawData): string[] {
@@ -147,6 +148,34 @@ export function validate(data: RawData): string[] {
   const acorns = campaign.acornsForMoons;
   if (!Array.isArray(acorns) || acorns.length !== 4 || acorns.some((a: number, i: number) => i > 0 && a < acorns[i - 1]))
     err("campaign", "acornsForMoons must be 4 non-decreasing numbers");
+
+  // Jimothy's stash: three treasures per level and seven for the surprise yard, all different
+  const tr = data.treasures as { levels?: Record<string, any>; daily?: string[] } | undefined;
+  if (tr) {
+    const items = new Set<string>();
+    const item = (w: string, id: unknown) => {
+      if (typeof id !== "string" || !id) return err(w, "treasure ids must be strings");
+      if (items.has(id)) err(w, `treasure "${id}" is used twice`);
+      items.add(id);
+      if (!str[`treasure.${id}`]) err(w, `no string "treasure.${id}"`);
+    };
+    for (const id of levelIds) if (!tr.levels?.[id]) err("treasures", `level "${id}" has no treasures`);
+    for (const [id, lt] of Object.entries(tr.levels ?? {})) {
+      const w = `treasures[${id}]`;
+      if (!levelIds.has(id)) err(w, "unknown level");
+      for (const k of ["clear", "moons", "goal"]) item(`${w}.items.${k}`, lt.items?.[k]);
+      const g = lt.goal ?? {};
+      if (!["chain", "deliver", "playDead", "distract", "chew", "fullHouse"].includes(g.kind)) err(w, `unknown goal kind "${g.kind}"`);
+      if (["chain", "deliver", "playDead", "distract"].includes(g.kind) && !(Number.isInteger(g.n) && g.n > 0)) err(w, "goal.n must be a positive whole number");
+      if (g.kind === "deliver" && !unitIds.has(g.unit)) err(w, `unknown unit "${g.unit}"`);
+      if ((g.kind === "distract" || g.kind === "chew") && !defenseIds.has(g.defense)) err(w, `unknown defense "${g.defense}"`);
+      const level = (data.levels as LevelDef[]).find((l) => l.id === id);
+      if (level && (g.kind === "distract" || g.kind === "chew") && !level.defenses.some((d) => d.def === g.defense))
+        err(w, `the goal needs a ${g.defense}, and this level has none`);
+    }
+    if (!Array.isArray(tr.daily) || tr.daily.length !== 7) err("treasures", "daily needs one treasure per day of the week");
+    for (const [i, id] of (tr.daily ?? []).entries()) item(`treasures.daily[${i}]`, id);
+  }
 
   for (const [id, ref] of Object.entries(data.references as Record<string, any>)) {
     if (!levelIds.has(id)) err("references", `reference for unknown level "${id}"`);

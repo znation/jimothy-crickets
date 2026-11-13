@@ -165,5 +165,12 @@ snack counter; an arrival chain shows as a "×N" bubble in paper and ink over th
 text, pink from 10) and bursts garbage-coloured confetti every tenth. Distracted defenses: the
 dog bounds after its squirrel with hearts, the neighbor swings at the sky with a "?!", the
 light's beam narrows onto the possum; a pink dial with a paper heart counts the distraction down.
-Pink (`#ff7fae`) means love throughout. Reduced motion keeps the bubble and dials but drops the
+Pink (`#ff7fae`) means love throughout.
+
+Treasures, for now in code: little SVG pictures (`src/ui/treasures.ts`) drawn like the HUD icons,
+a 64-unit box, 3.5-unit plum outline, flat fills from the game's palette, one highlight at most.
+A treasure still in its pile shows as its own silhouette at 22% opacity. A painted sprite named
+`treasure-<id>` replaces the SVG wherever it appears; paint them as plain objects on white, a
+three-quarter view, chunky and readable at 40 px. Goals are drawn as rebuses from the portraits:
+"possum ×4 ➜ pile", "dog ♥ squirrel", a possum feet-up for flopping, "rat 〰 fence" for chewing. Reduced motion keeps the bubble and dials but drops the
 pops, the flying cookies, the bounding and the confetti.

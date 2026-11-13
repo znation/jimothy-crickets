@@ -1,7 +1,7 @@
 // Headless attempts: run a level from a seed and an input list (or a bot) to the end of the night.
 
 import { createSim, sendBlocker, step, TICK_RATE, type SimState } from "./sim.ts";
-import type { Content, LevelDef, Outcome, Reference, SendInput, UnitId } from "./types.ts";
+import type { Content, LevelDef, Outcome, Reference, SendInput, SimEvent, UnitId } from "./types.ts";
 
 export interface AttemptResult {
   level: string;
@@ -19,7 +19,14 @@ export type Policy = (st: SimState) => SendInput | null;
 export function runAttempt(
   level: LevelDef,
   content: Content,
-  opts: { seed: number; available: UnitId[]; inputs?: readonly SendInput[]; policy?: Policy },
+  opts: {
+    seed: number;
+    available: UnitId[];
+    inputs?: readonly SendInput[];
+    policy?: Policy;
+    /** Sees every tick's events (treasure goals, tests). */
+    onEvents?: (st: SimState, events: SimEvent[]) => void;
+  },
 ): AttemptResult {
   const st = createSim(level, content, { seed: opts.seed, available: opts.available });
   const inputs = [...(opts.inputs ?? [])].sort((a, b) => a.tick - b.tick);
@@ -33,7 +40,9 @@ export function runAttempt(
     while (next < inputs.length && inputs[next]!.tick <= st.tick) now.push({ ...inputs[next++]!, tick: st.tick });
     const botSend = opts.policy?.(st);
     if (botSend) now.push(botSend);
-    for (const e of step(st, now)) {
+    const events = step(st, now);
+    if (events.length) opts.onEvents?.(st, events);
+    for (const e of events) {
       if (e.type === "unitSent") {
         sentByUnit[e.unit] = (sentByUnit[e.unit] ?? 0) + 1;
         accepted.push({ tick: st.tick - 1, unit: e.unit, lane: e.lane });
@@ -64,6 +73,7 @@ export function toReference(seed: number, inputs: readonly SendInput[]): Referen
 export interface BotOptions {
   weights?: Partial<Record<UnitId, number>>; // share of snacks to spend on each unit (default equal)
   burst?: number; // save up to this many snacks, then send until broke (bunches units up)
+  lanes?: Partial<Record<UnitId, number>>; // send this unit down this lane instead of the least-defended one
 }
 
 /**
@@ -87,7 +97,7 @@ export function bot(opts: BotOptions = {}): Policy {
   let inWave = !opts.burst;
   let laneCache: Map<UnitId, number> | null = null;
   return (st) => {
-    laneCache ??= new Map(st.available.map((u) => [u, leastDefendedLane(st, u)]));
+    laneCache ??= new Map(st.available.map((u) => [u, opts.lanes?.[u] ?? leastDefendedLane(st, u)]));
     if (!inWave && st.snacks >= (opts.burst ?? 0)) inWave = true;
     if (!inWave) return null;
     let pick: UnitId | null = null;

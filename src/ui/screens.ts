@@ -2,15 +2,19 @@
 // focus rings, keyboard access and readable text for free.
 
 import type { App } from "../app.ts";
-import { campaign, levelById, levelOrder, newPairs, unitsAvailableAt, upgrades } from "../data/content.ts";
+import { campaign, levelById, levelOrder, newPairs, treasures, unitsAvailableAt, upgrades } from "../data/content.ts";
+import { dateKey, weekdayOf, type DailyPlan } from "../daily.ts";
 import type { LevelSession } from "../play.ts";
+import { GoalTracker } from "../sim/goals.ts";
+import { catalog, foundTreasures, type TreasureEntry } from "../stash.ts";
 import { closestS } from "../sim/lane.ts";
 import { UNIT_IDS, type DefenseId, type UnitId } from "../sim/types.ts";
 import { h, svg } from "./dom.ts";
-import { acornIcon, cogIcon, handIcon, moonIcon, pauseIcon, pileIcon, snackIcon } from "./icons.ts";
+import { acornIcon, calendarIcon, cogIcon, handIcon, moonIcon, pauseIcon, pileIcon, snackIcon } from "./icons.ts";
 import { canDrawStory, drawStory, storyForArea, type StoryId } from "../render/story.ts";
 import { hasPainted, paintedAtlas, paintedIcon, portrait } from "./portrait.ts";
 import { t } from "./strings.ts";
+import { goalPicture, goalText, heartIcon, treasureIcon } from "./treasure-art.ts";
 
 export interface Screen {
   name: string;
@@ -72,8 +76,31 @@ export class MapScreen implements Screen {
     const furthest = levelOrder.filter((id) => this.unlocked(id)).at(-1) ?? levelOrder[0]!;
     this.focusLevel = furthest;
     this.area = opts.area ?? Math.max(0, campaign.areas.findIndex((a) => a.levels.includes(furthest)));
-    this.el = h("div.screen.map", null, topBar(app, () => app.showTitle()), this.body);
+    this.el = h("div.screen.map", null, topBar(app, () => app.showTitle()), this.body, this.extras());
     this.render();
+  }
+
+  /** Under the path: Jimothy's stash, and the surprise yard once the alley is done. */
+  private extras() {
+    const app = this.app;
+    const found = foundTreasures(app.save.data).size;
+    const stash = h(
+      "button.big.extra.stash-btn",
+      { onclick: () => app.show(new StashScreen(app)), "aria-label": `${t("stash.title")}, ${t("stash.count", { n: found, total: catalog().length })}` },
+      treasureIcon("duck"),
+      h("span", null, t("stash.button")),
+      h("span.count", null, String(found)),
+    );
+    if (!app.dailyUnlocked()) return h("div.map-extras", null, stash);
+    const today = app.save.data.daily[dateKey()] ?? 0;
+    const daily = h(
+      "button.big.extra.daily-btn",
+      { onclick: () => void app.playDaily(), "aria-label": `${t("daily.button")}, ${today} of 3 moons` },
+      svg(calendarIcon),
+      h("span", null, t("daily.button")),
+      today ? moons(today, "moons small") : null,
+    );
+    return h("div.map-extras", null, stash, daily);
   }
 
   focus() {
@@ -202,6 +229,100 @@ export class ShopScreen implements Screen {
   }
 }
 
+// ---------------------------------------------------------------- stash
+
+/** How to find a treasure, in words. */
+function howToFind(e: TreasureEntry): string {
+  const s = e.source;
+  if (s.kind === "daily") return t("stash.how.daily", { day: t(`day.${s.weekday}`) });
+  if (s.kind === "goal") return t("stash.how.goal", { level: s.level, goal: goalText(treasures.levels[s.level]!.goal) });
+  return t(`stash.how.${s.kind}`, { level: s.level });
+}
+
+export class StashScreen implements Screen {
+  name = "stash";
+  el: HTMLElement;
+  private detail = h("div.stash-detail", { role: "status" });
+  private shelves: HTMLElement;
+
+  constructor(app: App) {
+    const found = foundTreasures(app.save.data);
+    const all = catalog();
+    const count = t("stash.count", { n: all.filter((e) => found.has(e.id)).length, total: all.length });
+    this.detail.textContent = count;
+    const slot = (e: TreasureEntry) => {
+      const has = found.has(e.id);
+      const b = h(
+        `button.slot${has ? ".found" : ""}`,
+        { "aria-label": has ? `${t(`treasure.${e.id}`)}, ${t("stash.found")}` : howToFind(e), "data-treasure": e.id },
+        treasureIcon(e.id, has ? "" : "missing"),
+      );
+      const show = () => this.describe(e, has);
+      b.addEventListener("focus", show);
+      b.addEventListener("click", show);
+      return b;
+    };
+    const shelf = (title: string, cols: { label: string; items: TreasureEntry[] }[], cls = "") =>
+      h(
+        `section.shelf${cls}`,
+        null,
+        h("h3", null, title),
+        h("div.shelf-grid", null, ...cols.map((c) => h("div.slot-col", null, h("span.col-label", null, c.label), ...c.items.map(slot)))),
+      );
+    const byLevel = (level: string) => all.filter((e) => e.source.kind !== "daily" && e.source.level === level);
+    const daily = all.filter((e) => e.source.kind === "daily");
+    const showDaily = app.dailyUnlocked() || daily.some((e) => found.has(e.id));
+    this.shelves = h(
+      "div.shelves",
+      null,
+      ...campaign.areas.map((a) => shelf(t(`area.${a.id}`), a.levels.map((id) => ({ label: id, items: byLevel(id) })))),
+      showDaily
+        ? shelf(
+            t("stash.daily"),
+            daily.map((e) => ({ label: t(`day.${(e.source as { weekday: number }).weekday}`).slice(0, 3), items: [e] })),
+            ".daily",
+          )
+        : null,
+    );
+    this.el = h(
+      "div.screen.stash",
+      null,
+      topBar(app, () => app.showMap(), { shop: false }),
+      h("div.stash-head", null, portrait("jimothy-happy", 96, 72), h("div.stash-title", null, h("h2.screen-title", null, t("stash.title")), this.detail)),
+      this.shelves,
+    );
+  }
+
+  focus() {
+    this.shelves.querySelector<HTMLButtonElement>(".slot")?.focus({ preventScroll: true });
+  }
+
+  private describe(e: TreasureEntry, has: boolean) {
+    if (has) {
+      this.detail.replaceChildren(treasureIcon(e.id), h("span.name", null, t(`treasure.${e.id}`)));
+      return;
+    }
+    const s = e.source;
+    const pic =
+      s.kind === "goal"
+        ? goalPicture(treasures.levels[s.level]!.goal, unitsAvailableAt(s.level), 34)
+        : s.kind === "moons"
+          ? moons(3, "moons small")
+          : null;
+    this.detail.replaceChildren(h("span.how", null, howToFind(e)), pic ?? "");
+  }
+}
+
+/** A moment while the day's surprise yard is worked out (and checked to be winnable). */
+export class ScoutingScreen implements Screen {
+  name = "scouting";
+  el = h(
+    "div.screen.scouting",
+    null,
+    h("div.card.scouting-card", null, portrait("jimothy-think", 120, 90), h("p.say", null, t("daily.scouting")), h("div.dots-loading", null, h("span"), h("span"), h("span"))),
+  );
+}
+
 // ---------------------------------------------------------------- settings
 
 export function openSettings(app: App) {
@@ -305,15 +426,28 @@ export class LevelScreen implements Screen {
   private keysHeld = new Set<string>();
   private laneButtons: HTMLButtonElement[] = [];
   private laneLayout = -1;
+  /** The surprise yard being played, or null for a campaign level. */
+  private daily: DailyPlan | null;
+  /** This level's treasure goal, while its treasure is still to be found. */
+  private goal: GoalTracker | null = null;
+  private goalItem = "";
+  private goalChip: HTMLElement | null = null;
+  private goalProgress: HTMLElement | null = null;
+  private lastProgress = -1;
+  /** Treasures already in the stash when the attempt began, to show what's new at the end. */
+  private foundBefore: Set<string>;
 
   readonly session: LevelSession;
   private app: App;
 
-  constructor(app: App, session: LevelSession, opts: { skipIntro: boolean }) {
+  constructor(app: App, session: LevelSession, opts: { skipIntro: boolean; daily?: DailyPlan }) {
     this.app = app;
     this.session = session;
+    this.daily = opts.daily ?? null;
+    this.foundBefore = foundTreasures(app.save.data);
     const st = session.st;
     session.onEvents((events) => {
+      if (this.goal?.onEvents(st, events)) this.goalFound();
       app.scene.onEvents(st, events);
       app.audio.onEvents(events, (i) => st.defenses[i]!.def.id);
       for (const e of events) {
@@ -369,6 +503,21 @@ export class LevelScreen implements Screen {
       bar.append(card);
     });
 
+    // the level's treasure goal, as a picture in the HUD, until its treasure is found
+    const lt = this.daily ? undefined : treasures.levels[session.level.id];
+    if (lt && !session.replaying && !this.foundBefore.has(lt.items.goal)) {
+      this.goal = new GoalTracker(lt.goal, st.available);
+      this.goalItem = lt.items.goal;
+      this.goalProgress = h("span.goal-progress");
+      this.goalChip = h(
+        "div.goal-chip",
+        { "aria-label": goalText(lt.goal) },
+        goalPicture(lt.goal, st.available, 34),
+        this.goalProgress,
+        treasureIcon(lt.items.goal, "missing"),
+      );
+    }
+
     this.el = h(
       "div.screen.level",
       null,
@@ -377,6 +526,7 @@ export class LevelScreen implements Screen {
         null,
         (this.snacksPill = h("div.pill.snacks", { "aria-label": t("hud.snacks") }, paintedIcon("snack", snackIcon), this.snacksEl)),
         h("div.pill.pile", null, paintedIcon(hasPainted(`pile-${session.level.area}`) ? `pile-${session.level.area}` : "pile", pileIcon), h("div.bar", null, this.pileFill)),
+        this.goalChip,
         h(
           "div.hud-right",
           null,
@@ -429,6 +579,42 @@ export class LevelScreen implements Screen {
     this.app.scene.snackTarget = null;
   }
 
+  /** The goal is met: the treasure pops out of the chip and goes straight into the stash. */
+  private goalFound() {
+    if (!this.app.save.findTreasure(this.goalItem)) return;
+    void this.app.save.store();
+    this.app.audio.play("treasure");
+    this.app.platform.haptics?.bump();
+    const chip = this.goalChip!;
+    chip.querySelector(".treasure")?.replaceWith(treasureIcon(this.goalItem));
+    chip.classList.add("done");
+    chip.setAttribute("aria-label", `${t("goal.found")} ${t(`treasure.${this.goalItem}`)}`);
+    chip.append(h("span.goal-found", { "aria-hidden": "true" }, t("goal.found")));
+  }
+
+  /** Play this level (or today's surprise yard) again from the start. */
+  private restart() {
+    if (this.daily) void this.app.playDaily({ skipIntro: true });
+    else this.app.playLevel(this.session.level.id, { skipIntro: true });
+  }
+
+  /** Treasures found during this attempt, as a row for the results. */
+  private newTreasures() {
+    const now = foundTreasures(this.app.save.data);
+    const fresh = catalog().filter((e) => now.has(e.id) && !this.foundBefore.has(e.id));
+    if (!fresh.length) return null;
+    return h(
+      "div.found-row",
+      { "aria-label": `${t("results.found")} ${fresh.map((e) => t(`treasure.${e.id}`)).join(", ")}` },
+      h("span", { "aria-hidden": "true" }, t("results.found")),
+      ...fresh.map((e, i) => {
+        const icon = treasureIcon(e.id, "pop");
+        (icon as HTMLElement).style.animationDelay = `${0.4 + i * 0.25}s`;
+        return icon;
+      }),
+    );
+  }
+
   private bumpSnacks() {
     const pill = this.snacksPill;
     pill.classList.remove("bump");
@@ -464,6 +650,12 @@ export class LevelScreen implements Screen {
       card.style.setProperty("--cd", cd.toFixed(3));
       card.classList.toggle("broke", st.snacks < def.cost);
       card.classList.toggle("held", this.session.holding === u);
+    }
+    if (this.goal && this.goal.progress !== this.lastProgress) {
+      this.lastProgress = this.goal.progress;
+      // the chain shows its own count above the pile; other goals count up here
+      const counted = this.goal.goal.kind !== "chain" && this.goal.target > 1;
+      this.goalProgress!.textContent = counted && !this.goal.done ? `${this.goal.progress}/${this.goal.target}` : "";
     }
     if (this.endTimer > 0 && (this.endTimer -= dt) <= 0) this.showEnd();
   }
@@ -600,8 +792,13 @@ export class LevelScreen implements Screen {
   private showIntro() {
     const go = h("button.big.primary", { onclick: () => this.closeIntro() }, t("intro.go"));
     // Plan §10.2: the first time a defense or friend appears, show its picture.
-    const news = firstAppearances(this.session.level.id);
-    const pairs = newPairs(this.session.level.id);
+    const news = this.daily ? [] : firstAppearances(this.session.level.id);
+    const pairs = this.daily ? [] : newPairs(this.session.level.id);
+    // the surprise yard shows the treasure today's win puts in the stash
+    const prizeId = this.daily ? treasures.daily[weekdayOf(this.daily.key)]! : null;
+    const prize = prizeId
+      ? h("figure.new-thing.prize", null, treasureIcon(prizeId, this.foundBefore.has(prizeId) ? "" : "missing"), h("figcaption", null, t("daily.prize")))
+      : null;
     this.openOverlay(
       "intro",
       h(
@@ -609,10 +806,11 @@ export class LevelScreen implements Screen {
         null,
         portrait("jimothy-wave", 160, 120),
         h("p.say", null, t(this.session.level.intro!.textKey)),
-        news.length || pairs.length
+        news.length || pairs.length || prize
           ? h(
               "div.news",
               null,
+              prize,
               ...news.map((n) =>
                 h("figure.new-thing", null, portrait(n.id, 96, 72), h("figcaption", null, t(`${n.kind}.${n.id}`))),
               ),
@@ -678,7 +876,7 @@ export class LevelScreen implements Screen {
         portrait("jimothy-think", 120, 90),
         h("h2", null, t("pause.title")),
         resume,
-        h("button.big", { onclick: () => this.app.playLevel(this.session.level.id, { skipIntro: true }) }, t("pause.restart")),
+        h("button.big", { onclick: () => this.restart() }, t("pause.restart")),
         h("button.big", { onclick: () => this.showNightEnded() }, t("pause.callIt")),
         h("button.big", { onclick: () => this.app.showMap() }, t("pause.map")),
         h("button.big", { onclick: () => openSettings(this.app) }, t("settings.title")),
@@ -704,14 +902,16 @@ export class LevelScreen implements Screen {
     const id = this.session.level.id;
     const earned = st.outcome!.moons;
     // the finale's story card plays before the results, the first time the last level is won
-    const finale = id === levelOrder.at(-1) && !this.app.save.data.levels[id]?.cleared;
-    const { recruit, acorns } = this.app.save.recordWin(id, earned);
+    const finale = !this.daily && id === levelOrder.at(-1) && !this.app.save.data.levels[id]?.cleared;
+    const { recruit, acorns } = this.daily
+      ? { recruit: null, ...this.app.save.recordDaily(this.daily.key, earned) }
+      : this.app.save.recordWin(id, earned);
     void this.app.save.store();
-    const nextId = levelOrder[levelOrder.indexOf(id) + 1];
+    const nextId = this.daily ? undefined : levelOrder[levelOrder.indexOf(id) + 1];
     const next = nextId
       ? h("button.big.primary", { onclick: () => this.app.playLevel(nextId) }, t("results.next"))
       : null;
-    const again = h("button.big", { onclick: () => this.app.playLevel(id, { skipIntro: true }) }, t("results.again"));
+    const again = h("button.big", { onclick: () => this.restart() }, t("results.again"));
     const results = () => {
       this.openOverlay(
         "results",
@@ -722,6 +922,7 @@ export class LevelScreen implements Screen {
           h("h2", null, t("results.title")),
           moons(earned, "moons large"),
           acorns > 0 ? h("p.acorns-won", null, paintedIcon("acorn", acornIcon), t("results.acorns", { n: acorns })) : null,
+          this.newTreasures(),
           recruit
             ? h("div.recruit", null, portrait(recruit, 112, 80), h("p", null, t("results.recruit", { unit: t(`unit.${recruit}`) })))
             : null,
@@ -737,7 +938,7 @@ export class LevelScreen implements Screen {
   }
 
   private showNightEnded() {
-    const again = h("button.big.primary", { onclick: () => this.app.playLevel(this.session.level.id, { skipIntro: true }) }, t("night.again"));
+    const again = h("button.big.primary", { onclick: () => this.restart() }, t("night.again"));
     this.openOverlay(
       "night",
       h(
@@ -746,20 +947,13 @@ export class LevelScreen implements Screen {
         portrait("jimothy-sleepy", 120, 90),
         h("h2", null, t("night.title")),
         h("p", null, t("night.body")),
+        this.newTreasures(),
         again,
         h("button.big", { onclick: () => this.app.showMap() }, t("night.map")),
       ),
       again,
     );
   }
-}
-
-/** A small pink heart for the pairing pictures. */
-function heartIcon() {
-  return svg(
-    `<svg viewBox="0 0 52 44" width="40" height="34" aria-hidden="true"><path d="M26 40C4 24 6 4 26 14 46 4 48 24 26 40Z" fill="#ff7fae" stroke="#2a2233" stroke-width="5" stroke-linejoin="round"/></svg>`,
-    "pair-heart",
-  );
 }
 
 /** Defenses and friends that appear for the first time in this level, in campaign order. */

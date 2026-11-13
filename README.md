@@ -132,6 +132,15 @@ Progression is **persistent across the campaign**:
   health, crow speed, cheaper possums, faster resource trickle).
 - This requires a **save system** — the campaign state persists between sessions.
 
+Each pile also hides **three treasures** for **Jimothy's stash**: one for clearing the level, one
+for three moons, and one for a playful goal shown as a picture, like "dog ♥ squirrel" or
+"possum ×4 ➜ pile". The stash is a sticker book on the map with a silhouette for every treasure
+still out there. Nothing in it is ever lost.
+
+After the alley, the map also offers a **surprise yard**: a remix of a level you've cleared, made
+on the device from the date, with new defenses in new places. The game checks each remix is
+winnable before offering it, and winning one on a Monday finds the Monday treasure.
+
 Each level also has an **in-level economy** that resets every attempt, used to send units during the
 round. The persistent layer decides *what* you can send and how strong it is; the in-level layer
 decides *when* and *how much*.

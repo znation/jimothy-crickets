@@ -14,3 +14,6 @@ export const cogIcon = `<svg viewBox="0 0 40 40"><path fill="currentColor" d="M1
 export const handIcon = `<svg viewBox="0 0 60 60"><path d="M24 54c-6-4-12-12-14-18-1-3 2-5 5-3l5 5V12a4 4 0 0 1 8 0v14l2-1a4 4 0 0 1 6 2l2-1a4 4 0 0 1 6 2l1-.5a4 4 0 0 1 6 3V44c0 6-4 10-10 10z" fill="#fff" stroke="#2a2233" stroke-width="3.5" stroke-linejoin="round"/></svg>`;
 
 export const acornIcon = `<svg viewBox="0 0 40 40"><path d="M9 17c0-6 5-9 11-9s11 3 11 9z" fill="#8a5a36" stroke="#2a2233" stroke-width="3" stroke-linejoin="round"/><path d="M20 8V4" stroke="#2a2233" stroke-width="3" stroke-linecap="round"/><path d="M11 17h18c0 9-4 15-9 17-5-2-9-8-9-17z" fill="#d9a35f" stroke="#2a2233" stroke-width="3" stroke-linejoin="round"/></svg>`;
+
+/** A calendar page with a star on it, for the surprise yard (the same picture every day). */
+export const calendarIcon = `<svg viewBox="0 0 40 40"><rect x="5" y="8" width="30" height="27" rx="5" fill="#fff6e6" stroke="#2a2233" stroke-width="3"/><path d="M5 13a5 5 0 0 1 5-5h20a5 5 0 0 1 5 5v4H5z" fill="#ff8f5a" stroke="#2a2233" stroke-width="3" stroke-linejoin="round"/><path d="M13 5v6M27 5v6" stroke="#2a2233" stroke-width="3" stroke-linecap="round"/><path d="M20 19.5l2.6 5.2 5.4.6-4 3.7 1.1 5.3-5.1-2.8-5.1 2.8 1.1-5.3-4-3.7 5.4-.6z" fill="#ffd23f" stroke="#2a2233" stroke-width="2" stroke-linejoin="round"/></svg>`;

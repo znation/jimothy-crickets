@@ -24,9 +24,11 @@ import l4_3 from "./levels/4-3.json" with { type: "json" };
 import l4_4 from "./levels/4-4.json" with { type: "json" };
 import l4_5 from "./levels/4-5.json" with { type: "json" };
 import referencesJson from "./references.json" with { type: "json" };
+import treasuresJson from "./treasures.json" with { type: "json" };
 import unitsJson from "./units.json" with { type: "json" };
 import upgradesJson from "./upgrades.json" with { type: "json" };
 import type { UpgradeDef } from "../sim/upgrades.ts";
+import type { Goal } from "../sim/goals.ts";
 import type {
   AreaId,
   Content,
@@ -54,6 +56,7 @@ export const rawData = {
   campaign: campaignJson as unknown,
   references: referencesJson as unknown,
   upgrades: upgradesJson as unknown[],
+  treasures: treasuresJson as unknown,
 };
 
 export const campaign = rawData.campaign as Campaign;
@@ -66,6 +69,16 @@ export const levelOrder: string[] = campaign.areas.flatMap((a) => a.levels);
 export const levels: LevelDef[] = levelOrder.map((id) => levelMap[id]!).filter(Boolean);
 export const references = rawData.references as Record<string, Reference>;
 export const upgrades = rawData.upgrades as UpgradeDef[];
+
+/** Each level's pile hides three treasures: for clearing it, for three moons, and for its goal. */
+export interface LevelTreasures {
+  items: { clear: string; moons: string; goal: string };
+  goal: Goal;
+}
+export const treasures = rawData.treasures as {
+  levels: Record<string, LevelTreasures>;
+  daily: string[]; // the surprise yard's treasure for each day of the week, Sunday first
+};
 
 export function levelById(id: string): LevelDef | undefined {
   return levelMap[id];

@@ -426,6 +426,9 @@ rule or a grep check in CI enforces this.
   "upgrades": { "cricket.hp": 2, "trickle": 1 },
   "acorns": 14,
   "levels": { "1-1": { "moons": 3, "cleared": true }, "1-2": { "moons": 1, "cleared": true } },
+  "treasures": ["sandwich"],
+  "daily": { "2026-11-13": 2 },
+  "dailyPlan": { "key": "2026-11-13", "base": "3-2", "attempt": 1, "moons": [0, 50, 93] },
   "settings": { "music": 0.7, "sfx": 1.0, "reducedMotion": false, "speed": 1 }
 }
 ```
@@ -434,6 +437,8 @@ rule or a grep check in CI enforces this.
   against fixture saves from each past version.
 - Unknown or corrupt saves are backed up under a separate key, never silently overwritten.
 - "Acorns" is a placeholder name for the meta-currency (§6).
+- `treasures` holds only goal treasures; clearing and three-moon treasures follow from `levels`,
+  and a surprise yard's from `daily`, so older saves fill their stash without a migration.
 
 ---
 
@@ -856,10 +861,15 @@ Checked when the model was chosen:
    - **top-left:** snacks counter. **Top-center:** pile hp as the pile's own shrinking picture plus
      a bar. **Top-right:** the moon/night arc, speed toggle, pause.
    - **left edge:** Jimothy in the staging area, cheering and reacting to events.
+   - **top, beside the pile:** the level's treasure goal as a picture with a count, until its
+     treasure is found.
 6. **Pause** — resume, restart, settings, call it a night, back to map.
 7. **Results** — moons earned, acorns, recruit reveal ("Possum wants to join!"), "Next" / "Again".
 8. **End of night** — the soft card from §6, Q7.
-9. **Settings** — volumes, speed default, reduced motion, large text, save export/import, credits,
+9. **Jimothy's stash** — from the map: a shelf per area, a column per level, three slots each,
+   and a shelf for the week's surprise yards. Missing treasures show as silhouettes; tapping one
+   says how to find it, with the goal's picture.
+10. **Settings** — volumes, speed default, reduced motion, large text, save export/import, credits,
    privacy note ("This game collects no data").
 
 ### 10.2 Teaching without text
@@ -1253,6 +1263,25 @@ M5 can run in parallel with M3–M4: generation runs overnight on idle CPU, not 
     notes, so a kid holding a card hears a tune and nothing sounds wrong. Each delivery's cookie
     flies from the pile to the snack counter, which bumps when it lands. Reference replays reach
     chains of 10–18.
+  - **Jimothy's stash:** each pile hides three treasures (`src/data/treasures.json`): for
+    clearing it, for three moons, and for a goal. Goals are judged from sim events
+    (`src/sim/goals.ts`): a chain of N, N of one friend delivered, possums flopping, a defense
+    distracted N times, a rat chewing through something, every kind of friend delivered. A goal
+    counts whenever it happens, win or not. Its picture sits in the HUD with a count; when it's
+    met the treasure pops out with a jingle and is saved at once. `tests/treasures.test.ts`
+    proves a bot can reach every goal, trying targeted bots (the right friend down each lane)
+    before the whole strategy space. The 67 treasures are SVG placeholders
+    (`src/ui/treasures.ts`); a painted `treasure-<id>` sprite in an atlas replaces one.
+  - **Surprise yard (`src/daily.ts`):** opens once 1-5 is cleared. The date picks one of your
+    cleared levels; its lanes and pile stay, and its defenses are re-dealt from the ones met by
+    then, placed beside the paths in the HUD-free band, at most one fence per lane and never on
+    every lane. Pile hp and trickle vary by about ±10%. Twelve bot strategies spread across the
+    strategy space check each remix: it passes if one wins with a fifth of the night to spare,
+    and the moons are set at 40% and 75% of the best bot's margin. Up to six remixes are tried
+    (the last three gentler), then the base level itself. Planning takes about 0.1–0.3 s on the
+    dev machine, behind a short "Jimothy is sneaking a look" card, and the plan is saved for the
+    day. Players bring every friend they've recruited. Wins pay acorns for improving the day's
+    best, and find that weekday's treasure.
 
 ### M8 — Audio, polish, accessibility (README step 7)
 

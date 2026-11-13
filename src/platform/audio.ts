@@ -13,7 +13,7 @@ export type Sfx =
   | "cricket" | "possum" | "squirrel" | "crow" | "rat"
   | "sprinkler" | "broomNeighbor" | "yardDog" | "motionLight" | "chew"
   | "shoo" | "pile" | "win" | "yawn" | "tap" | "buy" | "recruit"
-  | "yip" | "huh";
+  | "yip" | "huh" | "treasure";
 
 export type Theme = "menu" | "alley" | "backyards" | "culdesac" | "stripmall";
 
@@ -247,6 +247,13 @@ export class GameAudio {
       case "huh": // a puzzled rising "hm?"
         tone(c, out, { type: "triangle", f0: 180, f1: 300, at: now, dur: 0.32, vol: 0.3, wobble: 7, lowpass: 1200 });
         return voice(0.32);
+      case "treasure": // a twinkle running up the chain's scale, then a bright bell on top
+        [784, 988, 1175, 1568].forEach((f, i) =>
+          tone(c, out, { type: "sine", f0: f, f1: f, at: now + i * 0.07, dur: 0.12, vol: 0.18 }),
+        );
+        tone(c, out, { type: "triangle", f0: 2093, f1: 2093, at: now + 0.3, dur: 0.6, vol: 0.12 });
+        tone(c, out, { type: "sine", f0: 1568, f1: 1568, at: now + 0.3, dur: 0.7, vol: 0.14 });
+        return voice(1);
       case "tap":
         tone(c, out, { type: "sine", f0: 900, f1: 700, at: now, dur: 0.05, vol: 0.12 });
         return voice(0.05);

@@ -1,0 +1,25 @@
+{
+  "levels": {
+    "1-1": { "items": { "clear": "duck", "moons": "sock", "goal": "sandwich" }, "goal": { "kind": "chain", "n": 5 } },
+    "1-2": { "items": { "clear": "bottleCap", "moons": "fishBone", "goal": "tinCan" }, "goal": { "kind": "deliver", "unit": "cricket", "n": 15 } },
+    "1-3": { "items": { "clear": "bananaPeel", "moons": "button", "goal": "cheese" }, "goal": { "kind": "fullHouse" } },
+    "1-4": { "items": { "clear": "boot", "moons": "key", "goal": "appleCore" }, "goal": { "kind": "deliver", "unit": "possum", "n": 4 } },
+    "1-5": { "items": { "clear": "penny", "moons": "spoon", "goal": "pizza" }, "goal": { "kind": "playDead", "n": 3 } },
+    "2-1": { "items": { "clear": "tennisBall", "moons": "gardenGlove", "goal": "flowerPot" }, "goal": { "kind": "distract", "defense": "yardDog", "n": 1 } },
+    "2-2": { "items": { "clear": "frisbee", "moons": "dogBone", "goal": "pinecone" }, "goal": { "kind": "deliver", "unit": "squirrel", "n": 6 } },
+    "2-3": { "items": { "clear": "wateringCan", "moons": "gnomeHat", "goal": "snailShell" }, "goal": { "kind": "deliver", "unit": "possum", "n": 5 } },
+    "2-4": { "items": { "clear": "lightbulb", "moons": "marble", "goal": "feather" }, "goal": { "kind": "distract", "defense": "motionLight", "n": 1 } },
+    "2-5": { "items": { "clear": "kite", "moons": "shovel", "goal": "birdhouse" }, "goal": { "kind": "distract", "defense": "broomNeighbor", "n": 1 } },
+    "3-1": { "items": { "clear": "toyCar", "moons": "crayon", "goal": "yoyo" }, "goal": { "kind": "deliver", "unit": "crow", "n": 4 } },
+    "3-2": { "items": { "clear": "paperclip", "moons": "toyBlock", "goal": "dice" }, "goal": { "kind": "chew", "defense": "fence" } },
+    "3-3": { "items": { "clear": "sunglasses", "moons": "bow", "goal": "bell" }, "goal": { "kind": "chain", "n": 10 } },
+    "3-4": { "items": { "clear": "starSticker", "moons": "toothbrush", "goal": "umbrella" }, "goal": { "kind": "chew", "defense": "motionLight" } },
+    "3-5": { "items": { "clear": "snowGlobe", "moons": "balloon", "goal": "trophy" }, "goal": { "kind": "fullHouse" } },
+    "4-1": { "items": { "clear": "donut", "moons": "candy", "goal": "lollipop" }, "goal": { "kind": "distract", "defense": "yardDog", "n": 3 } },
+    "4-2": { "items": { "clear": "sodaBottle", "moons": "pretzel", "goal": "popcorn" }, "goal": { "kind": "chew", "defense": "sprinkler" } },
+    "4-3": { "items": { "clear": "teddy", "moons": "magnifier", "goal": "cupcake" }, "goal": { "kind": "distract", "defense": "broomNeighbor", "n": 3 } },
+    "4-4": { "items": { "clear": "ring", "moons": "whistle", "goal": "mitten" }, "goal": { "kind": "deliver", "unit": "rat", "n": 6 } },
+    "4-5": { "items": { "clear": "crown", "moons": "locket", "goal": "goldenDuck" }, "goal": { "kind": "chain", "n": 12 } }
+  },
+  "daily": ["sunflower", "muffin", "teapot", "watermelon", "thimble", "fork", "seashell"]
+}

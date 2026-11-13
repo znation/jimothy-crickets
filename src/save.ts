@@ -1,6 +1,7 @@
 // Campaign progress (plan §4.5). Versioned; every format change gets a migration below.
 
 import { campaign } from "./data/content.ts";
+import type { DailyPlan } from "./daily.ts";
 import type { Platform } from "./platform/types.ts";
 import type { UnitId } from "./sim/types.ts";
 import type { UpgradeDef } from "./sim/upgrades.ts";
@@ -21,6 +22,12 @@ export interface SaveData {
   upgrades: Record<string, number>;
   acorns: number;
   levels: Record<string, { moons: number; cleared: boolean }>;
+  /** Goal treasures found (clearing and three-moon treasures follow from `levels`). */
+  treasures: string[];
+  /** Surprise yards won: best moons by date. */
+  daily: Record<string, number>;
+  /** Today's surprise yard, worked out once and kept for the day. */
+  dailyPlan: DailyPlan | null;
   settings: Settings;
 }
 
@@ -31,6 +38,9 @@ export function freshSave(): SaveData {
     upgrades: {},
     acorns: 0,
     levels: {},
+    treasures: [],
+    daily: {},
+    dailyPlan: null,
     settings: { music: 0.7, sfx: 1, reducedMotion: false, largeText: false, speed: 1 },
   };
 }
@@ -92,6 +102,24 @@ export class SaveStore {
       return { recruit, acorns };
     }
     return { recruit: null, acorns };
+  }
+
+  /** Keep a goal treasure. Returns true the first time. */
+  findTreasure(id: string): boolean {
+    if (this.data.treasures.includes(id)) return false;
+    this.data.treasures.push(id);
+    return true;
+  }
+
+  /** Record a surprise-yard win. Acorns pay for improving that day's best, like campaign levels. */
+  recordDaily(key: string, moons: number): { acorns: number } {
+    const prev = this.data.daily[key] ?? 0;
+    const best = Math.max(prev, moons);
+    this.data.daily[key] = best;
+    const table = campaign.acornsForMoons;
+    const acorns = (table[best] ?? 0) - (table[prev] ?? 0);
+    this.data.acorns += acorns;
+    return { acorns };
   }
 
   /** Buy the next tier of an upgrade. Returns false if it's maxed out or unaffordable. */

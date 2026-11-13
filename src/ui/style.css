@@ -700,6 +700,7 @@ button:focus-visible,
 
 .hud-right {
   display: flex;
+  flex: none; /* the pause button never gets pushed off a narrow screen */
   align-items: center;
   gap: 10px;
 }
@@ -1134,5 +1135,454 @@ button:focus-visible,
   }
   .story-caption .say {
     font-size: 16px;
+  }
+}
+
+/* ---------------------------------------------------------------- Jimothy's stash */
+
+.treasure {
+  width: 48px;
+  height: 48px;
+  flex: none;
+}
+
+/* a treasure still hidden in a pile: just its shape */
+.treasure.missing {
+  filter: brightness(0);
+  opacity: 0.22;
+}
+
+.treasure.pop {
+  animation: treasure-pop 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+
+@keyframes treasure-pop {
+  from {
+    transform: scale(0) rotate(-30deg);
+  }
+}
+
+.map-extras {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.big.extra {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 6px 22px 6px 12px;
+}
+
+.big.extra .icon,
+.big.extra .treasure {
+  width: 40px;
+  height: 40px;
+}
+
+.big.extra .count {
+  min-width: 1.6em;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  font-size: 20px;
+}
+
+.big.extra .moons .moon {
+  width: 22px;
+  height: 22px;
+}
+
+.stash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(16, 18, 40, 0.7);
+}
+
+.stash-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  min-height: 72px;
+}
+
+.stash-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stash-title .screen-title {
+  margin: 0;
+}
+
+.stash-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.7);
+}
+
+.stash-detail .treasure {
+  width: 40px;
+  height: 40px;
+}
+
+.stash-detail .goal-pic {
+  padding: 2px 10px;
+  border-radius: 14px;
+  background: var(--paper);
+}
+
+.shelves {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 14px;
+  max-width: 1200px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 6px 12px;
+}
+
+.shelf {
+  align-self: flex-start;
+  padding: 8px 12px 10px;
+  border: 4px solid var(--ink);
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 5px 0 var(--ink);
+}
+
+.shelf h3 {
+  margin: 0 0 4px;
+  font-family: var(--display);
+  font-size: 18px;
+  text-align: center;
+}
+
+.shelf-grid {
+  display: flex;
+  gap: 4px;
+}
+
+.slot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.col-label {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.slot {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 3px solid transparent;
+  border-radius: 16px;
+  background: var(--paper-2);
+}
+
+.slot.found {
+  background: #fff1c2;
+  border-color: #f2c94c;
+}
+
+.slot .treasure {
+  width: 42px;
+  height: 42px;
+}
+
+/* ---------------------------------------------------------------- treasure goals */
+
+.goal-pic {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.goal-pic .icon {
+  width: calc(var(--px) * 0.9);
+  height: calc(var(--px) * 0.9);
+}
+
+.goal-pic .pair-heart {
+  width: calc(var(--px) * 0.6);
+  height: calc(var(--px) * 0.5);
+}
+
+.goal-pic .goal-bite {
+  width: calc(var(--px) * 0.6);
+  height: calc(var(--px) * 0.6);
+}
+
+.goal-times,
+.goal-arrow {
+  font-size: calc(var(--px) * 0.55);
+}
+
+.goal-bubble {
+  padding: 0 0.4em;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  font-size: calc(var(--px) * 0.55);
+}
+
+.goal-zzz {
+  font-size: calc(var(--px) * 0.4);
+  opacity: 0.7;
+}
+
+/* a possum playing dead: feet up */
+.portrait.flop {
+  transform: scaleY(-1);
+}
+
+.goal-chip {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 56px;
+  padding: 0 10px 0 12px;
+  border: 4px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 4px 0 var(--ink);
+  font-family: var(--display);
+  font-weight: 700;
+  animation: pop-in 0.4s 0.3s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+
+.goal-chip .treasure {
+  width: 38px;
+  height: 38px;
+}
+
+.goal-chip .goal-pic {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.goal-progress {
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.goal-progress:empty {
+  display: none;
+}
+
+.goal-chip.done {
+  background: #fff1c2;
+  border-color: #b8860b;
+  animation: goal-done 0.7s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+.goal-chip.done .treasure {
+  animation: treasure-pop 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+
+@keyframes goal-done {
+  30% {
+    transform: scale(1.25) rotate(-4deg);
+  }
+}
+
+.goal-found {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  margin-top: 6px;
+  padding: 2px 12px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: #ffe08a;
+  font-size: 18px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  animation: goal-found 2.4s ease-out both;
+}
+
+@keyframes goal-found {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -10px) scale(0.6);
+  }
+  12%,
+  75% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.found-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: #fff1c2;
+  font-family: var(--display);
+  font-weight: 700;
+}
+
+.prize .treasure {
+  width: 72px;
+  height: 72px;
+}
+
+.scouting {
+  display: grid;
+  place-items: center;
+  background: rgba(16, 18, 40, 0.55);
+}
+
+.dots-loading {
+  display: flex;
+  gap: 8px;
+}
+
+.dots-loading span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dot-bounce 0.9s ease-in-out infinite;
+}
+
+.dots-loading span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.dots-loading span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes dot-bounce {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.reduced-motion .goal-chip,
+.reduced-motion .goal-chip.done,
+.reduced-motion .treasure.pop,
+.reduced-motion .goal-chip.done .treasure,
+.reduced-motion .dots-loading span {
+  animation: none;
+}
+
+@media (max-height: 500px) {
+  .goal-chip {
+    height: 46px;
+    padding: 0 8px 0 10px;
+  }
+  .goal-chip .goal-pic {
+    --px: 24px !important;
+  }
+  .goal-chip .goal-pic .portrait {
+    width: 28px !important;
+    height: 21px !important;
+  }
+  .pile .bar {
+    width: 72px;
+  }
+  .stash-head {
+    margin-top: 44px;
+  }
+  .stash-head > .portrait {
+    display: none;
+  }
+  /* "every friend to the pile" is long: just the friends, smaller */
+  .goal-chip .goal-pic.many .portrait {
+    width: 19px !important;
+    height: 14px !important;
+  }
+  .goal-chip .goal-pic.many .goal-arrow,
+  .goal-chip .goal-pic.many .icon {
+    display: none;
+  }
+  .stash-title .screen-title {
+    font-size: 22px;
+  }
+  .goal-chip .treasure {
+    width: 30px;
+    height: 30px;
+  }
+  /* Next, Again and Map side by side, so the treasure row still leaves room for them */
+  .results .row .big {
+    min-width: 130px;
+    padding: 6px 18px;
+  }
+  .found-row {
+    padding: 2px 12px;
+  }
+  .found-row .treasure {
+    width: 36px;
+    height: 36px;
+  }
+  .map-extras .big.extra {
+    min-height: 44px;
+    padding: 2px 16px 2px 8px;
+  }
+  .big.extra .icon,
+  .big.extra .treasure {
+    width: 32px;
+    height: 32px;
+  }
+  .stash-head {
+    min-height: 0;
+  }
+  .stash-detail {
+    font-size: 15px;
+    min-height: 32px;
+  }
+  .slot {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+  .slot .treasure {
+    width: 32px;
+    height: 32px;
+  }
+  .shelf {
+    padding: 4px 8px 6px;
+  }
+  .shelf h3 {
+    font-size: 14px;
+  }
+  .col-label {
+    font-size: 12px;
   }
 }
