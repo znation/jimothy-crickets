@@ -3,5 +3,7 @@
   "cricket": "cricket-round",
   "possum": "possum-side",
   "crow": "crow-black",
-  "rat": "rat-side"
+  "rat": "rat-side",
+  "broomNeighbor": "neighbor-cardigan",
+  "yardDog": "dog-round"
 }

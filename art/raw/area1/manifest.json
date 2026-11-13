@@ -773,5 +773,37 @@
     "model": "stabilityai/sdxl-turbo",
     "steps": 4,
     "guidance": 0.0
+  },
+  "neighbor-cardigan": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a short round cheerful grandpa in a blue cardigan holding a long broom, baffled round eyes, tiny white moustache, rosy cheeks, big round nose, side view facing right",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 42000,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
+  },
+  "dog-round": {
+    "kind": "sprite",
+    "full_prompt": "children's picture book illustration, soft watercolour fills, bold dark ink outlines, one cute character sticker, whole body with white space around it, plain white background, a cute round chubby fluffy golden puppy sitting, sleepy droopy eyes, tongue out, big floppy ears, tiny paws, soft cream chest fluff, side view facing right",
+    "ref": null,
+    "ref_scale": 0.0,
+    "size": [
+      512,
+      512
+    ],
+    "init": null,
+    "strength": null,
+    "seed": 37000,
+    "model": "stabilityai/sdxl-turbo",
+    "steps": 4,
+    "guidance": 0.0
   }
 }

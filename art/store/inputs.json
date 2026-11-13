@@ -1,8 +1,8 @@
 {
   "comment": "Written by tools/make_store_art.ts; checked by tools/store_art_stamp.ts.",
   "files": {
-    "public/atlas/area1.json": "b5b841f2d2276035bc729a4d2a8d954632d50bb6",
-    "public/atlas/area1.webp": "efadae57af28038cdc8482b6a1f741f593299138",
+    "public/atlas/area1.json": "ed5a86dd2b7b926e9c505c50b879187af30f5c92",
+    "public/atlas/area1.webp": "1c699c910cf39631757acfd1779724584d14ea84",
     "public/atlas/areas-alley.webp": "fc377ee459905d610270ddcd69c334455a84ffcb",
     "public/atlas/areas-backyards.webp": "b5e65c6c1dc887000ba51d249f8469eb9413c9ff",
     "public/atlas/areas-culdesac.webp": "598063363b08c000e05d8ec2e030da1ed4ee2174",

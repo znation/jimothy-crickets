@@ -138,6 +138,21 @@
       "name": "crow-black",
       "seed": 34000,
       "prompt": "a cute round chubby baby crow flying, jet black fluffy feathers all over, black wings spread, big round friendly shiny eyes, small dark grey beak"
+    },
+    {
+      "name": "neighbor-round",
+      "seed": 35000,
+      "prompt": "a chubby round little old man in a fluffy bathrobe and slippers holding a broom, round surprised face, big round eyes, rosy cheeks, bald with white tufts"
+    },
+    {
+      "name": "neighbor-cardigan",
+      "seed": 36000,
+      "prompt": "a short round cheerful grandpa in a blue cardigan holding a long broom, baffled round eyes, tiny white moustache, rosy cheeks, big round nose"
+    },
+    {
+      "name": "dog-round",
+      "seed": 37000,
+      "prompt": "a cute round chubby fluffy golden puppy sitting, sleepy droopy eyes, tongue out, big floppy ears, tiny paws, soft cream chest fluff"
     }
   ]
 }

@@ -6,14 +6,14 @@ ships them as working art:
 
 | Sprite | Pick | Why |
 |---|---|---|
-| Jimothy | `jimothy-nub` 31 (touch-ups of `jimothy-photo` 9050) | 9050 was the roundest of 28 renders, but a ringed tail peeked out behind his hind leg and the frame cropped his rump. `jimothy-notail` (24) removed the tail, completed the rump and cleared the grass; `jimothy-nub` (31) gave him back the fairly tiny fluffy nub he really has |
+| Jimothy | `jimothy-nub` 31 (touch-ups of `jimothy-photo` 9050) | 9050 was the roundest of 28 renders, but a ringed tail peeked out behind his hind leg and the frame cropped his rump. `jimothy-notail` (24) removed the tail, completed the rump and cleared the grass; `jimothy-nub` (31) gave him back the fairly tiny fluffy nub he really has |. All five poses then get a polish pass (`tools/asset_gen/polish_jimothy.py`): the rump seam left by the tail removal is blended away, shading gives him volume, his eyes get big catchlights (not the sleepy or thinking eyes), and a soft pink blush sits on his mask under each eye
 | Cricket | `cricket-round` 36000 (was `cricket` 8100) | a clear little bug: big shiny eyes, a smile and a rosy cheek, pink wings, facing right. 8100's leaf-shaped wings read as ears in-game, so the crickets looked like goblins. The matte's hole in the upper wing is filled by hand |
 | Possum | `possum-side` 36000 (was `possum` 8200) | pale, fluffy and white-faced, on all fours, facing right. 8200 faced the camera and looked just like the rat. A plant, a radish and a patch of ground from its scene are erased by hand |
 | Squirrel | 9300 | side view, facing right, whole tail in frame |
 | Crow | `crow-black` 37000 (was `crow` 7400) | very round, one big eye, a yellow beak; mirrored to face right (`flip`). SDXL-Turbo's watercolour style turns "black" into grey (and "orange beak" into a robin's breast), so the feathers are darkened to a blue-black in the curated file and a soft blush is added under the eye. 7400 was a realistic crow |
 | Rat | `rat-side` 37000 (was `rat` 9500) | brown, side-on, the whole tail in frame. Brown against the possum's white keeps the two apart at a glance |
-| Broom neighbor | 7700 | bewildered, comic, broom and bucket |
-| Yard dog | 9800 | a sitting puppy: the goofiest and least threatening |
+| Broom neighbor | `neighbor-cardigan` 42000 (was 7700) | a short round grandpa: blue cap and cardigan, big white moustache, rosy cheeks, broom in hand. The frame clipped the bristles, so the curated file trims them to a ragged rounded end. 7700 was a realistic, scraggly old man |
+| Yard dog | `dog-round` 37000 (was 9800), cropped | a round chibi golden puppy sitting with its tail out, big shiny eyes, a red collar; the crop drops a sketchbook spiral at the left edge |
 | Motion light | 11000 (framing v1) | isolated lamp on a bracket |
 | Pile (alley) | 11100 | an overflowing can with bags and boxes |
 
@@ -87,8 +87,8 @@ picture-book palette; not pixel art, not flat vector.
 | Squirrel | orange, with a big fluffy tail (its silhouette) | |
 | Crow | round, glossy black, small orange beak, friendly eyes | menacing or sharp |
 | Rat | round grey with big pink ears and a pink tail | sewer-rat realism |
-| Broom neighbor | bewildered, mostly comic | angry or villainous |
-| Yard dog | sleepy, fluffy, goofy | snarling, teeth |
+| Broom neighbor | a short round grandpa, bewildered, mostly comic | angry or villainous; realistic |
+| Yard dog | a round fluffy puppy, goofy | snarling, teeth |
 
 Characters face **right** (toward the pile), whole body visible. Build-time `flip` in
 `art/sprites.json` fixes sprites that came out facing left.
@@ -145,6 +145,10 @@ The prompt set is `art/prompts/area1.json`. What the spikes established (2026-10
   records the box, and `matte.py` crops before matting.
 - **Fences:** ask for a solid gate. Picket fences lose their rails in matting.
 - **Sprinklers** always come out as garden scenes; the best candidates read as small fountains.
+- **The neighbor:** "chubby round little old man in a bathrobe" drew bald, baby-faced men; "short
+  round cheerful grandpa in a blue cardigan" with a "tiny white moustache" reads as a neighbor.
+- **Puppies** come out front-facing and often on a sketchbook page with spiral binding; crop the
+  spiral off (`crops.json`).
 
 ## Animation
 
