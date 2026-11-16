@@ -438,6 +438,9 @@ export class LevelScreen implements Screen {
   private goalChip: HTMLElement | null = null;
   private goalProgress: HTMLElement | null = null;
   private lastProgress = -1;
+  /** Which defense last startled each friend, and how many friends each defense turned back. */
+  private lastHitBy = new Map<number, number>();
+  private turnedBack = new Map<number, number>();
   /** Treasures already in the stash when the attempt began, to show what's new at the end. */
   private foundBefore: Set<string>;
 
@@ -459,6 +462,12 @@ export class LevelScreen implements Screen {
         else if (e.type === "levelWon") app.platform.haptics?.bump();
       }
       for (const e of events) {
+        if (e.type === "unitHit") this.lastHitBy.set(e.uid, e.index);
+        else if (e.type === "unitShooed") {
+          const by = this.lastHitBy.get(e.uid);
+          if (by !== undefined) this.turnedBack.set(by, (this.turnedBack.get(by) ?? 0) + 1);
+          this.lastHitBy.delete(e.uid);
+        }
         if (e.type === "unitSent" && this.tutorialStep === 1) this.advanceTutorial();
         if (e.type === "levelWon" || e.type === "nightEnded") this.endTimer = 1.4;
         // the cookie the scene flies over from the pile lands on the counter
@@ -661,6 +670,12 @@ export class LevelScreen implements Screen {
       if (pile < this.last.pile && this.last.pile >= 0) this.bump(this.pilePill, "hit");
       this.last.pile = pile;
       this.pileFill.style.width = this.pileTrail.style.width = `${pile * 100}%`;
+    }
+    if (this.laneButtons.length) {
+      // a friend setting off under a lane's button: let it show through
+      const busy = this.laneButtons.map(() => false);
+      for (const u of st.units) if (u.s < 90 && !u.def.tags.includes("air")) busy[u.lane] = true;
+      this.laneButtons.forEach((b, i) => b.classList.toggle("see-through", busy[i]!));
     }
     const night = Math.min(1, st.tick / st.nightTicks);
     if (Math.abs(night - this.last.night) > 0.002) {
@@ -1032,6 +1047,28 @@ export class LevelScreen implements Screen {
     else results();
   }
 
+  /**
+   * Jimothy's advice after a night that ran out: the defense that turned back the most friends,
+   * and the friend who can get past it, or a path it can't reach.
+   */
+  private nightTip(): HTMLElement | null {
+    const st = this.session.st;
+    let worst = -1;
+    let most = 0;
+    for (const [i, n] of this.turnedBack) if (n > most) [worst, most] = [i, n];
+    if (worst < 0 || most < 2) return h("p.night-tip", null, t("night.tip.hold"));
+    const d = st.defenses[worst]!;
+    const defense = t(`defense.${d.def.id}`).toLowerCase();
+    const [spot] = SceneRenderer.weakSpots(st, worst);
+    if (spot) {
+      const unit = t(`unit.${spot.unit}`).toLowerCase();
+      return h("div.recruit.night-tip", null, portrait(spot.unit, 80, 60), h("p", null, t(`night.tip.${spot.how}`, { defense, unit })));
+    }
+    if (st.lanes.length > 1 && d.coverage.some((c) => c.length === 0))
+      return h("div.recruit.night-tip", null, portrait(d.def.id, 80, 60), h("p", null, t("night.tip.lane", { defense })));
+    return h("p.night-tip", null, t("night.tip.hold"));
+  }
+
   private showNightEnded() {
     const again = h("button.big.primary", { onclick: () => this.restart() }, t("night.again"));
     this.openOverlay(
@@ -1041,10 +1078,9 @@ export class LevelScreen implements Screen {
         null,
         portrait("jimothy-sleepy", 120, 90),
         h("h2", null, t("night.title")),
-        h("p", null, t("night.body")),
+        this.nightTip() ?? h("p", null, t("night.body")),
         this.newTreasures(),
-        again,
-        h("button.big", { onclick: () => this.app.showMap() }, t("night.map")),
+        h("div.row", null, again, h("button.big", { onclick: () => this.app.showMap() }, t("night.map"))),
       ),
       again,
     );

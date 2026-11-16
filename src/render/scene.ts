@@ -56,6 +56,10 @@ export class SceneRenderer {
   private focus = new Map<number, { ox: number; oy: number; aim: number }>();
   /** Per unit: where it's drawn along its lane, which eases after a broom sweeps it back. */
   private shownS = new Map<number, number>();
+  /** Each friend's sideways place on its path, eased (see spreadCrowds). */
+  private lateral = new Map<number, number>();
+  /** How strongly each defense's range is drawn: dimmed when it can't reach the chosen lane. */
+  private rangeFocus = new Map<number, number>();
   /** Per unit: wall time it was sent, for a little pop as it steps onto the lane. */
   private sentAt = new Map<number, number>();
   private clock = 0;
@@ -91,6 +95,8 @@ export class SceneRenderer {
     this.focus.clear();
     this.rangeFade.clear();
     this.shownS.clear();
+    this.lateral.clear();
+    this.rangeFocus.clear();
     this.sentAt.clear();
   }
 
@@ -109,7 +115,7 @@ export class SceneRenderer {
           for (const uid of e.targets) {
             const u = st.units.find((v) => v.uid === uid);
             if (!u) continue;
-            const [x, y] = this.unitPos(st, u.lane, u.prevS, u.jitter, u.def.tags.includes("air"));
+            const [x, y] = this.unitPos(st, u, u.prevS, u.def.tags.includes("air"));
             this.add({ kind: "swoosh", x, y: y - 30, life: 0.35, dir: x < d.pos[0] ? -1 : 1 });
           }
         }
@@ -142,7 +148,7 @@ export class SceneRenderer {
       } else if (e.type === "unitHit") {
         const u = st.units.find((v) => v.uid === e.uid);
         if (u && !this.reducedMotion) {
-          const [x, y] = this.unitPos(st, u.lane, u.s, u.jitter, u.def.tags.includes("air"));
+          const [x, y] = this.unitPos(st, u, u.s, u.def.tags.includes("air"));
           this.add({ kind: "startle", x, y: y - 40, life: 0.45 });
         }
       } else if (e.type === "levelWon") {
@@ -188,7 +194,7 @@ export class SceneRenderer {
     if (busy) {
       const u = st.units.find((v) => v.uid === d.distractUid);
       if (u) {
-        const [ux, uy] = this.unitPos(st, u.lane, u.s, u.jitter, u.def.tags.includes("air"));
+        const [ux, uy] = this.unitPos(st, u, u.s, u.def.tags.includes("air"));
         tx = ux - d.pos[0];
         ty = uy - d.pos[1];
         aim = Math.atan2(ty, tx);
@@ -287,7 +293,7 @@ export class SceneRenderer {
 
     // units, back to front
     this.clock = t;
-    const order = st.units.map((u) => {
+    const walking = st.units.map((u) => {
       let s = u.prevS + (u.s - u.prevS) * alpha;
       // A broom sweep moves a friend back a long way in one tick: slide it there with a hop
       // instead of letting it blink.
@@ -300,8 +306,11 @@ export class SceneRenderer {
         s = eased;
       }
       this.shownS.set(u.uid, s);
-      const air = u.def.tags.includes("air");
-      const [x, y] = this.unitPos(st, u.lane, s, u.jitter, false);
+      return { u, s, lift, air: u.def.tags.includes("air") };
+    });
+    this.spreadCrowds(walking, dt);
+    const order = walking.map(({ u, s, lift, air }) => {
+      const [x, y] = this.unitPos(st, u, s, false);
       const since = t - (this.sentAt.get(u.uid) ?? -1);
       const pop = since >= 0 && since < 0.3 && !this.reducedMotion ? 0.6 + 0.4 * Math.sin((since / 0.3) * Math.PI * 0.5) + 0.12 * Math.sin((since / 0.3) * Math.PI) : 1;
       return { u, x, y, air, lift, pop };
@@ -310,6 +319,7 @@ export class SceneRenderer {
       const live = new Set(st.units.map((u) => u.uid));
       for (const uid of this.shownS.keys()) if (!live.has(uid)) this.shownS.delete(uid);
       for (const uid of this.sentAt.keys()) if (!live.has(uid)) this.sentAt.delete(uid);
+      for (const uid of this.lateral.keys()) if (!live.has(uid)) this.lateral.delete(uid);
     }
     order.sort((a, b) => a.y - b.y);
     // soft contact shadows for everyone on the ground, in one fill (flyers get theirs below)
@@ -761,12 +771,55 @@ export class SceneRenderer {
     }
   }
 
-  unitPos(st: SimState, lane: number, s: number, jitter: number, air: boolean): Vec {
-    const l = st.lanes[lane]!;
+  unitPos(st: SimState, u: SimState["units"][number], s: number, air: boolean): Vec {
+    const l = st.lanes[u.lane]!;
     const [x, y] = pointAt(l, s, [0, 0]);
     const [dx, dy] = directionAt(l, s);
-    const off = jitter * LANE_WIDTH * 0.28;
+    const off = this.lateral.get(u.uid) ?? u.jitter * LANE_WIDTH * 0.28;
     return [x - dy * off, y + dx * off - (air ? FLY_HEIGHT : 0)];
+  }
+
+  /**
+   * Friends walking close together fan out across the path instead of piling onto one spot, so a
+   * crowd reads as a crowd. Cosmetic only: each friend has a resting sideways offset (its jitter)
+   * and is nudged away from anyone it would overlap, easing there so nobody jumps.
+   */
+  private spreadCrowds(items: { u: SimState["units"][number]; s: number; air: boolean }[], dt: number) {
+    const GAP = 46; // about one friend's width
+    const MAX = LANE_WIDTH * 0.4;
+    const groups = new Map<number, { uid: number; s: number; off: number }[]>();
+    for (const { u, s, air } of items) {
+      const key = u.lane * 2 + (air ? 1 : 0);
+      let g = groups.get(key);
+      if (!g) groups.set(key, (g = []));
+      g.push({ uid: u.uid, s, off: u.jitter * LANE_WIDTH * 0.28 });
+    }
+    const ease = dt > 0 && !this.reducedMotion ? 1 - Math.exp(-dt * 5) : 1;
+    for (const g of groups.values()) {
+      g.sort((a, b) => a.s - b.s);
+      for (let pass = 0; pass < 3; pass++) {
+        for (let i = 0; i < g.length; i++) {
+          const a = g[i]!;
+          for (let j = i + 1; j < g.length; j++) {
+            const b = g[j]!;
+            const ds = b.s - a.s;
+            if (ds >= GAP) break;
+            let dl = b.off - a.off;
+            if (dl === 0) dl = a.uid < b.uid ? 0.01 : -0.01;
+            const dist = Math.hypot(ds, dl);
+            if (dist >= GAP) continue;
+            // push sideways only: the sim decides who is ahead
+            const push = ((GAP - dist) / 2) * Math.sign(dl) * 0.6;
+            a.off = Math.max(-MAX, Math.min(MAX, a.off - push));
+            b.off = Math.max(-MAX, Math.min(MAX, b.off + push));
+          }
+        }
+      }
+      for (const { uid, off } of g) {
+        const was = this.lateral.get(uid);
+        this.lateral.set(uid, was === undefined ? off : was + (off - was) * ease);
+      }
+    }
   }
 
   /**
@@ -812,6 +865,13 @@ export class SceneRenderer {
       fade = d.disabled ? Math.max(0, fade - dt * 1.5) : 1;
       this.rangeFade.set(d.index, fade);
       if (fade <= 0) continue;
+      // With more than one lane, ranges that can't reach the lane you're sending down step back,
+      // so the ones that matter for your next friend stand out.
+      const lane = this.highlightLanes ? this.selectedLane : -1;
+      const want = lane < 0 || (d.coverage[lane]?.length ?? 0) > 0 ? 1 : 0.3;
+      const was = this.rangeFocus.get(d.index);
+      const focus = was === undefined || dt === 0 ? want : was + (want - was) * (1 - Math.exp(-dt * 8));
+      this.rangeFocus.set(d.index, focus);
       const since = (st.tick + alpha - d.lastFiredTick) / TICK_RATE;
       const flash = d.lastFiredTick > 0 && since >= 0 && since < 0.5 ? 1 - since / 0.5 : 0;
       const busy = d.distractTicks > 0;
@@ -820,7 +880,7 @@ export class SceneRenderer {
       const half = shape.kind === "cone" ? (shape.arcDeg * Math.PI) / 360 : 0;
       ctx.save();
       ctx.translate(d.pos[0], d.pos[1]);
-      ctx.globalAlpha = fade;
+      ctx.globalAlpha = fade * focus;
       ctx.beginPath();
       if (shape.kind === "radius") ctx.arc(0, 0, shape.r, 0, Math.PI * 2);
       else {
@@ -919,7 +979,7 @@ export class SceneRenderer {
       if (!u) continue;
       const total = Math.round(d.def.effect.windup * TICK_RATE);
       const k = 1 - Math.max(0, d.windupTicks - alpha) / total;
-      const [x, y] = this.unitPos(st, u.lane, u.prevS + (u.s - u.prevS) * alpha, u.jitter, false);
+      const [x, y] = this.unitPos(st, u, u.prevS + (u.s - u.prevS) * alpha, false);
       const pulse = this.reducedMotion ? 1 : 1 + Math.sin(t * 20) * 0.06;
       ctx.save();
       ctx.translate(x, y + 8);

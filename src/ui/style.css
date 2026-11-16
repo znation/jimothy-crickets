@@ -297,6 +297,11 @@ button:focus-visible,
   font-weight: 700;
 }
 
+.recruit.night-tip {
+  max-width: 420px;
+  text-align: left;
+}
+
 /* ---------------------------------------------------------------- title and map */
 
 .title {
@@ -902,6 +907,11 @@ button:focus-visible,
   font-size: 26px;
   font-weight: 700;
   box-shadow: 0 4px 0 var(--ink);
+  transition: opacity 0.2s, scale 0.15s;
+}
+
+.lane-btn.see-through:not(:hover, :focus-visible) {
+  opacity: 0.4;
 }
 
 .lane-btn .arrow {
@@ -1060,8 +1070,12 @@ button:focus-visible,
     font-size: 26px;
   }
   /* no room for Jimothy on the results card: he's celebrating behind it anyway */
-  .results > .portrait:first-child {
+  .results > .portrait:first-child,
+  .night-card > .portrait:first-child {
     display: none;
+  }
+  .night-tip {
+    font-size: 15px;
   }
   .settings .col {
     gap: 2px;
