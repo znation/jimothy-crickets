@@ -733,6 +733,17 @@ button:focus-visible,
   gap: 10px;
 }
 
+.night.late .night-arc {
+  animation: late-night 1.1s ease-in-out infinite;
+}
+
+@keyframes late-night {
+  50% {
+    filter: drop-shadow(0 0 8px #ffc65c) brightness(1.15);
+    transform: scale(1.08);
+  }
+}
+
 .night .night-arc {
   width: 96px;
   height: 52px;

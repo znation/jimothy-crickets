@@ -656,6 +656,8 @@ export class LevelScreen implements Screen {
       const a = Math.PI * (1 - night);
       this.nightMoon.setAttribute("cx", String(60 + Math.cos(a) * 52));
       this.nightMoon.setAttribute("cy", String(58 - Math.sin(a) * 52));
+      // nearly sunrise: the dial glows so the last stretch of the night is hard to miss
+      this.nightMoon.closest(".night")?.classList.toggle("late", night > 0.85 && !st.outcome);
     }
     for (const [u, card] of this.cards) {
       const def = st.content.units[u];

@@ -31,7 +31,7 @@ const LOVE = "#ff7fae";
 const CHASE_REACH = 170;
 
 interface Effect {
-  kind: "hop" | "text" | "startle" | "dust" | "confetti" | "heart" | "snack";
+  kind: "hop" | "text" | "startle" | "dust" | "confetti" | "heart" | "snack" | "swoosh" | "splash";
   x: number;
   y: number;
   age: number;
@@ -54,6 +54,11 @@ export class SceneRenderer {
   private sprites = new UnitSprites();
   /** Per defense: where a chasing dog has run to (offset from its spot) and where a light points. */
   private focus = new Map<number, { ox: number; oy: number; aim: number }>();
+  /** Per unit: where it's drawn along its lane, which eases after a broom sweeps it back. */
+  private shownS = new Map<number, number>();
+  /** Per unit: wall time it was sent, for a little pop as it steps onto the lane. */
+  private sentAt = new Map<number, number>();
+  private clock = 0;
   /** Where the HUD's snack counter is, in world units, so delivered cookies can fly to it. */
   snackTarget: (() => Vec | null) | null = null;
   /** Painted sprites from tools/build_atlas.ts; null means the vector placeholders. */
@@ -80,12 +85,30 @@ export class SceneRenderer {
     this.cheer = 0;
     this.focus.clear();
     this.rangeFade.clear();
+    this.shownS.clear();
+    this.sentAt.clear();
   }
 
   /** Turn sim events into presentation effects. */
   onEvents(st: SimState, events: SimEvent[]) {
     for (const e of events) {
-      if (e.type === "unitShooed") {
+      if (e.type === "unitSent") {
+        const [x, y] = pointAt(st.lanes[e.lane]!, 0, this.tmp);
+        this.sentAt.set(e.uid, this.clock);
+        this.add({ kind: "dust", x, y: y + 16, life: 0.4 });
+      } else if (e.type === "defenseFired") {
+        const d = st.defenses[e.index]!;
+        if (d.def.id === "sprinkler" && !this.reducedMotion) {
+          this.add({ kind: "splash", x: d.pos[0], y: d.pos[1], life: 0.7, dir: d.def.shape.r });
+        } else if (d.def.effect.pushback) {
+          for (const uid of e.targets) {
+            const u = st.units.find((v) => v.uid === uid);
+            if (!u) continue;
+            const [x, y] = this.unitPos(st, u.lane, u.prevS, u.jitter, u.def.tags.includes("air"));
+            this.add({ kind: "swoosh", x, y: y - 30, life: 0.35, dir: x < d.pos[0] ? -1 : 1 });
+          }
+        }
+      } else if (e.type === "unitShooed") {
         const [x, y] = pointAt(st.lanes[e.lane]!, e.s, this.tmp);
         this.add({ kind: "hop", x, y, life: 0.9, unit: e.unit, dir: e.uid % 2 ? 1 : -1 });
       } else if (e.type === "pileHit") {
@@ -258,12 +281,31 @@ export class SceneRenderer {
     this.drawChain(st, alpha);
 
     // units, back to front
+    this.clock = t;
     const order = st.units.map((u) => {
-      const s = u.prevS + (u.s - u.prevS) * alpha;
+      let s = u.prevS + (u.s - u.prevS) * alpha;
+      // A broom sweep moves a friend back a long way in one tick: slide it there with a hop
+      // instead of letting it blink.
+      const shown = this.shownS.get(u.uid);
+      let lift = 0;
+      if (shown !== undefined && shown - s > 30 && !this.reducedMotion) {
+        const gap = shown - s;
+        const eased = s + gap * Math.exp(-dt * 14);
+        lift = Math.sin(Math.min(1, (eased - s) / 160) * Math.PI) * 40;
+        s = eased;
+      }
+      this.shownS.set(u.uid, s);
       const air = u.def.tags.includes("air");
       const [x, y] = this.unitPos(st, u.lane, s, u.jitter, false);
-      return { u, x, y, air };
+      const since = t - (this.sentAt.get(u.uid) ?? -1);
+      const pop = since >= 0 && since < 0.3 && !this.reducedMotion ? 0.6 + 0.4 * Math.sin((since / 0.3) * Math.PI * 0.5) + 0.12 * Math.sin((since / 0.3) * Math.PI) : 1;
+      return { u, x, y, air, lift, pop };
     });
+    if (this.shownS.size > st.units.length + 50) {
+      const live = new Set(st.units.map((u) => u.uid));
+      for (const uid of this.shownS.keys()) if (!live.has(uid)) this.shownS.delete(uid);
+      for (const uid of this.sentAt.keys()) if (!live.has(uid)) this.sentAt.delete(uid);
+    }
     order.sort((a, b) => a.y - b.y);
     // soft contact shadows for everyone on the ground, in one fill (flyers get theirs below)
     const shadows = new Path2D();
@@ -277,7 +319,7 @@ export class SceneRenderer {
     ctx.fillStyle = SHADOW;
     ctx.fill(shadows);
     const drops = new Path2D();
-    for (const { u, x, y, air } of order) {
+    for (const { u, x, y, air, lift, pop } of order) {
       ctx.save();
       if (air) {
         ctx.beginPath();
@@ -285,7 +327,8 @@ export class SceneRenderer {
         ctx.fillStyle = SHADOW;
         ctx.fill();
       }
-      ctx.translate(x, y - (air ? FLY_HEIGHT : 0));
+      ctx.translate(x, y - (air ? FLY_HEIGHT : 0) - lift);
+      if (pop !== 1) ctx.scale(pop, pop);
       const moving = u.stunTicks === 0 && u.flopTicks === 0 && u.chewing < 0;
       const art = this.atlas?.frames[u.def.id];
       if (art) this.drawUnitArt(u.def.id, art, moving ? simT : 0, u.uid * 1.7, u.flopTicks > 0, u.chewing >= 0);
@@ -350,6 +393,33 @@ export class SceneRenderer {
 
     this.drawFireflies(t);
     this.drawEffects(t, dt);
+    this.drawDawn(st, alpha);
+  }
+
+  /**
+   * The night running out, felt in the scene and not just the moon dial: over its last third
+   * the sky behind the houses warms toward sunrise and a peach wash creeps over the yard.
+   */
+  private drawDawn(st: SimState, alpha: number) {
+    const night = Math.min(1, (st.tick + alpha) / st.nightTicks);
+    const k = st.outcome?.kind === "won" ? 0 : Math.max(0, (night - 0.65) / 0.35);
+    if (k <= 0) return;
+    const { ctx } = this.view;
+    const vis = this.view.visibleWorld();
+    const horizon = horizonFor(st.level);
+    ctx.save();
+    // one smooth wash: faint up in the night sky, warmest along the rooftops, settling over the yard
+    const span = vis.y1 - vis.y0;
+    const at = (y: number) => Math.min(1, Math.max(0, (y - vis.y0) / span));
+    const wash = ctx.createLinearGradient(0, vis.y0, 0, vis.y1);
+    wash.addColorStop(0, `rgba(255, 150, 130, ${0.06 * k})`);
+    wash.addColorStop(at(horizon - 60), `rgba(255, 180, 130, ${0.26 * k})`);
+    wash.addColorStop(at(horizon + 40), `rgba(255, 205, 150, ${0.24 * k})`);
+    wash.addColorStop(at(horizon + 400), `rgba(255, 200, 160, ${0.1 * k})`);
+    wash.addColorStop(1, `rgba(255, 200, 160, ${0.08 * k})`);
+    ctx.fillStyle = wash;
+    ctx.fillRect(vis.x0, vis.y0, vis.x1 - vis.x0, span);
+    ctx.restore();
   }
 
   /**
@@ -861,6 +931,38 @@ export class SceneRenderer {
           ctx.lineWidth = 5;
           ctx.strokeStyle = INK;
           ctx.stroke();
+        }
+      } else if (e.kind === "swoosh") {
+        // the broom's sweep: a white crescent past the friend it sends back
+        const sweep = k * 1.6 - 0.3;
+        ctx.translate(e.x, e.y);
+        ctx.scale(e.dir!, 1);
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.arc(-20, 0, 56, -1.9 + sweep, -0.6 + sweep);
+        ctx.lineWidth = 12 * (1 - k) + 2;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(-20, 0, 40, -1.7 + sweep, -0.8 + sweep);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.stroke();
+      } else if (e.kind === "splash") {
+        // the sprinkler's burst: a ring of water rolling out to the edge of its reach
+        const r = e.dir! * (0.15 + 0.85 * (1 - (1 - k) * (1 - k)));
+        ctx.globalAlpha = 0.7 * (1 - k);
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, r, 0, Math.PI * 2);
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = "#8fd3ff";
+        ctx.stroke();
+        ctx.fillStyle = "#cdeeff";
+        for (let i = 0; i < 16; i++) {
+          const a = (i / 16) * Math.PI * 2 + 0.2;
+          ctx.beginPath();
+          ctx.arc(e.x + Math.cos(a) * (r - 14), e.y + Math.sin(a) * (r - 14) - Math.sin(k * Math.PI) * 18, 5, 0, Math.PI * 2);
+          ctx.fill();
         }
       } else if (e.kind === "startle") {
         // drawn once and blitted: text rendering per mark is slow in WebKit during big swarms
