@@ -8,10 +8,12 @@ import type { LevelSession } from "../play.ts";
 import { GoalTracker } from "../sim/goals.ts";
 import { catalog, foundTreasures, type TreasureEntry } from "../stash.ts";
 import { closestS } from "../sim/lane.ts";
+import type { SimState } from "../sim/sim.ts";
 import { UNIT_IDS, type DefenseId, type UnitId } from "../sim/types.ts";
 import { h, svg } from "./dom.ts";
 import { acornIcon, calendarIcon, cogIcon, handIcon, moonIcon, pauseIcon, pileIcon, snackIcon } from "./icons.ts";
 import { canDrawStory, drawStory, storyForArea, type StoryId } from "../render/story.ts";
+import { SceneRenderer } from "../render/scene.ts";
 import { hasPainted, paintedAtlas, paintedIcon, portrait } from "./portrait.ts";
 import { t } from "./strings.ts";
 import { goalPicture, goalText, heartIcon, treasureIcon } from "./treasure-art.ts";
@@ -547,6 +549,8 @@ export class LevelScreen implements Screen {
     );
 
     this.app.view.canvas.onpointerdown = (e) => this.tapField(e);
+    this.app.view.canvas.onpointermove = (e) => this.hoverField(e);
+    this.app.view.canvas.onpointerleave = () => this.hoverField(null);
     app.scene.snackTarget = () => {
       const icon = this.snacksPill.querySelector(".icon") ?? this.snacksPill;
       if (!icon.isConnected) return null;
@@ -572,10 +576,15 @@ export class LevelScreen implements Screen {
     const area = campaign.areas.find((a) => a.levels[0] === session.level.id);
     const story = area && !app.save.data.levels[session.level.id]?.cleared ? storyForArea(area.id) : null;
     const intro = () => (session.level.intro ? this.showIntro() : this.closeIntro());
-    if (opts.skipIntro || session.replaying) this.maybeTutorial();
-    else if (story) this.showStory(story, intro);
+    if (opts.skipIntro || session.replaying) {
+      this.maybeTutorial();
+      if (!this.tutorial) this.hintPeek();
+    } else if (story) this.showStory(story, intro);
     else if (session.level.intro) this.showIntro();
-    else this.maybeTutorial();
+    else {
+      this.maybeTutorial();
+      if (!this.tutorial) this.hintPeek();
+    }
   }
 
   focus() {
@@ -584,6 +593,9 @@ export class LevelScreen implements Screen {
 
   dispose() {
     this.app.view.canvas.onpointerdown = null;
+    this.app.view.canvas.onpointermove = null;
+    this.app.view.canvas.onpointerleave = null;
+    this.app.scene.peek = null;
     this.app.scene.snackTarget = null;
   }
 
@@ -724,10 +736,56 @@ export class LevelScreen implements Screen {
     el.classList.add("nudge");
   }
 
+  /** Hovering a defense with a mouse peeks at its weak spots for as long as the mouse stays. */
+  private hoverField(e: PointerEvent | null) {
+    const scene = this.app.scene;
+    if (e && e.pointerType !== "mouse") return;
+    const i = e && !this.overlay ? scene.defenseAt(this.session.st, this.app.view.toWorld(e.clientX, e.clientY)) : -1;
+    if (i >= 0 && (scene.peek?.index !== i || scene.peek.until !== Infinity)) {
+      scene.peek = { index: i, since: performance.now() / 1000, until: Infinity };
+      this.notePeeked();
+      this.app.wake();
+    } else if (i < 0 && scene.peek?.until === Infinity) scene.peek = null;
+  }
+
+  private notePeeked() {
+    const save = this.app.save;
+    if (save.data.peeked) return;
+    save.data.peeked = true;
+    void save.store();
+  }
+
+  /**
+   * Until the player has asked a defense about itself, each level starts by showing one bubble,
+   * a moment in, over the first defense that has a weak spot this troupe can use.
+   */
+  private hintPeek() {
+    const st = this.session.st;
+    if (this.app.save.data.peeked || this.session.replaying || this.app.stillTick !== null) return;
+    const d = st.defenses.find((x) => SceneRenderer.weakSpots(st, x.index).length > 0);
+    if (!d) return;
+    const now = performance.now() / 1000;
+    this.app.scene.peek = { index: d.index, since: now + 1.2, until: now + 5 };
+  }
+
   private tapField(e: PointerEvent) {
     const st = this.session.st;
-    if (st.lanes.length < 2 || this.overlay) return;
+    if (this.overlay) return;
     const p = this.app.view.toWorld(e.clientX, e.clientY);
+    // a tap on a defense asks about it rather than picking a lane
+    const d = this.app.scene.defenseAt(st, p);
+    if (d >= 0) {
+      const now = performance.now() / 1000;
+      const scene = this.app.scene;
+      if (e.pointerType !== "mouse") {
+        const same = scene.peek?.index === d && scene.peek.since <= now;
+        scene.peek = { index: d, since: same ? scene.peek!.since : now, until: now + 2.6 };
+      }
+      this.notePeeked();
+      this.app.wake();
+      return;
+    }
+    if (st.lanes.length < 2) return;
     let best = -1;
     let bestDist = 160;
     st.lanes.forEach((lane, i) => {
@@ -870,6 +928,7 @@ export class LevelScreen implements Screen {
     this.closeOverlay();
     this.session.frozen = false;
     this.maybeTutorial();
+    if (!this.tutorial) this.hintPeek();
     this.focus();
     this.app.wake();
   }
@@ -956,6 +1015,7 @@ export class LevelScreen implements Screen {
           portrait("jimothy-happy", 120, 90),
           h("h2", null, t("results.title")),
           moons(earned, "moons large"),
+          this.daily ? null : moonDial(st),
           acorns > 0 ? h("p.acorns-won", null, paintedIcon("acorn", acornIcon), t("results.acorns", { n: acorns })) : null,
           this.newTreasures(),
           recruit
@@ -989,6 +1049,29 @@ export class LevelScreen implements Screen {
       again,
     );
   }
+}
+
+/**
+ * The night as an arc, like the HUD's, split where each moon is won: gold for three, pale for two,
+ * faint for one. A raccoon-grey dot marks when the pile fell, so a two-moon win shows how much
+ * sooner the third needed.
+ */
+function moonDial(st: SimState): SVGSVGElement {
+  const night = st.level.nightLength;
+  const at = (f: number) => {
+    const a = Math.PI * (1 - Math.min(1, Math.max(0, f)));
+    return `${(60 + Math.cos(a) * 52).toFixed(1)} ${(58 - Math.sin(a) * 52).toFixed(1)}`;
+  };
+  const seg = (f0: number, f1: number, colour: string, width: number) =>
+    f1 > f0 ? `<path d="M${at(f0)}A52 52 0 0 1 ${at(f1)}" fill="none" stroke="${colour}" stroke-width="${width}" stroke-linecap="round"/>` : "";
+  const f3 = 1 - st.level.moons[2] / night;
+  const f2 = 1 - st.level.moons[1] / night;
+  const done = st.outcome!.tick / st.nightTicks;
+  const tick = (f: number) => `<circle cx="${at(f).split(" ")[0]}" cy="${at(f).split(" ")[1]}" r="4" fill="#2a2233"/>`;
+  return svg(
+    `<svg viewBox="-4 -4 128 70" role="img" aria-label="Finished at ${Math.round(done * 100)}% of the night"><path d="M8 58a52 52 0 0 1 104 0" fill="none" stroke="#2a2233" stroke-width="13" stroke-linecap="round"/>${seg(0, f3, "#ffc65c", 7)}${seg(f3, f2, "#f3dfae", 7)}${seg(f2, 1, "#d6cfc2", 7)}${tick(f3)}${tick(f2)}<circle cx="${at(done).split(" ")[0]}" cy="${at(done).split(" ")[1]}" r="9" fill="#fff6e6" stroke="#2a2233" stroke-width="4"/><circle cx="${at(done).split(" ")[0]}" cy="${at(done).split(" ")[1]}" r="3.5" fill="#2a2233"/></svg>`,
+    "moon-dial",
+  );
 }
 
 /** Defenses and friends that appear for the first time in this level, in campaign order. */

@@ -70,6 +70,11 @@ export class SceneRenderer {
   }
   reducedMotion = false;
   selectedLane = -1;
+  /**
+   * A defense the player is asking about (tapped, or under the mouse): a thought bubble over it
+   * shows which friends get the better of it. `until` is wall time in s; Infinity while hovered.
+   */
+  peek: { index: number; since: number; until: number } | null = null;
   highlightLanes = false;
 
   private view: View;
@@ -394,6 +399,159 @@ export class SceneRenderer {
     this.drawFireflies(t);
     this.drawEffects(t, dt);
     this.drawDawn(st, alpha);
+    this.drawPeek(st, t);
+  }
+
+  /** The defense nearest a world point, if the point is on (or just around) its picture. */
+  defenseAt(st: SimState, p: Vec): number {
+    let best = -1;
+    let bestD = Infinity;
+    for (const d of st.defenses) {
+      if (d.disabled) continue;
+      const art = this.atlas?.frames[d.def.id];
+      const h = art ? frameHeight(art) : 100;
+      const w = art ? art.w / art.scale : 100;
+      // the picture is centred on its position; allow a little slack for fingers
+      const dx = Math.abs(p[0] - d.pos[0]) - w / 2;
+      const dy = Math.abs(p[1] - d.pos[1]) - h / 2;
+      const dist = Math.max(dx, dy);
+      if (dist < 24 && dist < bestD) [best, bestD] = [d.index, dist];
+    }
+    return best;
+  }
+
+  /** Which of this level's friends get past a defense, and how. */
+  static weakSpots(st: SimState, index: number): { unit: UnitId; how: "love" | "chew" | "over" }[] {
+    const d = st.defenses[index]!.def;
+    const out: { unit: UnitId; how: "love" | "chew" | "over" }[] = [];
+    const fav = d.distractedBy?.unit;
+    if (fav && st.available.includes(fav)) out.push({ unit: fav, how: "love" });
+    if (st.available.includes("rat") && (d.chewHp || d.effect.blocks)) out.push({ unit: "rat", how: "chew" });
+    if (st.available.includes("crow") && !d.targets.includes("air")) out.push({ unit: "crow", how: "over" });
+    return out;
+  }
+
+  private drawPeek(st: SimState, t: number) {
+    const peek = this.peek;
+    if (!peek) return;
+    const d = st.defenses[peek.index];
+    if (!d || d.disabled || t > peek.until) {
+      this.peek = null;
+      return;
+    }
+    if (t < peek.since) return; // a hint that hasn't started yet
+    const hints = SceneRenderer.weakSpots(st, peek.index);
+    if (!hints.length) return;
+    const { ctx } = this.view;
+    const art = this.atlas?.frames[d.def.id];
+    const top = d.pos[1] - (art ? frameHeight(art) / 2 : 60) - 26;
+    const slot = 92;
+    const w = hints.length * slot + 20;
+    const h = 104;
+    // keep the bubble on the page
+    const vis = this.view.visibleWorld();
+    const cx = Math.min(vis.x1 - w / 2 - 12, Math.max(vis.x0 + w / 2 + 12, d.pos[0]));
+    const above = top - h - 24 > vis.y0 + 90; // clear of the HUD, or else it goes below
+    const by = above ? top - h - 24 : d.pos[1] + (art ? frameHeight(art) / 2 : 60) + 30;
+    const age = t - peek.since;
+    const fadeOut = peek.until === Infinity ? 1 : Math.min(1, (peek.until - t) / 0.25);
+    const pop = this.reducedMotion ? 1 : Math.min(1, 0.7 + age * 4) + Math.max(0, Math.sin(Math.min(1, age * 4) * Math.PI)) * 0.06;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, fadeOut);
+    ctx.translate(cx, by + (above ? h : 0));
+    ctx.scale(pop, pop);
+    ctx.translate(-cx, -(by + (above ? h : 0)));
+    // the bubble, with three little thought dots trailing down to the defense
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = INK;
+    ctx.fillStyle = "#fff6e6";
+    const dots = above
+      ? [[d.pos[0] + 6, top + 6, 7], [d.pos[0] + 12, top - 10, 10]]
+      : [[d.pos[0] + 6, by - 24, 7], [d.pos[0] + 12, by - 10, 10]];
+    for (const [x, y, r] of dots) {
+      ctx.beginPath();
+      ctx.arc(x!, y!, r!, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.roundRect(cx - w / 2, by, w, h, 40);
+    ctx.fill();
+    ctx.stroke();
+    hints.forEach(({ unit, how }, i) => {
+      const x = cx - w / 2 + 10 + slot * i + slot / 2;
+      const y = by + h / 2;
+      const f = this.atlas?.frames[unit];
+      ctx.save();
+      ctx.translate(x - 6, y);
+      if (f) {
+        const k = Math.min(70 / (f.w / f.scale), 70 / frameHeight(f));
+        ctx.translate(0, (frameHeight(f) * k) / 2);
+        drawFrame(ctx, f, k, k);
+      } else {
+        ctx.translate(0, 18);
+        this.sprites.draw(ctx, this.view.scale * this.view.dpr, 1, unit, 0, 0, {});
+      }
+      ctx.restore();
+      this.drawHow(how, x + 26, y + 22);
+    });
+    ctx.restore();
+  }
+
+  /** A small round badge: ♥ can't resist it, teeth chews through it, a swoop flies over it. */
+  private drawHow(how: "love" | "chew" | "over", x: number, y: number) {
+    const { ctx } = this.view;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.beginPath();
+    ctx.arc(0, 0, 17, 0, Math.PI * 2);
+    ctx.fillStyle = how === "love" ? LOVE : how === "chew" ? "#ff8f5a" : "#8fd3ff";
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = INK;
+    ctx.stroke();
+    ctx.fillStyle = "#fff6e6";
+    ctx.lineWidth = 3;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    if (how === "love") {
+      ctx.scale(0.42, 0.42);
+      ctx.translate(0, 2);
+      heartPath(ctx);
+      ctx.fill();
+    } else if (how === "chew") {
+      // a chomp: two rows of teeth meeting
+      ctx.beginPath();
+      ctx.moveTo(-11, -8);
+      ctx.lineTo(11, -8);
+      for (let i = 2; i >= 0; i--) {
+        ctx.lineTo(-11 + (i + 1) * (22 / 3), -8);
+        ctx.lineTo(-11 + (i + 0.5) * (22 / 3), 1);
+      }
+      ctx.lineTo(-11, -8);
+      ctx.moveTo(-11, 9);
+      for (let i = 0; i < 3; i++) {
+        ctx.lineTo(-11 + i * (22 / 3), 9);
+        ctx.lineTo(-11 + (i + 0.5) * (22 / 3), 2);
+      }
+      ctx.lineTo(11, 9);
+      ctx.closePath();
+      ctx.fill();
+    } else {
+      // up and over
+      ctx.beginPath();
+      ctx.moveTo(-9, 7);
+      ctx.quadraticCurveTo(0, -14, 9, 7);
+      ctx.strokeStyle = "#fff6e6";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(4, 4);
+      ctx.lineTo(10, 9);
+      ctx.lineTo(12, 1);
+      ctx.stroke();
+    }
+    ctx.restore();
   }
 
   /**

@@ -733,6 +733,13 @@ button:focus-visible,
   gap: 10px;
 }
 
+.moon-dial {
+  display: block;
+  width: 132px;
+  height: 72px;
+  margin: -4px auto 4px;
+}
+
 .night.late .night-arc {
   animation: late-night 1.1s ease-in-out infinite;
 }

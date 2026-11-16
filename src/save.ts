@@ -28,6 +28,8 @@ export interface SaveData {
   daily: Record<string, number>;
   /** Today's surprise yard, worked out once and kept for the day. */
   dailyPlan: DailyPlan | null;
+  /** The player has asked a defense about its weak spots; until then, levels show one by themselves. */
+  peeked: boolean;
   settings: Settings;
 }
 
@@ -41,6 +43,7 @@ export function freshSave(): SaveData {
     treasures: [],
     daily: {},
     dailyPlan: null,
+    peeked: false,
     settings: { music: 0.7, sfx: 1, reducedMotion: false, largeText: false, speed: 1 },
   };
 }
