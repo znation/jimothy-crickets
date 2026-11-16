@@ -120,11 +120,13 @@ export class MapScreen implements Screen {
   private render() {
     const save = this.app.save.data;
     const area = campaign.areas[this.area]!;
+    this.app.backdrop(area.levels[0]!);
+    const next = levelOrder.find((id) => this.unlocked(id) && !save.levels[id]?.cleared);
     const nodes = area.levels.map((id) => {
       const open = this.unlocked(id);
       const best = save.levels[id]?.moons ?? 0;
       return h(
-        "button.level-node",
+        id === next ? "button.level-node.next" : "button.level-node",
         {
           disabled: !open,
           onclick: () => this.app.playLevel(id),
@@ -429,6 +431,9 @@ export class LevelScreen implements Screen {
   private last = { snacks: -1, pile: -1, night: -1 };
   private keysHeld = new Set<string>();
   private laneButtons: HTMLButtonElement[] = [];
+  private cardTip = h("div.card-tip", { role: "tooltip" });
+  private cardTipTimer = 0;
+  private keyAt = -Infinity;
   private laneLayout = -1;
   /** The surprise yard being played, or null for a campaign level. */
   private daily: DailyPlan | null;
@@ -492,7 +497,7 @@ export class LevelScreen implements Screen {
       const def = st.content.units[u];
       const card = h(
         "button.unit-card",
-        { "aria-label": `${t(`unit.${u}`)}, ${def.cost} snacks`, "data-unit": u },
+        { "aria-label": `${t(`unit.${u}`)}, ${def.cost} snacks. ${t(`about.${u}`)}`, "data-unit": u },
         portrait(u, 84, 60),
         h("span.cost", null, paintedIcon("snack", snackIcon), String(def.cost)),
         h("span.key", null, String(i + 1)),
@@ -513,9 +518,18 @@ export class LevelScreen implements Screen {
       });
       card.addEventListener("keyup", (e) => (e.key === "Enter" || e.key === " ") && this.release(u));
       card.addEventListener("contextmenu", (e) => e.preventDefault());
+      // what this friend is good at: on hover with a mouse, or keyboard focus
+      card.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && this.showCardTip(u));
+      card.addEventListener("pointerleave", (e) => e.pointerType === "mouse" && this.hideCardTip(u));
+      // (only when moved there by keys or a gamepad, not when the level puts focus on the first card)
+      card.addEventListener("focus", () =>
+        setTimeout(() => performance.now() - this.keyAt < 400 && document.activeElement === card && this.showCardTip(u)),
+      );
+      card.addEventListener("blur", () => this.hideCardTip(u));
       this.cards.set(u, card);
       bar.append(card);
     });
+    bar.append(this.cardTip);
 
     // the level's treasure goal, as a picture in the HUD, until its treasure is found
     const lt = this.daily ? undefined : treasures.levels[session.level.id];
@@ -605,6 +619,7 @@ export class LevelScreen implements Screen {
     this.app.view.canvas.onpointermove = null;
     this.app.view.canvas.onpointerleave = null;
     this.app.scene.peek = null;
+    clearTimeout(this.cardTipTimer);
     this.app.scene.snackTarget = null;
   }
 
@@ -707,6 +722,7 @@ export class LevelScreen implements Screen {
   }
 
   onKey(e: KeyboardEvent, down: boolean) {
+    if (down) this.keyAt = performance.now();
     if (e.key === "Escape" && down) {
       if (this.overlay?.dataset.kind === "pause") this.resume();
       else if (!this.overlay) this.pause();
@@ -729,9 +745,34 @@ export class LevelScreen implements Screen {
     if (this.overlay || this.session.replaying) return;
     const reason = this.session.send(u);
     this.session.holding = u;
+    // the first time a friend is ever sent, their card says what they're good at
+    const met = this.app.save.data.metFriends;
+    if (!reason && !met.includes(u) && this.app.stillTick === null) {
+      met.push(u);
+      void this.app.save.store();
+      this.showCardTip(u, 3.5);
+    }
     if (reason === "snacks") this.nudge(this.cards.get(u)!);
     if (this.tutorialStep === 1 && !reason) this.session.frozen = false;
     this.app.wake();
+  }
+
+  /** A speech bubble over a friend's card saying what they're good at. */
+  private showCardTip(u: UnitId, secs = 0) {
+    const card = this.cards.get(u);
+    if (!card || this.overlay) return;
+    this.cardTip.replaceChildren(h("strong", null, t(`unit.${u}`)), " ", t(`about.${u}`));
+    this.cardTip.style.left = `${card.offsetLeft + card.offsetWidth / 2}px`;
+    this.cardTip.dataset.tipFor = u;
+    this.cardTip.classList.add("on");
+    clearTimeout(this.cardTipTimer);
+    if (secs) this.cardTipTimer = window.setTimeout(() => this.hideCardTip(u), secs * 1000);
+  }
+
+  private hideCardTip(u?: UnitId) {
+    if (u && this.cardTip.dataset.tipFor !== u) return;
+    clearTimeout(this.cardTipTimer);
+    this.cardTip.classList.remove("on");
   }
 
   private release(u: UnitId) {
@@ -858,6 +899,7 @@ export class LevelScreen implements Screen {
   // ---- overlays
 
   private openOverlay(kind: string, card: HTMLElement, focus: HTMLElement | null) {
+    this.hideCardTip();
     this.closeOverlay();
     this.session.frozen = true;
     this.session.holding = null;

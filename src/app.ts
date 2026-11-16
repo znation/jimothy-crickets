@@ -26,6 +26,8 @@ export class App {
   screen: Screen | null = null;
   private attract: LevelSession | null = null;
   private attractRestart = 0;
+  /** The level playing itself behind the title and map: the first level of the area on show. */
+  private backdropLevel = levels[0]!.id;
   private raf = 0;
   private last = 0;
   private debug: DebugOverlay | null = null;
@@ -94,6 +96,15 @@ export class App {
     this.screen = screen;
     this.ui.replaceChildren(screen.el);
     screen.focus?.();
+    this.wake();
+  }
+
+  /** Play another level behind the menus (the map shows the area you're looking at). */
+  backdrop(levelId: string) {
+    if (levelId === this.backdropLevel || !levelById(levelId)) return;
+    this.backdropLevel = levelId;
+    this.attract = null;
+    this.scene.clearEffects();
     this.wake();
   }
 
@@ -248,7 +259,7 @@ export class App {
     }
     if (!this.attract) {
       this.attractRestart = 0;
-      const level = levels[0]!;
+      const level = levelById(this.backdropLevel)!;
       this.attract = new LevelSession(level, { seed: 1, autoplay: bot({ burst: 30 }) });
       this.attract.onEvents((events) => this.scene.onEvents(this.attract!.st, events));
     }

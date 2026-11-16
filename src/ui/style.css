@@ -612,6 +612,7 @@ button:focus-visible,
   justify-content: center;
   gap: clamp(10px, 2vw, 24px);
   position: relative;
+  isolation: isolate;
 }
 
 .level-node {
@@ -633,6 +634,43 @@ button:focus-visible,
   background: #9a96a8;
   cursor: default;
   opacity: 0.8;
+}
+
+/* empty moons on a paper button need ink, not the pale outline used on the dark field */
+.level-node .moon path[fill="none"] {
+  stroke: rgba(42, 34, 51, 0.32);
+}
+
+/* the next level to play glows gently, so it's clear where to go */
+.level-node.next:not(:disabled) {
+  animation: next-level 1.8s ease-in-out infinite;
+}
+
+@keyframes next-level {
+  50% {
+    box-shadow:
+      0 6px 0 var(--ink),
+      0 0 0 8px rgba(255, 224, 138, 0.55);
+  }
+}
+
+/* still frames (screenshots) show the glow at its brightest rather than mid-pulse */
+[data-still] .level-node.next:not(:disabled) {
+  animation: none;
+  box-shadow:
+    0 6px 0 var(--ink),
+    0 0 0 8px rgba(255, 224, 138, 0.55);
+}
+
+/* a dotted trail from one level to the next */
+.path::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  z-index: -1;
+  border-top: 8px dotted rgba(255, 246, 230, 0.55);
 }
 
 .level-node .level-id {
@@ -773,6 +811,50 @@ button:focus-visible,
   transform: translateX(-50%);
   display: flex;
   gap: 12px;
+}
+
+/* what a friend is good at, in a bubble over their card */
+.card-tip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  width: max-content;
+  max-width: 240px;
+  padding: 8px 14px;
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 4px 0 rgba(42, 34, 51, 0.5);
+  font-size: 15px;
+  line-height: 1.3;
+  text-align: center;
+  translate: -50% 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, translate 0.15s;
+}
+
+.card-tip.on {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.card-tip::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 14px;
+  height: 14px;
+  translate: -50% -50%;
+  rotate: 45deg;
+  border: solid var(--ink);
+  border-width: 0 3px 3px 0;
+  background: var(--paper);
+}
+
+.card-tip strong {
+  font-family: var(--display);
 }
 
 .unit-card {
