@@ -416,6 +416,8 @@ export class LevelScreen implements Screen {
   private snacksEl: HTMLElement;
   private snacksPill!: HTMLElement;
   private pileFill: HTMLElement;
+  private pileTrail: HTMLElement;
+  private pilePill!: HTMLElement;
   private nightMoon: SVGCircleElement;
   private cards = new Map<UnitId, HTMLButtonElement>();
   private speedBtn: HTMLButtonElement;
@@ -464,6 +466,7 @@ export class LevelScreen implements Screen {
 
     this.snacksEl = h("span.value", null, "0");
     this.pileFill = h("div.fill");
+    this.pileTrail = h("div.trail");
     const arc = svg(
       `<svg viewBox="0 0 120 64"><path d="M8 58a52 52 0 0 1 104 0" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round"/><circle r="9" fill="#ffe08a" stroke="#2a2233" stroke-width="3"/></svg>`,
       "night-arc",
@@ -525,7 +528,12 @@ export class LevelScreen implements Screen {
         "div.hud-top",
         null,
         (this.snacksPill = h("div.pill.snacks", { "aria-label": t("hud.snacks") }, paintedIcon("snack", snackIcon), this.snacksEl)),
-        h("div.pill.pile", null, paintedIcon(hasPainted(`pile-${session.level.area}`) ? `pile-${session.level.area}` : "pile", pileIcon), h("div.bar", null, this.pileFill)),
+        (this.pilePill = h(
+          "div.pill.pile",
+          null,
+          paintedIcon(hasPainted(`pile-${session.level.area}`) ? `pile-${session.level.area}` : "pile", pileIcon),
+          h("div.bar", null, this.pileTrail, this.pileFill),
+        )),
         this.goalChip,
         h(
           "div.hud-right",
@@ -636,7 +644,12 @@ export class LevelScreen implements Screen {
     const snacks = Math.floor(st.snacks);
     if (snacks !== this.last.snacks) this.snacksEl.textContent = String((this.last.snacks = snacks));
     const pile = st.pileHp / st.level.pile.hp;
-    if (pile !== this.last.pile) this.pileFill.style.width = `${(this.last.pile = pile) * 100}%`;
+    if (pile !== this.last.pile) {
+      // the fill drops at once; a pale trail behind it catches up, showing what was just carried off
+      if (pile < this.last.pile && this.last.pile >= 0) this.bump(this.pilePill, "hit");
+      this.last.pile = pile;
+      this.pileFill.style.width = this.pileTrail.style.width = `${pile * 100}%`;
+    }
     const night = Math.min(1, st.tick / st.nightTicks);
     if (Math.abs(night - this.last.night) > 0.002) {
       this.last.night = night;
@@ -648,7 +661,11 @@ export class LevelScreen implements Screen {
       const def = st.content.units[u];
       const cd = (st.sendCooldown[u] ?? 0) / Math.max(1, Math.round(def.sendCooldown * 60));
       card.style.setProperty("--cd", cd.toFixed(3));
-      card.classList.toggle("broke", st.snacks < def.cost);
+      const broke = st.snacks < def.cost;
+      if (card.classList.contains("broke") && !broke) this.bump(card, "ready");
+      card.classList.toggle("broke", broke);
+      // saving up: the card fills from the bottom as snacks come in
+      card.style.setProperty("--save", broke ? Math.max(0, st.snacks / def.cost).toFixed(3) : "1");
       card.classList.toggle("held", this.session.holding === u);
     }
     if (this.goal && this.goal.progress !== this.lastProgress) {
@@ -692,6 +709,13 @@ export class LevelScreen implements Screen {
     if (this.session.holding === u) this.session.holding = null;
   }
 
+  /** Restart a one-shot CSS animation class. */
+  private bump(el: HTMLElement, cls: string) {
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  }
+
   private nudge(el: HTMLElement) {
     el.classList.remove("nudge");
     void el.offsetWidth;
@@ -723,14 +747,23 @@ export class LevelScreen implements Screen {
   private placeLaneButtons() {
     const v = this.app.view;
     this.laneLayout = v.generation;
-    // On short screens the unit bar covers the bottom lane's start: keep the buttons above it.
+    // Sized to the lane, so on a phone a button doesn't swallow the lane's mouth (and the friends
+    // stepping onto it), but never smaller than a comfortable touch target.
+    const size = Math.round(Math.min(56, Math.max(44, 84 * v.scale)));
+    this.el.style.setProperty("--lane-btn", `${size}px`);
+    // On short screens the unit bar covers the bottom lane's start: keep the buttons above it,
+    // and clear of each other.
     const barTop = this.el.querySelector(".unit-bar")!.getBoundingClientRect().top;
-    this.session.st.lanes.forEach((lane, i) => {
-      const [x, y] = lane.points[0]!;
+    const reach = size / 2 + 4 + 4; // radius, the drop shadow, a little air
+    const lanes = this.session.st.lanes;
+    let below = barTop + reach; // as if there were a button just under the bottom one
+    for (let i = lanes.length - 1; i >= 0; i--) {
+      const [x, y] = lanes[i]!.points[0]!;
       const b = this.laneButtons[i]!;
-      b.style.left = `${v.ox + (x + 40) * v.scale}px`;
-      b.style.top = `${Math.min(v.oy + y * v.scale, barTop - 38)}px`;
-    });
+      below = Math.min(v.oy + y * v.scale, below - 2 * reach);
+      b.style.left = `${v.ox + x * v.scale + size / 2 - 6}px`;
+      b.style.top = `${below}px`;
+    }
   }
 
   private cycleSpeed() {

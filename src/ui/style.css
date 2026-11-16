@@ -683,19 +683,47 @@ button:focus-visible,
 }
 
 .pile .bar {
+  position: relative;
   width: clamp(100px, 18vw, 260px);
   height: 20px;
   border: 3px solid var(--ink);
   border-radius: 10px;
-  background: #ddd3c2;
+  background: #5a4e5e;
   overflow: hidden;
 }
 
-.pile .fill {
-  height: 100%;
+/* what's left of the pile: warm and full when the night starts */
+.pile .fill,
+.pile .trail {
+  position: absolute;
+  inset: 0 auto 0 0;
   width: 100%;
-  background: linear-gradient(#6b7080, #3d404b);
-  transition: width 0.25s ease-out;
+  border-radius: 0 7px 7px 0;
+}
+
+.pile .fill {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.45) 0 28%, transparent 28%),
+    repeating-linear-gradient(-45deg, transparent 0 8px, rgba(255, 255, 255, 0.12) 8px 14px),
+    linear-gradient(#ffc65c, #f0873a);
+  box-shadow: inset -3px 0 0 rgba(42, 34, 51, 0.35);
+  transition: width 0.18s ease-out;
+}
+
+/* what was just carried off: catches up a moment later */
+.pile .trail {
+  background: #fff1c9;
+  transition: width 0.5s ease-in 0.35s;
+}
+
+.pill.pile.hit .bar {
+  animation: pile-hit 0.3s;
+}
+
+@keyframes pile-hit {
+  30% {
+    transform: scale(1.06, 1.18);
+  }
 }
 
 .hud-right {
@@ -741,6 +769,31 @@ button:focus-visible,
   overflow: hidden;
   touch-action: none;
   --cd: 0;
+}
+
+.unit-card {
+  isolation: isolate;
+  --save: 1;
+}
+
+/* saving up for it: a warm tide rises from the bottom as snacks come in */
+.unit-card.broke::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, #f3dfae calc(var(--save) * 100%), transparent 0);
+  pointer-events: none;
+}
+
+.unit-card.ready {
+  animation: card-ready 0.35s ease-out;
+}
+
+@keyframes card-ready {
+  40% {
+    transform: translateY(-6px) scale(1.05);
+  }
 }
 
 .unit-card::after {
@@ -819,8 +872,8 @@ button:focus-visible,
 
 .lane-btn {
   position: absolute;
-  width: 56px;
-  height: 56px;
+  width: var(--lane-btn, 56px);
+  height: var(--lane-btn, 56px);
   translate: -50% -50%;
   display: grid;
   place-items: center;
@@ -831,6 +884,10 @@ button:focus-visible,
   font-size: 26px;
   font-weight: 700;
   box-shadow: 0 4px 0 var(--ink);
+}
+
+.lane-btn .arrow {
+  font-size: calc(var(--lane-btn, 56px) * 0.46);
 }
 
 .lane-btn.on {

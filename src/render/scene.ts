@@ -1,7 +1,7 @@
 // Draws a level: a cached background layer (sky, alley, lanes, defense ranges), then per frame
 // the defenses, pile, units, Jimothy and short-lived effects. Reads sim state; never changes it.
 
-import { directionAt, pointAt } from "../sim/lane.ts";
+import { closestS, directionAt, pointAt } from "../sim/lane.ts";
 import { CHAIN_WINDOW_TICKS, TICK_RATE, type SimState } from "../sim/sim.ts";
 import type { DefenseState, SimEvent, UnitId, Vec } from "../sim/types.ts";
 import {
@@ -79,6 +79,7 @@ export class SceneRenderer {
     this.pileShake = 0;
     this.cheer = 0;
     this.focus.clear();
+    this.rangeFade.clear();
   }
 
   /** Turn sim events into presentation effects. */
@@ -192,13 +193,14 @@ export class SceneRenderer {
     const simT = (st.tick + alpha) / TICK_RATE;
     const k = this.view.scale * this.view.dpr; // device px per world unit
     if (this.selectedLane >= 0 && this.highlightLanes) this.drawLaneHighlight(st, this.selectedLane, t);
+    this.drawRanges(st, alpha, dt);
 
     for (const d of st.defenses) {
       const age = (st.tick + alpha - d.lastFiredTick) / TICK_RATE;
       ctx.save();
       ctx.translate(d.pos[0], d.pos[1]);
-      if (d.disabled && !d.def.effect.blocks) ctx.globalAlpha = 0.45;
       const art = this.atlas?.frames[d.def.id];
+      if (d.disabled && !d.def.effect.blocks && !art) ctx.globalAlpha = 0.45;
       const fx = d.def.distractedBy ? this.distraction(st, d, dt) : null;
       if (fx) ctx.translate(fx.f.ox, fx.f.oy);
       if (art) {
@@ -306,6 +308,7 @@ export class SceneRenderer {
     ctx.fillStyle = "#8fd3ff";
     ctx.fill(drops);
     ctx.restore();
+    this.drawNerve(order);
 
     // Jimothy in the staging area, between the lanes
     this.cheer = Math.max(0, this.cheer - dt);
@@ -456,6 +459,22 @@ export class SceneRenderer {
     const ctx = this.view.ctx;
     const h = frameHeight(f);
     ctx.translate(0, h / 2); // centered on the defense's position
+    if (disabled && id !== "fence") {
+      // The rats got to it. Nobody is hurt: the dog and the neighbor give up and nap, and the
+      // gadgets topple over, unplugged.
+      if (id === "yardDog" || id === "broomNeighbor") {
+        const breathe = this.reducedMotion ? 1 : 1 + Math.sin(t * 1.3) * 0.03;
+        ctx.rotate(id === "yardDog" ? -0.1 : 0.08);
+        drawFrame(ctx, f, 1.04 / breathe, 0.92 * breathe);
+        this.drawZzz(t, f.w / f.scale / 4, -h * 0.85, 0);
+      } else {
+        ctx.translate(-h * 0.15, 0);
+        ctx.rotate(-1.35);
+        ctx.globalAlpha *= 0.85;
+        drawFrame(ctx, f);
+      }
+      return;
+    }
     switch (id) {
       case "sprinkler": {
         drawFrame(ctx, f);
@@ -520,6 +539,77 @@ export class SceneRenderer {
     const [dx, dy] = directionAt(l, s);
     const off = jitter * LANE_WIDTH * 0.28;
     return [x - dy * off, y + dx * off - (air ? FLY_HEIGHT : 0)];
+  }
+
+  /**
+   * A small bar of nerve over each friend that has been startled at least once, so the player
+   * can see who is about to give up and hop off. Calm friends show nothing.
+   */
+  private drawNerve(order: { u: SimState["units"][number]; x: number; y: number; air: boolean }[]) {
+    const { ctx } = this.view;
+    const frames = this.atlas?.frames;
+    const W = 46;
+    const backs = new Path2D();
+    const fills: [Path2D, Path2D, Path2D] = [new Path2D(), new Path2D(), new Path2D()];
+    let any = false;
+    for (const { u, x, y, air } of order) {
+      const k = u.hp / u.def.hp;
+      if (k >= 1 || u.hp <= 0) continue;
+      any = true;
+      const f = frames?.[u.def.id];
+      const top = y - (air ? FLY_HEIGHT : 0) - (f ? frameHeight(f) : 60) - 10;
+      backs.roundRect(x - W / 2 - 4, top - 4, W + 8, 16, 8);
+      fills[k > 0.6 ? 0 : k > 0.3 ? 1 : 2].roundRect(x - W / 2, top, Math.max(8, W * k), 8, 4);
+    }
+    if (!any) return;
+    ctx.fillStyle = INK;
+    ctx.fill(backs);
+    ["#8bd36a", "#ffd166", "#ff8f5a"].forEach((c, i) => {
+      ctx.fillStyle = c;
+      ctx.fill(fills[i]!);
+    });
+  }
+
+  /**
+   * Each defense's reach, drawn live over the lanes so players can see which stretch of path it
+   * covers. It brightens when the defense acts, turns pink while it's busy with a favourite
+   * friend, and fades away once the rats have put it out of action.
+   */
+  private rangeFade = new Map<number, number>();
+  private drawRanges(st: SimState, alpha: number, dt: number) {
+    const { ctx } = this.view;
+    for (const d of st.defenses) {
+      if (d.def.effect.blocks) continue;
+      let fade = this.rangeFade.get(d.index) ?? (d.disabled ? 0 : 1);
+      fade = d.disabled ? Math.max(0, fade - dt * 1.5) : 1;
+      this.rangeFade.set(d.index, fade);
+      if (fade <= 0) continue;
+      const since = (st.tick + alpha - d.lastFiredTick) / TICK_RATE;
+      const flash = d.lastFiredTick > 0 && since >= 0 && since < 0.5 ? 1 - since / 0.5 : 0;
+      const busy = d.distractTicks > 0;
+      const shape = d.def.shape;
+      const f = (d.facingDeg * Math.PI) / 180;
+      const half = shape.kind === "cone" ? (shape.arcDeg * Math.PI) / 360 : 0;
+      ctx.save();
+      ctx.translate(d.pos[0], d.pos[1]);
+      ctx.globalAlpha = fade;
+      ctx.beginPath();
+      if (shape.kind === "radius") ctx.arc(0, 0, shape.r, 0, Math.PI * 2);
+      else {
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, shape.r, f - half, f + half);
+        ctx.closePath();
+      }
+      const [r, g, b, a] = busy ? [255, 127, 174, 0.14] : RANGE_COLOURS[d.def.id] ?? [255, 255, 255, 0.08];
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a + flash * 0.12})`;
+      ctx.fill();
+      ctx.setLineDash([12, 14]);
+      ctx.lineDashOffset = this.reducedMotion ? 0 : -((st.tick + alpha) / TICK_RATE) * 12;
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = `rgba(${Math.min(255, r + 40)}, ${Math.min(255, g + 40)}, ${Math.min(255, b + 40)}, ${0.3 + flash * 0.4})`;
+      ctx.stroke();
+      ctx.restore();
+    }
   }
 
   /** A soft oval shadow on the ground at (x, y), sized to a fraction `k` of the frame's width. */
@@ -681,10 +771,10 @@ export class SceneRenderer {
   }
 
   /** Three z's drifting up and fading from (x, y), for a napping Jimothy. */
-  private drawZzz(t: number, x: number, y: number) {
+  private drawZzz(t: number, x: number, y: number, tilt = 0.12) {
     const ctx = this.view.ctx;
     ctx.save();
-    ctx.rotate(0.12); // undo the nap tilt so the letters stay upright
+    ctx.rotate(tilt); // undo the nap tilt so the letters stay upright
     ctx.fillStyle = "#fff6e6";
     ctx.strokeStyle = INK;
     ctx.lineWidth = 5;
@@ -899,29 +989,6 @@ function paintBackground(
   // (ultrawide extremes). Lanes, ranges and the staging box are drawn over it, as §8.3 plans.
   if (painted) ctx.drawImage(painted, -BLEED_X, -BLEED_Y, BLEED_W, BLEED_H);
 
-  // defense ranges, faint, so players can read the layout
-  for (const d of st.defenses) {
-    if (d.def.effect.blocks) continue;
-    ctx.save();
-    ctx.translate(d.pos[0], d.pos[1]);
-    ctx.beginPath();
-    if (d.def.shape.kind === "radius") ctx.arc(0, 0, d.def.shape.r, 0, Math.PI * 2);
-    else {
-      const f = (d.facingDeg * Math.PI) / 180;
-      const half = (d.def.shape.arcDeg * Math.PI) / 360;
-      ctx.moveTo(0, 0);
-      ctx.arc(0, 0, d.def.shape.r, f - half, f + half);
-      ctx.closePath();
-    }
-    ctx.fillStyle = RANGE_COLOURS[d.def.id] ?? "rgba(255,255,255,0.08)";
-    ctx.fill();
-    ctx.setLineDash([10, 14]);
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.14)";
-    ctx.stroke();
-    ctx.restore();
-  }
-
   // lanes: a worn dirt path with mossy edges
   for (const lane of st.lanes) {
     const path = new Path2D();
@@ -943,6 +1010,7 @@ function paintBackground(
     ctx.stroke(path);
     ctx.setLineDash([]);
   }
+  paintLaneDetails(ctx, st, rnd);
 
   // staging area: a flattened cardboard box under Jimothy, between the lanes' starts
   ctx.save();
@@ -969,11 +1037,95 @@ function paintBackground(
   ctx.fillRect(0, 0, cw, ch);
 }
 
-const RANGE_COLOURS: Record<string, string> = {
-  sprinkler: "rgba(120, 200, 255, 0.12)",
-  broomNeighbor: "rgba(255, 190, 120, 0.10)",
-  yardDog: "rgba(255, 140, 120, 0.12)",
-  motionLight: "rgba(255, 243, 176, 0.08)",
+/**
+ * Pebbles and worn patches on the paths, and tufts of grass and clover along their edges, so the
+ * lanes read as trodden ground rather than flat strokes. Seeded, so a level always looks the same.
+ */
+function paintLaneDetails(ctx: CanvasRenderingContext2D, st: SimState, rnd: () => number) {
+  const onAnotherLane = (p: Vec, self: number, margin: number) =>
+    st.lanes.some((l, i) => i !== self && closestS(l, p).dist < LANE_WIDTH / 2 + margin);
+  const pebbles = new Path2D();
+  const pebbleLights = new Path2D();
+  const worn = new Path2D();
+  const tufts = new Path2D();
+  const clover: Vec[] = [];
+  st.lanes.forEach((lane, li) => {
+    const end = lane.length - 60; // the pile covers the last stretch
+    for (let s = 60; s < end; s += 26 + rnd() * 30) {
+      const [x, y] = pointAt(lane, s, [0, 0]);
+      const [dx, dy] = directionAt(lane, s);
+      // a pebble somewhere on the path
+      const off = (rnd() - 0.5) * (LANE_WIDTH - 30);
+      const px = x - dy * off;
+      const py = y + dx * off;
+      const r = 2.5 + rnd() * 4;
+      if (rnd() < 0.7) {
+        pebbles.moveTo(px + r, py);
+        pebbles.ellipse(px, py, r, r * 0.7, rnd() * 3, 0, Math.PI * 2);
+        pebbleLights.moveTo(px - r * 0.3 + r * 0.35, py - r * 0.3);
+        pebbleLights.arc(px - r * 0.3, py - r * 0.3, r * 0.35, 0, Math.PI * 2);
+      } else {
+        const w = 14 + rnd() * 22;
+        worn.moveTo(px + w, py);
+        worn.ellipse(px, py, w, w * 0.4, Math.atan2(dy, dx), 0, Math.PI * 2);
+      }
+      // a tuft on one edge or the other
+      if (rnd() < 0.55) {
+        const side = rnd() < 0.5 ? -1 : 1;
+        const edge = side * (LANE_WIDTH / 2 + 4);
+        const tx = x - dy * edge;
+        const ty = y + dx * edge;
+        if (onAnotherLane([tx, ty], li, 6)) continue;
+        if (rnd() < 0.15) {
+          clover.push([tx, ty]);
+          continue;
+        }
+        const blades = 3 + Math.floor(rnd() * 3);
+        const hgt = 12 + rnd() * 12;
+        for (let b = 0; b < blades; b++) {
+          const bx = tx + (b - blades / 2) * 4;
+          const lean = (b - blades / 2) * 3 + (rnd() - 0.5) * 4;
+          tufts.moveTo(bx - 2.5, ty + 2);
+          tufts.quadraticCurveTo(bx + lean * 0.4, ty - hgt * 0.6, bx + lean, ty - hgt);
+          tufts.quadraticCurveTo(bx + lean * 0.4 + 1, ty - hgt * 0.5, bx + 2.5, ty + 2);
+          tufts.closePath();
+        }
+      }
+    }
+  });
+  ctx.save();
+  ctx.fillStyle = "rgba(70, 58, 44, 0.18)";
+  ctx.fill(worn);
+  ctx.fillStyle = "#6f6455";
+  ctx.fill(pebbles);
+  ctx.fillStyle = "rgba(230, 220, 200, 0.45)";
+  ctx.fill(pebbleLights);
+  ctx.fillStyle = "#4f7a45";
+  ctx.fill(tufts);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(30, 50, 30, 0.6)";
+  ctx.stroke(tufts);
+  for (const [x, y] of clover) {
+    for (let i = 0; i < 3; i++) {
+      const a = -Math.PI / 2 + (i * Math.PI * 2) / 3;
+      ctx.beginPath();
+      ctx.arc(x + Math.cos(a) * 5, y - 6 + Math.sin(a) * 5, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#6aa257";
+      ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.arc(x + 9, y - 14, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = "#f4f0e6";
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+const RANGE_COLOURS: Record<string, [number, number, number, number]> = {
+  sprinkler: [120, 200, 255, 0.1],
+  broomNeighbor: [255, 190, 120, 0.08],
+  yardDog: [255, 140, 120, 0.1],
+  motionLight: [255, 243, 176, 0.06],
 };
 
 export interface Box {
