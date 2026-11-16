@@ -668,7 +668,7 @@ export class SceneRenderer {
         break;
       case "rat":
         lift = Math.abs(Math.sin(t * 16 + phase)) * 3;
-        if (chewing) rot = Math.sin(performance.now() / 25) * 0.06;
+        if (chewing) rot = Math.sin(t * 40) * 0.06;
         break;
     }
     if (this.reducedMotion) sy = 1;
